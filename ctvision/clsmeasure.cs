@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using HalconDotNet;
+//using HalconDotNet;
 using System.Collections;
 using ctmeasure;
 
@@ -79,13 +79,13 @@ namespace leanvision
             if (!roi1.Equals(roi2)) { 
                 double p1=0,p2=0;
                 if(roi1.roipoint==0) p1=roi1.ac;
-                if (roi1.roipoint == 1) p1 = roi1.gc;
-                if(roi1.roipoint==4) p1=roi1.c1;
-                if(roi1.roipoint==5) p1=roi1.c2;
+                else if (roi1.roipoint == 1) p1 = roi1.gc;
+                else if(roi1.roipoint==4) p1=roi1.c1;
+                else if(roi1.roipoint==5) p1=roi1.c2;
                 if (roi2.roipoint == 0) p2 = roi2.ac;
-                if (roi2.roipoint == 1) p2 = roi2.gc;
-                if (roi2.roipoint == 4) p2 = roi2.c1;
-                if (roi2.roipoint == 5) p2 = roi2.c2;
+                else if (roi2.roipoint == 1) p2 = roi2.gc;
+                else if (roi2.roipoint == 4) p2 = roi2.c1;
+                else if (roi2.roipoint == 5) p2 = roi2.c2;
                 mvalue = Math.Abs((p1 - p2) * xpixel / 1000) + moffset;
             }
 
@@ -139,7 +139,9 @@ namespace leanvision
                 if (roi1.roipoint == 1) { p1 = roi1.gr; p11 = roi1.gc; }
                 if (roi2.roipoint == 0) { p2 = roi2.ar; p22 = roi2.ac; }
                 if (roi2.roipoint == 1) { p2 = roi2.gr; p22 = roi2.gc; }
-                dist=HMisc.DistancePp(p1*ypixel/1000,p11*xpixel/1000,p2*ypixel/1000,p22*ypixel/1000);
+                //dist=HMisc.DistancePp(p1*ypixel/1000,p11*xpixel/1000,p2*ypixel/1000,p22*ypixel/1000);
+                double temp = Math.Pow((p1 * ypixel / 1000- p11 * xpixel / 1000),2)+Math.Pow((p2 * ypixel / 1000- p22 * ypixel / 1000),2);
+                dist = Math.Sqrt(temp);
                 mvalue = Math.Abs(dist) + moffset;
             }
             

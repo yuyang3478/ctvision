@@ -6,21 +6,27 @@ using ctmeasure;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using OpenCvSharp;    //添加相应的引用即可
+using OpenCvSharp.Extensions;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace leanvision
 {
     public class vcommon
     {
         public static softkeyyt skey;
         //显示颜色
-        public static string hcolor = "red";
-        public static string hcoloractive = "green";
-        public static string hcolorhandle = "red";
-        public static string hcolorregion = "red";
-        public static string hcolorselect = "red";
-        public static string hcolortext = "red";
+        public static Pen hcolor = Pens.Red;//"red";
+        public static Pen hcoloractive = Pens.Green;
+        public static Pen hcolorhandle = Pens.Red;
+        public static Pen hcolorregion = Pens.Red;
+        public static Pen hcolorselect = Pens.Red;
+        public static Pen hcolortext = Pens.Red;
         public static bool hshowresult = false;//是否显示测量结果
         public static bool hshowstatistic = true;//是否显示统计结果
         public static string productname = "";//当前产品名称
+        
         public static double postext1r = 70;//视图文本显示坐标
         public static double postext1c = 100;
         public static double postext2r = 150;
@@ -36,16 +42,25 @@ namespace leanvision
         public static int qtypass = 0;
         public static int qtyng = 0;
         public static double qtyrate = 100.0;
-        
+
+        //设置图片及文件存储路径
+        public static string picpath = "";
+        public static string filepath = "";
 
         public static void showstatistic()
         {
-            Program.fmain.tqty.Text = qty.ToString();
-            Program.fmain.tqtypass.Text = qtypass.ToString();
-            Program.fmain.tqtyng.Text = qtyng.ToString();
-            //if (qty == 0) qtyrate = 100.0;
-            //else qtyrate = qtypass*1.0 / qty * 100;
-            //Program.fmain.tqtyrate.Text = qtyrate.ToString("f1") + " %";
+            if (Program.fmain.tqty.InvokeRequired) { Program.fmain.tqty.Invoke(new MethodInvoker(delegate () { Program.fmain.tqty.Text = qty.ToString(); })); }
+            else { Program.fmain.tqty.Text = qty.ToString(); }
+            if (Program.fmain.tqtypass.InvokeRequired) { Program.fmain.tqtypass.Invoke(new MethodInvoker(delegate () { Program.fmain.tqtypass.Text = qtypass.ToString(); })); }
+            else { Program.fmain.tqtypass.Text = qtypass.ToString(); }
+            if (Program.fmain.tqtyng.InvokeRequired) { Program.fmain.tqtyng.Invoke(new MethodInvoker(delegate () { Program.fmain.tqtyng.Text = qtyng.ToString(); })); }
+            else { Program.fmain.tqtyng.Text = qtyng.ToString(); }
+            //Program.fmain.tqty.Text = qty.ToString();
+            //Program.fmain.tqtypass.Text = qtypass.ToString();
+            //Program.fmain.tqtyng.Text = qtyng.ToString();
+            ////if (qty == 0) qtyrate = 100.0;
+            ////else qtyrate = qtypass*1.0 / qty * 100;
+            ////Program.fmain.tqtyrate.Text = qtyrate.ToString("f1") + " %";
         }
 
         public static void resetstatistic()
@@ -67,12 +82,12 @@ namespace leanvision
             FileStream fs = new FileStream(fn, FileMode.OpenOrCreate, FileAccess.Write);
             BinaryFormatter bf = new BinaryFormatter();
             ArrayList al = new ArrayList();
-            al.Add(hcolor);
-            al.Add(hcoloractive);
-            al.Add(hcolorhandle);
-            al.Add(hcolorregion);
-            al.Add(hcolorselect);
-            al.Add(hcolortext);
+            al.Add(penTocolor(hcolor));
+            al.Add(penTocolor(hcoloractive));
+            al.Add(penTocolor(hcolorhandle));
+            al.Add(penTocolor(hcolorregion));
+            al.Add(penTocolor(hcolorselect));
+            al.Add(penTocolor(hcolortext));
             al.Add(qty);
             al.Add(qtyng);
             al.Add(qtypass);
@@ -80,14 +95,19 @@ namespace leanvision
             al.Add(hshowstatistic);
             al.Add(posmove);
             al.Add(productname);
+            
             al.Add(postext1r);
             al.Add(postext1c);
             al.Add(postext2r);
             al.Add(postext2c);
             al.Add(fontsize);
-            al.Add(viewscale);
-            al.Add(viewx);
-            al.Add(viewy);
+            //viewscale = 0.3;
+            //al.Add(viewscale);
+            //al.Add(viewx);
+            //al.Add(viewy);
+            //al.Add(templateFile);
+            al.Add(picpath);
+            al.Add(filepath);
             bf.Serialize(fs, al);
             fs.Flush();
             fs.Close();
@@ -101,12 +121,12 @@ namespace leanvision
             FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read);
             BinaryFormatter bf = new BinaryFormatter();
             ArrayList al = (ArrayList)bf.Deserialize(fs);
-            hcolor = (string)al[0];
-            hcoloractive = (string)al[1];
-            hcolorhandle = (string)al[2];
-            hcolorregion = (string)al[3];
-            hcolorselect = (string)al[4];
-            hcolortext = (string)al[5];
+            hcolor = vcommon.colorToPen((string)al[0]);
+            hcoloractive = vcommon.colorToPen((string)al[1]);
+            hcolorhandle = vcommon.colorToPen((string)al[2]);
+            hcolorregion = vcommon.colorToPen((string)al[3]);
+            hcolorselect = vcommon.colorToPen((string)al[4]);
+            hcolortext = vcommon.colorToPen((string)al[5]);
             qty = (int)al[6];
             qtyng = (int)al[7];
             qtypass = (int)al[8];
@@ -119,12 +139,47 @@ namespace leanvision
             postext2r = (double)al[15];
             postext2c = (double)al[16];
             fontsize = (int)al[17];
-            viewscale = (double)al[18];
-            viewx = (double)al[19];
-            viewy = (double)al[20];
+            picpath = (string)al[18];
+            filepath = (string)al[19];
+
+
+            //viewscale = (double)al[18];
+            //viewx = (double)al[19];
+            //viewy = (double)al[20];
+
+            //if (al.Count == 22)
+            //    templateFile = (string)al[21];//"C:\\Users\\Administrator\\Desktop\\ctvisionv8\\66666.bmp";// 
+            //else
+            //    templateFile = ".\\default.bmp";
             fs.Close();
             al.Clear();
             al = null;
+        }
+
+        public static Pen colorToPen(string colorText)
+        {
+            if (string.Equals(colorText, "red"))
+            {
+                return Pens.Red;
+            }
+            else if (string.Equals(colorText, "green"))
+            {
+                return Pens.Green;
+            }
+            return Pens.Blue;
+        }
+
+        public static string penTocolor(Pen pen)
+        {
+            if (Pens.Red.Equals(pen))
+            {
+                return "red";
+            }
+            else if (Pens.Green.Equals(pen))
+            {
+                return "green";
+            }
+            return "blue";
         }
     }//class
 }//namespace

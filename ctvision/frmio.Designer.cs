@@ -50,13 +50,12 @@
             this.tokon = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnclose = new System.Windows.Forms.Button();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.triggershape = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.btnsend = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.ckok = new System.Windows.Forms.CheckBox();
             this.ckng = new System.Windows.Forms.CheckBox();
+            this.triggershape = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -265,26 +264,6 @@
             this.btnclose.UseVisualStyleBackColor = true;
             this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
             // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.triggershape});
-            this.shapeContainer1.Size = new System.Drawing.Size(387, 410);
-            this.shapeContainer1.TabIndex = 29;
-            this.shapeContainer1.TabStop = false;
-            // 
-            // triggershape
-            // 
-            this.triggershape.BackColor = System.Drawing.Color.White;
-            this.triggershape.FillColor = System.Drawing.Color.White;
-            this.triggershape.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
-            this.triggershape.Location = new System.Drawing.Point(336, 74);
-            this.triggershape.Name = "triggershape";
-            this.triggershape.Size = new System.Drawing.Size(19, 19);
-            // 
             // btnsend
             // 
             this.btnsend.Location = new System.Drawing.Point(338, 200);
@@ -337,11 +316,21 @@
             this.ckng.TabIndex = 34;
             this.ckng.UseVisualStyleBackColor = true;
             // 
+            // triggershape
+            // 
+            this.triggershape.Location = new System.Drawing.Point(197, 38);
+            this.triggershape.Name = "triggershape";
+            this.triggershape.Size = new System.Drawing.Size(20, 23);
+            this.triggershape.TabIndex = 35;
+            this.triggershape.Text = "@";
+            this.triggershape.UseVisualStyleBackColor = true;
+            // 
             // frmio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(387, 410);
+            this.Controls.Add(this.triggershape);
             this.Controls.Add(this.ckng);
             this.Controls.Add(this.ckok);
             this.Controls.Add(this.button2);
@@ -352,7 +341,6 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cbcomport);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.shapeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmio";
@@ -392,12 +380,13 @@
         private System.Windows.Forms.TextBox tokon;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnclose;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
-        private Microsoft.VisualBasic.PowerPacks.OvalShape triggershape;
+        //private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+        //private Microsoft.VisualBasic.PowerPacks.OvalShape triggershape;
         private System.Windows.Forms.Button btnsend;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.CheckBox ckok;
         private System.Windows.Forms.CheckBox ckng;
+        private System.Windows.Forms.Button triggershape;
     }
 }

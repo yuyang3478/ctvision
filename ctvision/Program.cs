@@ -60,6 +60,7 @@ namespace ctmeasure
 
         public static bool getversion()
         {
+            return true;
             string outstring = "";
             if (Program.skey.YReadString(ref outstring, 0, 13, "00000000", "FFFFFFFF", Program.keypath) != 0) return false;
             else

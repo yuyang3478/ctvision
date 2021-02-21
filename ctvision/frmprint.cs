@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using leanvision;
 
 namespace ctmeasure
 {
@@ -82,7 +83,14 @@ namespace ctmeasure
         public void pbegin() {
             btime = DateTime.Now.ToString("yyyyMMddHHmm");
             if (factory == ""||device==""||worker=="") return;
-            folder = Application.StartupPath + "\\photos\\" + DateTime.Now.ToString("yyyyMMdd");
+            if (vcommon.picpath == "")
+            {
+                folder = Application.StartupPath + "\\photos\\" + DateTime.Now.ToString("yyyyMMdd");
+            }
+            else
+            {
+                folder = vcommon.picpath;
+            }
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             folder += "\\" + DateTime.Now.ToString("yyyyMMddHHmm");
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
@@ -94,7 +102,7 @@ namespace ctmeasure
             if (btime.Trim() == "") return;
             etime = DateTime.Now.ToString("yyyyMMddHHmm");
             folder = "";
-            pendprint();
+            //pendprint();
         }
 
         //结束打印
@@ -125,9 +133,17 @@ namespace ctmeasure
 
         //查看NG图片
         public void photosview() {
-            string fpath = viewfolder.Trim();
-            if (fpath == "") fpath = Application.StartupPath + "\\photos";
-            if(!Directory.Exists(fpath)) Directory.CreateDirectory(fpath);
+            string fpath = "";
+            if (vcommon.picpath == "")
+            {
+                fpath = viewfolder.Trim();
+                if (fpath == "") fpath = Application.StartupPath + "\\photos";
+                if (!Directory.Exists(fpath)) Directory.CreateDirectory(fpath);  
+            }
+            else {
+                fpath = vcommon.picpath;
+            }
+
             System.Diagnostics.Process.Start("explorer.exe", fpath);
         }
 

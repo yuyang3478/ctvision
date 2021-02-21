@@ -6,7 +6,12 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using leanvision;
-using HalconDotNet;
+//using HalconDotNet;
+using MVSDK;//使用SDK接口
+//using Snapshot;
+using CameraHandle = System.Int32;
+using MvApi = MVSDK.MvApi;
+using System.Runtime.InteropServices;
 
 namespace ctmeasure
 {
@@ -22,21 +27,23 @@ namespace ctmeasure
         {
             dcamera = Program.fmain.dcamera;
             //列举相机
-            HTuple cameras = dcamera.listcameras();
+            tSdkCameraDevInfo[] tCameraDevInfoList = dcamera.listcameras();
             string cname = "";
-            if (cameras.Type == HTupleType.STRING)
+            if (tCameraDevInfoList.Length == 1)
             {
-                cname = cameras.ToString().Replace("\"", "");
-                if(cname.IndexOf("MindVision")>-1) cbcameras.Items.Add(cname);
+                cname = System.Text.Encoding.Default.GetString(tCameraDevInfoList[0].acFriendlyName); //cameras.ToString().Replace("\"", "");
+                cbcameras.Items.Add(cname);
+                //if (cname.IndexOf("MindVision")>-1) 
             }
             else {
-                for (int i = 0; i < cameras.Length; i++)
+                for (int i = 0; i < tCameraDevInfoList.Length; i++)
                 {
-                    cname = cameras[i].ToString().Replace("\"", "");
-                    if (cname.IndexOf("MindVision") > -1) cbcameras.Items.Add(cname);
+                    cname = System.Text.Encoding.Default.GetString(tCameraDevInfoList[i].acFriendlyName);
+                    cbcameras.Items.Add(cname);
+                    //if (cname.IndexOf("MindVision") > -1) 
                 }
             }
-            cbcameras.SelectedIndex = cbcameras.Items.IndexOf(dcamera.cname);
+            cbcameras.SelectedIndex = cbcameras.Items.IndexOf(cname);
             try
             {
                 tbexposuretime.Value = (int)dcamera.exposuretime;

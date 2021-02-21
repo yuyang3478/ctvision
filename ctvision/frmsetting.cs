@@ -11,6 +11,7 @@ namespace ctmeasure
 {
     public partial class frmsetting : Form
     {
+        
         public frmsetting()
         {
             InitializeComponent();
@@ -72,19 +73,35 @@ namespace ctmeasure
         }
 
         private void btnok_Click(object sender, EventArgs e)
-        {
-            vcommon.hcolor = cbcolor1.Text;
-            vcommon.hcoloractive = cbcolor2.Text;
-            vcommon.hcolorhandle = cbcolor3.Text;
-            vcommon.hcolorregion = cbcolor4.Text;
-            vcommon.hcolorselect = cbcolor5.Text;
-            vcommon.hcolortext = cbcolor6.Text;
+        {   
+            vcommon.hcolor = vcommon.colorToPen(cbcolor1.Text);
+            vcommon.hcoloractive = vcommon.colorToPen(cbcolor2.Text);
+            vcommon.hcolorhandle = vcommon.colorToPen(cbcolor3.Text);
+            vcommon.hcolorregion = vcommon.colorToPen(cbcolor4.Text);
+            vcommon.hcolorselect = vcommon.colorToPen(cbcolor5.Text);
+            vcommon.hcolortext = vcommon.colorToPen(cbcolor6.Text);
             vcommon.fontsize = int.Parse(tfontsize.Text);
             vcommon.hshowresult = rbdata.Checked;
             vcommon.hshowstatistic = rbstatistic.Checked;
             vcommon.posmove = int.Parse(tmove.Text);
+
+            vcommon.picpath = tbpic.Text.ToString().Trim();
+            vcommon.filepath = tbfile.Text.ToString().Trim();
+
             this.Close();
         }
+
+        //private Pen colorToPen(string colorText)
+        //{
+        //    if (string.Equals(colorText,"red"))
+        //    {
+        //        return Pens.Red;
+        //    }else if (string.Equals(colorText, "red"))
+        //    {
+        //        return Pens.Green;
+        //    }
+        //    return Pens.Blue;
+        //}
 
         private void tmove_Leave(object sender, EventArgs e)
         {
@@ -106,5 +123,32 @@ namespace ctmeasure
             if (tfontsize.Text.Trim() == "") tfontsize.Text = "5";
         }
 
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnpic_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "请选择文件路径";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                tbpic.Text = dialog.SelectedPath;
+               
+            }
+             
+        }
+
+        private void btnfile_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "请选择文件路径";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                tbfile.Text = dialog.SelectedPath;
+                
+            }
+        }
     }
 }

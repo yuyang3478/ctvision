@@ -31,14 +31,14 @@ namespace ctmeasure
             tngtime.Text = comio.sngtime.ToString();
             ckok.Checked = comio.ckok;
             ckng.Checked = comio.ckng;
-            triggershape.FillColor = Color.White;
+            triggershape.BackColor = Color.White;
         }
 
         public void triggeron() {
-            triggershape.FillColor = Color.Red;
+            triggershape.BackColor = Color.Red;
         }
         public void triggeroff() {
-            triggershape.FillColor = Color.White;
+            triggershape.BackColor = Color.White;
         }
 
         private void cbcomport_SelectedIndexChanged(object sender, EventArgs e)
