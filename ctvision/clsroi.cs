@@ -57,6 +57,10 @@ namespace leanvision
         public double stdsurface { get; set; }//残缺比标准
         public double msurface { get; set; }//残缺比测量值
 
+        public Mat whiteMask;//要做序列化或者保存
+
+        public Mat blackMask;//要做序列化或者保存
+
         //public Mat origImagePart = new Mat();
 
         //计算结果
@@ -112,7 +116,7 @@ namespace leanvision
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col) , (row1 - row) ));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             //Console.WriteLine("width,wRatio :{0},{1}", (col1 - col) * wRatio, wRatio);
             //if (roi.Width == 0 || roi.Height == 0) return;
-            if (roi.X <= 0 || roi.Y <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
+            if (roi.X <= 0 || roi.Y <= 0 ||roi.Width<=0||roi.Height<=0|| ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
             {
                 //MessageBox.Show("ROI 超出边界");
                 return;
@@ -168,7 +172,7 @@ namespace leanvision
         public void show(Mat himg, roishape rs)
         {
             Rect roi = new Rect(new OpenCvSharp.Point(rs.col - vcommon.viewx, rs.row - vcommon.viewy), new OpenCvSharp.Size((rs.col1 - rs.col), (rs.row1 - rs.row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
-            if (roi.X <= 0 || roi.Y <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
+            if (roi.X <= 0 || roi.Y <= 0 || roi.Width <= 0 || roi.Height <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
             {
                 //MessageBox.Show("ROI 超出边界");
                 return;
@@ -236,24 +240,335 @@ namespace leanvision
             }
 
         }
-
-        //调节时显示区域
-        public void getregion(Mat himg,Mat himgback) {
-            
-            //double wRatio = himg.Width * 1.0 / iw;// hw.Width;
-            //double hRatio = himg.Height * 1.0 / ih;// hw.Height;
-            //double hshift = (ih * wRatio * 1.0 - himg.Height) / 2.0;
-            //Rect roi = new Rect(new OpenCvSharp.Point(col * wRatio-vcommon.viewx, row * wRatio - hshift-vcommon.viewy), new OpenCvSharp.Size((col1 - col) * wRatio, (row1 - row) * wRatio));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
-            Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row  - vcommon.viewy), new OpenCvSharp.Size((col1 - col) , (row1 - row) ));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
-            //Console.WriteLine("width,wRatio :{0},{1}", (col1 - col), wRatio);
+         
+        public void getWhiteMask(Mat himg, Mat himgback)
+        { 
+            Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));
             if (roi.Width == 0 || roi.Height == 0) return;
             if (himgback == null) return;
-            if (roi.X<=0||roi.Y<=0||((roi.X + roi.Width) >= himgback.Width) || ((roi.Y + roi.Height) > himgback.Height)) {
+            if (roi.X <= 0 || roi.Y <= 0 || roi.Width <= 0 || roi.Height <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
+            {
                 //MessageBox.Show("ROI 超出边界");
                 return;
             }
             Mat ImageROI = himgback[roi];// 
-            
+
+            if (whiteMask == null)
+            {
+                whiteMask = new Mat();
+            }
+            ImageROI.CopyTo(whiteMask);
+            Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
+             
+            ////处理ImageROI
+            if (closingcircle == 0) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(9, 9)); }
+            if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
+            if (closingcircle == 2) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
+
+            Cv2.Threshold(ImageROI, ImageROI, thminsurface, 255, ThresholdTypes.Binary);//thmin, thmax
+            //Cv2.ImShow("BitwiseNot", ImageROI);
+            //Cv2.WaitKey(10000000);
+            if (closingcircle == 0)
+            {
+                InputArray kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(9, 9));
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
+            }
+            else if (closingcircle == 1)
+            {
+                InputArray kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(5, 5));
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
+            }
+            else
+            {
+                InputArray kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(3, 3));
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
+            }
+
+
+            //获得轮廓
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchly;
+            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+            if (contours.Length == 0) return;
+            double maxContourArea = 0;
+            int maxConIdx = 0;
+            brx = int.MaxValue;
+            bry = int.MaxValue;
+            brx1 = 0;
+            bry1 = 0;
+            //int thickns = -1;
+            //if (Program.fmain.isRunOrRunOnceChecked)
+            //{
+            //    thickns = 3;
+            //}
+            for (int i = 0; i < contours.Length; i++)
+            {
+                //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+                //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
+
+                var contour = contours[i];
+                if (!Program.fmain.cksurfaceareamax.Checked)
+                {
+                    Cv2.DrawContours(
+                                whiteMask,
+                                contours,
+                                i,
+                                color: new Scalar(0, 255, 0),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                    Rect br = Cv2.BoundingRect(contours[i]);
+                    Cv2.DrawContours(
+                                whiteMask,
+                                contours,
+                                i,
+                                color: new Scalar(0, 0, 255),
+                                thickness: 1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                    
+                    if ((br.X + br.Width) > brx1)
+                    {
+                        brx1 = (br.X + br.Width);
+                    }
+                    if ((br.Y + br.Height) > bry1)
+                    {
+                        bry1 = br.Y + br.Height;
+                    }
+
+                    if (br.X < brx)
+                    {
+                        brx = br.X;
+                    }
+                    if (br.Y < bry)
+                    {
+                        bry = br.Y;
+                    }
+
+                }
+                double area1 = Cv2.ContourArea(contour);
+                if (area1 > maxContourArea)
+                {
+                    maxContourArea = area1;
+                    maxConIdx = i;
+                }
+            }
+
+            boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
+            if (Program.fmain.cksurfaceareamax.Checked)
+            {
+                Cv2.DrawContours(
+                                whiteMask,
+                                contours,
+                                maxConIdx,
+                                color: new Scalar(0, 255, 0),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                 
+                Cv2.DrawContours(
+                            whiteMask,
+                            contours,
+                            maxConIdx,
+                            color: new Scalar(0, 0, 255),
+                            thickness: 1,//CV_FILLED
+                            lineType: LineTypes.Link8,
+                            hierarchy: hierarchly,
+                            maxLevel: int.MaxValue);
+
+                 
+                boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
+            }
+
+            //Cv2.Rectangle(whiteMask,
+            //        new OpenCvSharp.Point(boundingRect.X, boundingRect.Y),
+            //        new OpenCvSharp.Point(boundingRect.X + boundingRect.Width, boundingRect.Y + boundingRect.Height),
+            //        new Scalar(255, 0, 0),
+            //        20);
+
+            //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
+            whiteMask.CopyTo(himg[roi]);
+
+
+        }
+        public void getBlackMask(Mat himg, Mat himgback)
+        {
+            Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));
+            if (roi.Width == 0 || roi.Height == 0) return;
+            if (himgback == null) return;
+            if (roi.X <= 0 || roi.Y <= 0 || roi.Width <= 0 || roi.Height <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
+            {
+                //MessageBox.Show("ROI 超出边界");
+                return;
+            }
+            Mat ImageROI = himgback[roi];// 
+
+            if (blackMask == null)
+            {
+                blackMask = new Mat();
+            }
+            ImageROI.CopyTo(blackMask);
+            Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
+
+            ////处理ImageROI
+            if (closingcircle == 0) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(9, 9)); }
+            if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
+            if (closingcircle == 2) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
+            Cv2.BitwiseNot(ImageROI, ImageROI);
+            Cv2.Threshold(ImageROI, ImageROI, thmaxsurface, 255, ThresholdTypes.Binary);//thmin, thmax
+            //Cv2.ImShow("BitwiseNot", ImageROI);
+            //Cv2.WaitKey(10000000);
+            if (closingcircle == 0)
+            {
+                InputArray kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(9, 9));
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
+            }
+            else if (closingcircle == 1)
+            {
+                InputArray kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(5, 5));
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
+            }
+            else
+            {
+                InputArray kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(3, 3));
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
+                Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
+            }
+
+
+            //获得轮廓
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchly;
+            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+            if (contours.Length == 0) return;
+            double maxContourArea = 0;
+            int maxConIdx = 0;
+            brx = int.MaxValue;
+            bry = int.MaxValue;
+            brx1 = 0;
+            bry1 = 0;
+            //int thickns = -1;
+            //if (Program.fmain.isRunOrRunOnceChecked)
+            //{
+            //    thickns = 3;
+            //}
+            for (int i = 0; i < contours.Length; i++)
+            {
+                //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+                //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
+
+                var contour = contours[i];
+                if (!Program.fmain.cksurfaceareamax.Checked)
+                {
+                    Cv2.DrawContours(
+                                blackMask,
+                                contours,
+                                i,
+                                color: new Scalar(0, 255, 0),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                    Rect br = Cv2.BoundingRect(contours[i]);
+                    Cv2.DrawContours(
+                                blackMask,
+                                contours,
+                                i,
+                                color: new Scalar(0, 0, 255),
+                                thickness: 1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+
+                    if ((br.X + br.Width) > brx1)
+                    {
+                        brx1 = (br.X + br.Width);
+                    }
+                    if ((br.Y + br.Height) > bry1)
+                    {
+                        bry1 = br.Y + br.Height;
+                    }
+
+                    if (br.X < brx)
+                    {
+                        brx = br.X;
+                    }
+                    if (br.Y < bry)
+                    {
+                        bry = br.Y;
+                    }
+
+                }
+                double area1 = Cv2.ContourArea(contour);
+                if (area1 > maxContourArea)
+                {
+                    maxContourArea = area1;
+                    maxConIdx = i;
+                }
+            }
+
+            boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
+            if (Program.fmain.cksurfaceareamax.Checked)
+            {
+                Cv2.DrawContours(
+                                blackMask,
+                                contours,
+                                maxConIdx,
+                                color: new Scalar(0, 255, 0),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+
+                Cv2.DrawContours(
+                            blackMask,
+                            contours,
+                            maxConIdx,
+                            color: new Scalar(0, 0, 255),
+                            thickness: 1,//CV_FILLED
+                            lineType: LineTypes.Link8,
+                            hierarchy: hierarchly,
+                            maxLevel: int.MaxValue);
+
+
+                boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
+            }
+
+            //Cv2.Rectangle(blackMask,
+            //        new OpenCvSharp.Point(boundingRect.X, boundingRect.Y),
+            //        new OpenCvSharp.Point(boundingRect.X + boundingRect.Width, boundingRect.Y + boundingRect.Height),
+            //        new Scalar(255, 0, 0),
+            //        20);
+
+            //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
+            blackMask.CopyTo(himg[roi]);
+        }
+        public void getregion(Mat himg, Mat himgback)
+        {
+
+            //double wRatio = himg.Width * 1.0 / iw;// hw.Width;
+            //double hRatio = himg.Height * 1.0 / ih;// hw.Height;
+            //double hshift = (ih * wRatio * 1.0 - himg.Height) / 2.0;
+            //Rect roi = new Rect(new OpenCvSharp.Point(col * wRatio-vcommon.viewx, row * wRatio - hshift-vcommon.viewy), new OpenCvSharp.Size((col1 - col) * wRatio, (row1 - row) * wRatio));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
+            Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
+            //Console.WriteLine("width,wRatio :{0},{1}", (col1 - col), wRatio);
+            if (roi.Width == 0 || roi.Height == 0) return;
+            if (himgback == null) return;
+            if (roi.X <= 0 || roi.Y <= 0 || roi.Width <= 0 || roi.Height <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
+            {
+                //MessageBox.Show("ROI 超出边界");
+                return;
+            }
+            Mat ImageROI = himgback[roi];// 
+
             //if (origImagePart.Width == 0 || origImagePart.Height == 0) {
             //    new Mat(himg, roi).CopyTo(origImagePart );
             //}
@@ -264,7 +579,8 @@ namespace leanvision
             //Cv2.WaitKey(10000000);
             //origImagePart.CopyTo(srcCopy);
             //origImagePart.CopyTo(ImageROI);
-            if (srcCopy == null) { 
+            if (srcCopy == null)
+            {
                 srcCopy = new Mat();
             }
             ImageROI.CopyTo(srcCopy);
@@ -277,7 +593,7 @@ namespace leanvision
             if (closingcircle == 0) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(9, 9)); }
             if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
             if (closingcircle == 2) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
-            
+
             Cv2.Threshold(ImageROI, ImageROI, thmin, thmax, ThresholdTypes.Binary);//thmin, thmax
             //Cv2.ImShow("BitwiseNot", ImageROI);
             //Cv2.WaitKey(10000000);
@@ -365,8 +681,8 @@ namespace leanvision
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (areamaxcheck && !combinecheck)
             {
-                
-                
+
+
                 Cv2.DrawContours(
                             srcCopy,
                             contours,
@@ -445,7 +761,7 @@ namespace leanvision
             {//要加换算公式
                 ar = roi.Y + cy;
                 ac = roi.X + cx;
-                area = maxContourArea ;
+                area = maxContourArea;
                 r1 = roi.Y + Convert.ToInt32(boundingRect.Y);
                 c1 = roi.X + Convert.ToInt32(boundingRect.X);
                 r2 = roi.Y + Convert.ToInt32(boundingRect.Y + boundingRect.Height);
@@ -463,7 +779,7 @@ namespace leanvision
                 cradius = Convert.ToDouble(radius);
             }
 
-            
+
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
             //srcCopy.CopyTo(himg[roi]);
@@ -586,6 +902,8 @@ namespace leanvision
         };
        
         public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
+            //没有mask 直接计算整个bbox的匹配度
+            return false;
             if (surfacecheck == false) return true;
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)

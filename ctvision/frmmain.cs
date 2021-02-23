@@ -1052,8 +1052,8 @@ namespace ctmeasure
             thmaxsurface.Value = rois.croi.thmaxsurface;
             tthminsurface.Text = thminsurface.Value.ToString();
             tthmaxsurface.Text = thmaxsurface.Value.ToString();
-            stdsurface.Value = Convert.ToInt32(rois.croi.stdsurface*10);
-            tstdsurface.Text = (stdsurface.Value*1.0/10.0).ToString();
+            bararea.Value = Convert.ToInt32(rois.croi.stdsurface*10);
+            tbarea.Text = (bararea.Value*1.0/10.0).ToString();
 
             if (cbthway.SelectedIndex == 0) {
                 thmin.Enabled = true;
@@ -1093,8 +1093,8 @@ namespace ctmeasure
             tthminsurface.Text = "0";
             thmaxsurface.Value = 0;
             tthmaxsurface.Text = "0";
-            stdsurface.Value = 0;
-            tstdsurface.Text = "0";
+            bararea.Value = 0;
+            tbarea.Text = "0";
         }
 
         private void trowmin_KeyPress(object sender, KeyPressEventArgs e)
@@ -1866,10 +1866,12 @@ namespace ctmeasure
             rois.rois = (ArrayList)data[3];
             mrois.clear();
             mrois.ilist = (ArrayList)data[4];
+
             templateFile = (string)data[5];
             zscale = (double)data[6];
             imgx = (int)data[7];
             imgy = (int)data[8];
+
             data.Clear();
             data = null;
             
@@ -2741,9 +2743,25 @@ namespace ctmeasure
         {
             if (!thminsurface.Focused) return;
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tthminsurface.Text = thminsurface.Value.ToString();
-            drawsurface();
+            drawWhiteRegion();
+            //drawsurface();
+        }
+
+        public void drawWhiteRegion() {
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            pictureBox1.Invalidate(); 
         }
 
         private void thmaxsurface_ValueChanged(object sender, EventArgs e)
@@ -2752,14 +2770,33 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             if (thmaxsurface.Value < thminsurface.Value) thminsurface.Value = thmaxsurface.Value;
             tthmaxsurface.Text = thmaxsurface.Value.ToString();
-            drawsurface();
+            drawBlackRegion();
+            //drawsurface();
         }
+
+        public void drawBlackRegion()
+        {
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+
+                croi.getBlackMask(dcamera.himg, himgbak);
+            }
+            pictureBox1.Invalidate();
+        }
+
 
         private void stdsurface_ValueChanged(object sender, EventArgs e)
         {
-            if (!stdsurface.Focused) return;
+            if (!bararea.Focused) return;
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            tstdsurface.Text = (stdsurface.Value*1.0/100.0).ToString();
+            tbarea.Text = (bararea.Value*1.0/100.0).ToString();
             drawsurface();
         }
         private void cksurface_Click(object sender, EventArgs e)
@@ -2792,7 +2829,8 @@ namespace ctmeasure
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
-                croi.stdsurface = stdsurface.Value*1.0/100.0;
+                croi.stdsurface = bararea.Value*1.0/100.0;
+                
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
             }
             pictureBox1.Invalidate();
@@ -2816,10 +2854,7 @@ namespace ctmeasure
 
         }
 
-        private void thmin_Scroll(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void btnpixelunit_Click(object sender, EventArgs e)
         {
@@ -2986,6 +3021,21 @@ namespace ctmeasure
             frmlogin fs = new frmlogin();
             fs.StartPosition = FormStartPosition.CenterScreen;
             fs.ShowDialog();
+        }
+
+        private void label37_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void thminsurface_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bararea_ValueChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void btnend_Click(object sender, EventArgs e)
