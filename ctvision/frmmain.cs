@@ -1839,7 +1839,7 @@ namespace ctmeasure
             tpart.Text = "";
             if (fn == "") return;
             if (!File.Exists(fn)) fn=Application.StartupPath+"\\default.lvd";
-            
+             
             ArrayList data;
             FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read);
             BinaryFormatter bf = new BinaryFormatter();
@@ -1871,6 +1871,10 @@ namespace ctmeasure
             zscale = (double)data[6];
             imgx = (int)data[7];
             imgy = (int)data[8];
+            //templateFile = "C:\\Users\\24981\\Desktop\\ct\\ctvision\\ctvision\\bin\\Debug\\default.bmp";
+            //zscale = 0.2;
+            //imgx = 0;
+            //imgy = 0;
 
             data.Clear();
             data = null;

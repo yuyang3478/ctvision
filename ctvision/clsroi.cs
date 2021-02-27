@@ -57,10 +57,12 @@ namespace leanvision
         public double stdsurface { get; set; }//残缺比标准
         public double msurface { get; set; }//残缺比测量值
 
+        [NonSerialized]
         public Mat whiteMask;//要做序列化或者保存
-
+        [NonSerialized]
         public Mat blackMask;//要做序列化或者保存
-
+        [NonSerialized]
+        public Mat mask;
         //public Mat origImagePart = new Mat();
 
         //计算结果
@@ -253,9 +255,14 @@ namespace leanvision
             }
             Mat ImageROI = himgback[roi];// 
 
-            if (whiteMask == null)
+            if (whiteMask == null||(whiteMask.Width!=ImageROI.Width||whiteMask.Height!=ImageROI.Height))
             {
-                whiteMask = new Mat();
+                whiteMask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
+                //mask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC1); 
+            }
+            if (mask == null || (mask.Width != ImageROI.Width || mask.Height != ImageROI.Height))
+            {
+                mask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
             }
             ImageROI.CopyTo(whiteMask);
             Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
@@ -394,6 +401,8 @@ namespace leanvision
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
             whiteMask.CopyTo(himg[roi]);
+            Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.GRAY2BGR);
+            Cv2.Add(ImageROI,mask,mask);
 
 
         }
@@ -409,9 +418,13 @@ namespace leanvision
             }
             Mat ImageROI = himgback[roi];// 
 
-            if (blackMask == null)
+            if (blackMask == null || (blackMask.Width != ImageROI.Width || blackMask.Height != ImageROI.Height))
             {
-                blackMask = new Mat();
+                blackMask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
+                
+            }
+            if (mask == null || (mask.Width != ImageROI.Width || mask.Height != ImageROI.Height)) {
+                mask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
             }
             ImageROI.CopyTo(blackMask);
             Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
@@ -549,7 +562,9 @@ namespace leanvision
             //        20);
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
-            blackMask.CopyTo(himg[roi]);
+            blackMask.CopyTo(himg[roi]); 
+            Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.GRAY2BGR);
+            Cv2.Add(ImageROI, mask, mask);
         }
         public void getregion(Mat himg, Mat himgback)
         {
@@ -903,7 +918,8 @@ namespace leanvision
        
         public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
             //没有mask 直接计算整个bbox的匹配度
-            return false;
+           
+            //return false;
             if (surfacecheck == false) return true;
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
@@ -913,7 +929,7 @@ namespace leanvision
             }
             Mat submat = new Mat();
             Mat subgray = new Mat();
-            Cv2.Subtract(Program.fmain.template[roi], himgbak[roi], submat);
+            Cv2.Subtract(Program.fmain.template[roi], himgbak[roi], submat, mask);
             Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
             Cv2.Threshold(subgray,subgray, thminsurface, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
 
@@ -1452,7 +1468,7 @@ namespace leanvision
                     tmptr2 = tmptr2 / 4;
                     linel = linel / 4;
                 }
-                Font drawFont = new Font("Arial", (int)(1.3 * tfontsize * vcommon.viewscale));
+                Font drawFont = new Font("Arial", (int)(1.3 * tfontsize)); //*vcommon.viewscale
 
                 if (text1 != "") { 
                     e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle( tmptc1 - linel), Convert.ToSingle(tmptr1), Convert.ToSingle(tmptc1 + linel), Convert.ToSingle(tmptr1));
@@ -1478,7 +1494,7 @@ namespace leanvision
                 
                 foreach (string str in ostr)
                 {
-                    drawFont = new Font("Arial", (int)(0.5 * tfontsize * vcommon.viewscale));
+                    drawFont = new Font("Arial", (int)(0.5 * tfontsize ));//* vcommon.viewscale
                     //StringFormat drawFormat = new StringFormat();
                     //g.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tr), Convert.ToSingle(tc), drawFormat);
                     e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);

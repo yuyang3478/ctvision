@@ -67,19 +67,29 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabroi = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.tbheight = new System.Windows.Forms.TextBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.tbgraythresh = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.bargraythresh = new System.Windows.Forms.TrackBar();
+            this.label38 = new System.Windows.Forms.Label();
             this.barheight = new System.Windows.Forms.TrackBar();
+            this.barwidth = new System.Windows.Forms.TrackBar();
+            this.tbwidth = new System.Windows.Forms.TextBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.tbheight = new System.Windows.Forms.TextBox();
+            this.bararea = new System.Windows.Forms.TrackBar();
+            this.tbarea = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.thminsurface = new System.Windows.Forms.TrackBar();
+            this.label35 = new System.Windows.Forms.Label();
+            this.tthminsurface = new System.Windows.Forms.TextBox();
+            this.thmaxsurface = new System.Windows.Forms.TrackBar();
+            this.label34 = new System.Windows.Forms.Label();
+            this.tthmaxsurface = new System.Windows.Forms.TextBox();
             this.cksurfaceareamax = new System.Windows.Forms.CheckBox();
             this.ckshowsurface = new System.Windows.Forms.CheckBox();
-            this.tbarea = new System.Windows.Forms.TextBox();
-            this.bararea = new System.Windows.Forms.TrackBar();
-            this.label33 = new System.Windows.Forms.Label();
             this.cksurface = new System.Windows.Forms.CheckBox();
-            this.tthmaxsurface = new System.Windows.Forms.TextBox();
-            this.thmaxsurface = new System.Windows.Forms.TrackBar();
-            this.tthminsurface = new System.Windows.Forms.TextBox();
-            this.label34 = new System.Windows.Forms.Label();
             this.cbthway = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.troi = new System.Windows.Forms.TextBox();
@@ -202,21 +212,19 @@
             this.tbalignmidv = new System.Windows.Forms.ToolStripMenuItem();
             this.tbalignheight = new System.Windows.Forms.ToolStripMenuItem();
             this.tbalignwidth = new System.Windows.Forms.ToolStripMenuItem();
-            this.thminsurface = new System.Windows.Forms.TrackBar();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.barwidth = new System.Windows.Forms.TrackBar();
-            this.tbwidth = new System.Windows.Forms.TextBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.mtools.SuspendLayout();
             this.mstatus.SuspendLayout();
             this.ptools.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabroi.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bargraythresh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barheight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barwidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bararea)).BeginInit();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thmaxsurface)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -235,10 +243,6 @@
             this.pview.SuspendLayout();
             this.phwin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barwidth)).BeginInit();
-            this.groupBox8.SuspendLayout();
-            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // mtools
@@ -276,7 +280,7 @@
             this.mtools.Location = new System.Drawing.Point(0, 0);
             this.mtools.Name = "mtools";
             this.mtools.Padding = new System.Windows.Forms.Padding(0);
-            this.mtools.Size = new System.Drawing.Size(2536, 42);
+            this.mtools.Size = new System.Drawing.Size(2536, 50);
             this.mtools.TabIndex = 0;
             this.mtools.Text = "toolStrip1";
             this.mtools.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mtools_ItemClicked);
@@ -288,7 +292,7 @@
             this.tbcamera.Image = ((System.Drawing.Image)(resources.GetObject("tbcamera.Image")));
             this.tbcamera.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbcamera.Name = "tbcamera";
-            this.tbcamera.Size = new System.Drawing.Size(46, 36);
+            this.tbcamera.Size = new System.Drawing.Size(46, 44);
             this.tbcamera.Text = "toolStripButton1";
             this.tbcamera.ToolTipText = "相机设置";
             this.tbcamera.Click += new System.EventHandler(this.tbcamera_Click);
@@ -300,7 +304,7 @@
             this.tbcameraplay.Image = ((System.Drawing.Image)(resources.GetObject("tbcameraplay.Image")));
             this.tbcameraplay.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbcameraplay.Name = "tbcameraplay";
-            this.tbcameraplay.Size = new System.Drawing.Size(46, 36);
+            this.tbcameraplay.Size = new System.Drawing.Size(46, 44);
             this.tbcameraplay.Text = "toolStripButton1";
             this.tbcameraplay.ToolTipText = "相机预览";
             this.tbcameraplay.Click += new System.EventHandler(this.tbcameraplay_Click);
@@ -312,7 +316,7 @@
             this.tbio.Image = ((System.Drawing.Image)(resources.GetObject("tbio.Image")));
             this.tbio.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbio.Name = "tbio";
-            this.tbio.Size = new System.Drawing.Size(46, 36);
+            this.tbio.Size = new System.Drawing.Size(46, 44);
             this.tbio.Text = "toolStripButton2";
             this.tbio.ToolTipText = "IO设置";
             this.tbio.Click += new System.EventHandler(this.tbio_Click);
@@ -324,7 +328,7 @@
             this.tbsetting.Image = ((System.Drawing.Image)(resources.GetObject("tbsetting.Image")));
             this.tbsetting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbsetting.Name = "tbsetting";
-            this.tbsetting.Size = new System.Drawing.Size(46, 36);
+            this.tbsetting.Size = new System.Drawing.Size(46, 44);
             this.tbsetting.Text = "toolStripButton1";
             this.tbsetting.ToolTipText = "系统设置";
             this.tbsetting.Click += new System.EventHandler(this.tbsetting_Click);
@@ -342,7 +346,7 @@
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton3.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton3.Text = "toolStripButton3";
             this.toolStripButton3.ToolTipText = "加载图片";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
@@ -354,7 +358,7 @@
             this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton4.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton4.Text = "toolStripButton4";
             this.toolStripButton4.ToolTipText = "保存图片";
             this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
@@ -373,7 +377,7 @@
             this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
             this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton6.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton6.Text = "toolStripButton6";
             this.toolStripButton6.ToolTipText = "缩小";
             this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
@@ -385,7 +389,7 @@
             this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton5.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton5.Text = "toolStripButton5";
             this.toolStripButton5.ToolTipText = "放大";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
@@ -397,7 +401,7 @@
             this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
             this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton7.Name = "toolStripButton7";
-            this.toolStripButton7.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton7.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton7.Text = "toolStripButton7";
             this.toolStripButton7.ToolTipText = "适合窗口";
             this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
@@ -416,7 +420,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton2.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton2.Text = "toolStripButton2";
             this.toolStripButton2.ToolTipText = "删除";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
@@ -428,7 +432,7 @@
             this.tbdrawrect.Image = ((System.Drawing.Image)(resources.GetObject("tbdrawrect.Image")));
             this.tbdrawrect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbdrawrect.Name = "tbdrawrect";
-            this.tbdrawrect.Size = new System.Drawing.Size(46, 36);
+            this.tbdrawrect.Size = new System.Drawing.Size(46, 44);
             this.tbdrawrect.Text = "toolStripButton10";
             this.tbdrawrect.ToolTipText = "区域绘制";
             this.tbdrawrect.Click += new System.EventHandler(this.toolStripButton10_Click);
@@ -440,7 +444,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton1.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.ToolTipText = " 复制";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
@@ -450,14 +454,14 @@
             // 
             this.tbalignsize.Image = ((System.Drawing.Image)(resources.GetObject("tbalignsize.Image")));
             this.tbalignsize.Name = "tbalignsize";
-            this.tbalignsize.Size = new System.Drawing.Size(52, 42);
+            this.tbalignsize.Size = new System.Drawing.Size(52, 50);
             this.tbalignsize.Click += new System.EventHandler(this.tbalignsize_Click);
             // 
             // tbalignsamespace
             // 
             this.tbalignsamespace.Image = ((System.Drawing.Image)(resources.GetObject("tbalignsamespace.Image")));
             this.tbalignsamespace.Name = "tbalignsamespace";
-            this.tbalignsamespace.Size = new System.Drawing.Size(52, 42);
+            this.tbalignsamespace.Size = new System.Drawing.Size(52, 50);
             this.tbalignsamespace.Click += new System.EventHandler(this.tbalignsamespace_Click);
             // 
             // toolStripSeparator2
@@ -473,7 +477,7 @@
             this.tbcheckimage.Image = ((System.Drawing.Image)(resources.GetObject("tbcheckimage.Image")));
             this.tbcheckimage.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbcheckimage.Name = "tbcheckimage";
-            this.tbcheckimage.Size = new System.Drawing.Size(46, 36);
+            this.tbcheckimage.Size = new System.Drawing.Size(46, 44);
             this.tbcheckimage.Text = "toolStripButton8";
             this.tbcheckimage.ToolTipText = "NG 图片预览";
             this.tbcheckimage.Click += new System.EventHandler(this.toolStripButton8_Click);
@@ -484,7 +488,7 @@
             this.toolStripButton9.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton9.Image")));
             this.toolStripButton9.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton9.Name = "toolStripButton9";
-            this.toolStripButton9.Size = new System.Drawing.Size(46, 36);
+            this.toolStripButton9.Size = new System.Drawing.Size(46, 44);
             this.toolStripButton9.Text = "toolStripButton9";
             this.toolStripButton9.ToolTipText = "测量记录";
             this.toolStripButton9.Click += new System.EventHandler(this.measure_log_Click);
@@ -501,7 +505,7 @@
             this.tbrunonce.Image = ((System.Drawing.Image)(resources.GetObject("tbrunonce.Image")));
             this.tbrunonce.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbrunonce.Name = "tbrunonce";
-            this.tbrunonce.Size = new System.Drawing.Size(46, 36);
+            this.tbrunonce.Size = new System.Drawing.Size(46, 44);
             this.tbrunonce.Text = "toolStripButton9";
             this.tbrunonce.ToolTipText = "单次运行";
             this.tbrunonce.Click += new System.EventHandler(this.tbrunonce_Click);
@@ -513,7 +517,7 @@
             this.tbrun.Image = ((System.Drawing.Image)(resources.GetObject("tbrun.Image")));
             this.tbrun.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbrun.Name = "tbrun";
-            this.tbrun.Size = new System.Drawing.Size(46, 36);
+            this.tbrun.Size = new System.Drawing.Size(46, 44);
             this.tbrun.Text = "toolStripButton8";
             this.tbrun.ToolTipText = "自动连续运行";
             this.tbrun.Click += new System.EventHandler(this.tbrun_Click);
@@ -525,7 +529,7 @@
             this.tbrunstrop.Image = ((System.Drawing.Image)(resources.GetObject("tbrunstrop.Image")));
             this.tbrunstrop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbrunstrop.Name = "tbrunstrop";
-            this.tbrunstrop.Size = new System.Drawing.Size(46, 36);
+            this.tbrunstrop.Size = new System.Drawing.Size(46, 44);
             this.tbrunstrop.Text = "toolStripButton9";
             this.tbrunstrop.ToolTipText = "停止";
             this.tbrunstrop.Click += new System.EventHandler(this.toolStripButton9_Click);
@@ -538,7 +542,7 @@
             this.tbexit.Image = ((System.Drawing.Image)(resources.GetObject("tbexit.Image")));
             this.tbexit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbexit.Name = "tbexit";
-            this.tbexit.Size = new System.Drawing.Size(46, 36);
+            this.tbexit.Size = new System.Drawing.Size(46, 44);
             this.tbexit.Text = "toolStripButton8";
             this.tbexit.ToolTipText = "退出";
             this.tbexit.Click += new System.EventHandler(this.tbexit_Click);
@@ -551,7 +555,7 @@
             this.tbhelp.Image = ((System.Drawing.Image)(resources.GetObject("tbhelp.Image")));
             this.tbhelp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbhelp.Name = "tbhelp";
-            this.tbhelp.Size = new System.Drawing.Size(46, 36);
+            this.tbhelp.Size = new System.Drawing.Size(46, 44);
             this.tbhelp.Text = "关于...";
             this.tbhelp.Click += new System.EventHandler(this.tbhelp_Click);
             this.tbhelp.MouseEnter += new System.EventHandler(this.tbcamera_MouseEnter);
@@ -559,7 +563,7 @@
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 42);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 50);
             // 
             // tblogmenu
             // 
@@ -567,7 +571,7 @@
             this.tblogmenu.Image = ((System.Drawing.Image)(resources.GetObject("tblogmenu.Image")));
             this.tblogmenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tblogmenu.Name = "tblogmenu";
-            this.tblogmenu.Size = new System.Drawing.Size(46, 36);
+            this.tblogmenu.Size = new System.Drawing.Size(46, 44);
             this.tblogmenu.Text = "toolStripButton10";
             this.tblogmenu.Click += new System.EventHandler(this.toolStripButton10_Click_1);
             // 
@@ -611,7 +615,7 @@
             this.ptools.Location = new System.Drawing.Point(1638, 0);
             this.ptools.Margin = new System.Windows.Forms.Padding(6);
             this.ptools.Name = "ptools";
-            this.ptools.Size = new System.Drawing.Size(896, 1462);
+            this.ptools.Size = new System.Drawing.Size(896, 1454);
             this.ptools.TabIndex = 2;
             // 
             // tabControl1
@@ -627,7 +631,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(890, 2516);
+            this.tabControl1.Size = new System.Drawing.Size(890, 2508);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -646,7 +650,7 @@
             this.tabroi.Margin = new System.Windows.Forms.Padding(6);
             this.tabroi.Name = "tabroi";
             this.tabroi.Padding = new System.Windows.Forms.Padding(6);
-            this.tabroi.Size = new System.Drawing.Size(874, 2469);
+            this.tabroi.Size = new System.Drawing.Size(874, 2461);
             this.tabroi.TabIndex = 3;
             this.tabroi.Text = "图像识别";
             this.tabroi.UseVisualStyleBackColor = true;
@@ -659,30 +663,84 @@
             this.groupBox6.Controls.Add(this.cksurfaceareamax);
             this.groupBox6.Controls.Add(this.ckshowsurface);
             this.groupBox6.Controls.Add(this.cksurface);
-            this.groupBox6.Location = new System.Drawing.Point(36, 946);
+            this.groupBox6.Location = new System.Drawing.Point(45, 879);
             this.groupBox6.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox6.Size = new System.Drawing.Size(595, 516);
+            this.groupBox6.Size = new System.Drawing.Size(595, 551);
             this.groupBox6.TabIndex = 24;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "  表面检测  ";
             // 
-            // tbheight
+            // groupBox9
             // 
-            this.tbheight.Location = new System.Drawing.Point(458, 104);
-            this.tbheight.Margin = new System.Windows.Forms.Padding(6);
-            this.tbheight.Name = "tbheight";
-            this.tbheight.ReadOnly = true;
-            this.tbheight.Size = new System.Drawing.Size(62, 31);
-            this.tbheight.TabIndex = 42;
+            this.groupBox9.Controls.Add(this.tbgraythresh);
+            this.groupBox9.Controls.Add(this.label39);
+            this.groupBox9.Controls.Add(this.bargraythresh);
+            this.groupBox9.Controls.Add(this.label38);
+            this.groupBox9.Controls.Add(this.barheight);
+            this.groupBox9.Controls.Add(this.barwidth);
+            this.groupBox9.Controls.Add(this.tbwidth);
+            this.groupBox9.Controls.Add(this.label33);
+            this.groupBox9.Controls.Add(this.tbheight);
+            this.groupBox9.Controls.Add(this.bararea);
+            this.groupBox9.Controls.Add(this.tbarea);
+            this.groupBox9.Controls.Add(this.label37);
+            this.groupBox9.Location = new System.Drawing.Point(31, 268);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(536, 268);
+            this.groupBox9.TabIndex = 44;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "缺陷过滤";
+            // 
+            // tbgraythresh
+            // 
+            this.tbgraythresh.Location = new System.Drawing.Point(458, 39);
+            this.tbgraythresh.Margin = new System.Windows.Forms.Padding(6);
+            this.tbgraythresh.Name = "tbgraythresh";
+            this.tbgraythresh.ReadOnly = true;
+            this.tbgraythresh.Size = new System.Drawing.Size(62, 31);
+            this.tbgraythresh.TabIndex = 48;
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(9, 45);
+            this.label39.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(99, 25);
+            this.label39.TabIndex = 47;
+            this.label39.Text = "亮度差:   ";
+            // 
+            // bargraythresh
+            // 
+            this.bargraythresh.AutoSize = false;
+            this.bargraythresh.BackColor = System.Drawing.SystemColors.Window;
+            this.bargraythresh.LargeChange = 2;
+            this.bargraythresh.Location = new System.Drawing.Point(112, 34);
+            this.bargraythresh.Margin = new System.Windows.Forms.Padding(0);
+            this.bargraythresh.Maximum = 1000;
+            this.bargraythresh.Name = "bargraythresh";
+            this.bargraythresh.Size = new System.Drawing.Size(332, 58);
+            this.bargraythresh.TabIndex = 46;
+            this.bargraythresh.TickStyle = System.Windows.Forms.TickStyle.None;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(28, 207);
+            this.label38.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(78, 25);
+            this.label38.TabIndex = 43;
+            this.label38.Text = "宽度:   ";
             // 
             // barheight
             // 
             this.barheight.AutoSize = false;
             this.barheight.BackColor = System.Drawing.SystemColors.Window;
             this.barheight.LargeChange = 2;
-            this.barheight.Location = new System.Drawing.Point(112, 104);
+            this.barheight.Location = new System.Drawing.Point(112, 147);
             this.barheight.Margin = new System.Windows.Forms.Padding(0);
             this.barheight.Maximum = 1000;
             this.barheight.Name = "barheight";
@@ -690,16 +748,165 @@
             this.barheight.TabIndex = 41;
             this.barheight.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
+            // barwidth
+            // 
+            this.barwidth.AutoSize = false;
+            this.barwidth.BackColor = System.Drawing.SystemColors.Window;
+            this.barwidth.LargeChange = 2;
+            this.barwidth.Location = new System.Drawing.Point(112, 201);
+            this.barwidth.Margin = new System.Windows.Forms.Padding(0);
+            this.barwidth.Maximum = 1000;
+            this.barwidth.Name = "barwidth";
+            this.barwidth.Size = new System.Drawing.Size(332, 54);
+            this.barwidth.TabIndex = 44;
+            this.barwidth.TickStyle = System.Windows.Forms.TickStyle.None;
+            // 
+            // tbwidth
+            // 
+            this.tbwidth.Location = new System.Drawing.Point(458, 201);
+            this.tbwidth.Margin = new System.Windows.Forms.Padding(6);
+            this.tbwidth.Name = "tbwidth";
+            this.tbwidth.ReadOnly = true;
+            this.tbwidth.Size = new System.Drawing.Size(62, 31);
+            this.tbwidth.TabIndex = 45;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(28, 98);
+            this.label33.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(78, 25);
+            this.label33.TabIndex = 35;
+            this.label33.Text = "面积:   ";
+            // 
+            // tbheight
+            // 
+            this.tbheight.Location = new System.Drawing.Point(458, 147);
+            this.tbheight.Margin = new System.Windows.Forms.Padding(6);
+            this.tbheight.Name = "tbheight";
+            this.tbheight.ReadOnly = true;
+            this.tbheight.Size = new System.Drawing.Size(62, 31);
+            this.tbheight.TabIndex = 42;
+            // 
+            // bararea
+            // 
+            this.bararea.AutoSize = false;
+            this.bararea.BackColor = System.Drawing.SystemColors.Window;
+            this.bararea.LargeChange = 2;
+            this.bararea.Location = new System.Drawing.Point(112, 92);
+            this.bararea.Margin = new System.Windows.Forms.Padding(0);
+            this.bararea.Maximum = 1000;
+            this.bararea.Name = "bararea";
+            this.bararea.Size = new System.Drawing.Size(332, 58);
+            this.bararea.TabIndex = 36;
+            this.bararea.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.bararea.ValueChanged += new System.EventHandler(this.bararea_ValueChanged);
+            // 
+            // tbarea
+            // 
+            this.tbarea.Location = new System.Drawing.Point(458, 92);
+            this.tbarea.Margin = new System.Windows.Forms.Padding(6);
+            this.tbarea.Name = "tbarea";
+            this.tbarea.ReadOnly = true;
+            this.tbarea.Size = new System.Drawing.Size(62, 31);
+            this.tbarea.TabIndex = 37;
+            // 
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(28, 110);
+            this.label37.Location = new System.Drawing.Point(28, 153);
             this.label37.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(78, 25);
             this.label37.TabIndex = 40;
             this.label37.Text = "长度:   ";
             this.label37.Click += new System.EventHandler(this.label37_Click);
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.thminsurface);
+            this.groupBox8.Controls.Add(this.label35);
+            this.groupBox8.Controls.Add(this.tthminsurface);
+            this.groupBox8.Controls.Add(this.thmaxsurface);
+            this.groupBox8.Controls.Add(this.label34);
+            this.groupBox8.Controls.Add(this.tthmaxsurface);
+            this.groupBox8.Location = new System.Drawing.Point(31, 100);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(536, 147);
+            this.groupBox8.TabIndex = 43;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "区域选择";
+            // 
+            // thminsurface
+            // 
+            this.thminsurface.AutoSize = false;
+            this.thminsurface.BackColor = System.Drawing.SystemColors.Window;
+            this.thminsurface.LargeChange = 2;
+            this.thminsurface.Location = new System.Drawing.Point(117, 37);
+            this.thminsurface.Margin = new System.Windows.Forms.Padding(0);
+            this.thminsurface.Maximum = 255;
+            this.thminsurface.Name = "thminsurface";
+            this.thminsurface.Size = new System.Drawing.Size(332, 47);
+            this.thminsurface.TabIndex = 12;
+            this.thminsurface.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.thminsurface.Value = 127;
+            this.thminsurface.ValueChanged += new System.EventHandler(this.thminsurface_ValueChanged);
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(9, 46);
+            this.label35.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(117, 25);
+            this.label35.TabIndex = 10;
+            this.label35.Text = "白色区域：";
+            // 
+            // tthminsurface
+            // 
+            this.tthminsurface.Location = new System.Drawing.Point(455, 40);
+            this.tthminsurface.Margin = new System.Windows.Forms.Padding(6);
+            this.tthminsurface.Name = "tthminsurface";
+            this.tthminsurface.ReadOnly = true;
+            this.tthminsurface.Size = new System.Drawing.Size(62, 31);
+            this.tthminsurface.TabIndex = 13;
+            this.tthminsurface.Text = "127";
+            // 
+            // thmaxsurface
+            // 
+            this.thmaxsurface.AutoSize = false;
+            this.thmaxsurface.BackColor = System.Drawing.SystemColors.Window;
+            this.thmaxsurface.LargeChange = 2;
+            this.thmaxsurface.Location = new System.Drawing.Point(117, 87);
+            this.thmaxsurface.Margin = new System.Windows.Forms.Padding(0);
+            this.thmaxsurface.Maximum = 255;
+            this.thmaxsurface.Name = "thmaxsurface";
+            this.thmaxsurface.Size = new System.Drawing.Size(332, 52);
+            this.thmaxsurface.TabIndex = 14;
+            this.thmaxsurface.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.thmaxsurface.Value = 127;
+            this.thmaxsurface.ValueChanged += new System.EventHandler(this.thmaxsurface_ValueChanged);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(9, 93);
+            this.label34.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(117, 25);
+            this.label34.TabIndex = 11;
+            this.label34.Text = "黑色区域：";
+            // 
+            // tthmaxsurface
+            // 
+            this.tthmaxsurface.Location = new System.Drawing.Point(456, 92);
+            this.tthmaxsurface.Margin = new System.Windows.Forms.Padding(6);
+            this.tthmaxsurface.Name = "tthmaxsurface";
+            this.tthmaxsurface.ReadOnly = true;
+            this.tthmaxsurface.Size = new System.Drawing.Size(62, 31);
+            this.tthmaxsurface.TabIndex = 15;
+            this.tthmaxsurface.Text = "127";
             // 
             // cksurfaceareamax
             // 
@@ -725,39 +932,6 @@
             this.ckshowsurface.UseVisualStyleBackColor = true;
             this.ckshowsurface.Click += new System.EventHandler(this.ckshowsurface_Click);
             // 
-            // tbarea
-            // 
-            this.tbarea.Location = new System.Drawing.Point(458, 49);
-            this.tbarea.Margin = new System.Windows.Forms.Padding(6);
-            this.tbarea.Name = "tbarea";
-            this.tbarea.ReadOnly = true;
-            this.tbarea.Size = new System.Drawing.Size(62, 31);
-            this.tbarea.TabIndex = 37;
-            // 
-            // bararea
-            // 
-            this.bararea.AutoSize = false;
-            this.bararea.BackColor = System.Drawing.SystemColors.Window;
-            this.bararea.LargeChange = 2;
-            this.bararea.Location = new System.Drawing.Point(112, 49);
-            this.bararea.Margin = new System.Windows.Forms.Padding(0);
-            this.bararea.Maximum = 1000;
-            this.bararea.Name = "bararea";
-            this.bararea.Size = new System.Drawing.Size(332, 58);
-            this.bararea.TabIndex = 36;
-            this.bararea.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.bararea.ValueChanged += new System.EventHandler(this.bararea_ValueChanged);
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(28, 55);
-            this.label33.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(78, 25);
-            this.label33.TabIndex = 35;
-            this.label33.Text = "面积:   ";
-            // 
             // cksurface
             // 
             this.cksurface.AutoSize = true;
@@ -771,51 +945,6 @@
             this.cksurface.Text = "表面检测";
             this.cksurface.UseVisualStyleBackColor = true;
             this.cksurface.Click += new System.EventHandler(this.cksurface_Click);
-            // 
-            // tthmaxsurface
-            // 
-            this.tthmaxsurface.Location = new System.Drawing.Point(456, 92);
-            this.tthmaxsurface.Margin = new System.Windows.Forms.Padding(6);
-            this.tthmaxsurface.Name = "tthmaxsurface";
-            this.tthmaxsurface.ReadOnly = true;
-            this.tthmaxsurface.Size = new System.Drawing.Size(62, 31);
-            this.tthmaxsurface.TabIndex = 15;
-            this.tthmaxsurface.Text = "127";
-            // 
-            // thmaxsurface
-            // 
-            this.thmaxsurface.AutoSize = false;
-            this.thmaxsurface.BackColor = System.Drawing.SystemColors.Window;
-            this.thmaxsurface.LargeChange = 2;
-            this.thmaxsurface.Location = new System.Drawing.Point(117, 87);
-            this.thmaxsurface.Margin = new System.Windows.Forms.Padding(0);
-            this.thmaxsurface.Maximum = 255;
-            this.thmaxsurface.Name = "thmaxsurface";
-            this.thmaxsurface.Size = new System.Drawing.Size(332, 52);
-            this.thmaxsurface.TabIndex = 14;
-            this.thmaxsurface.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.thmaxsurface.Value = 127;
-            this.thmaxsurface.ValueChanged += new System.EventHandler(this.thmaxsurface_ValueChanged);
-            // 
-            // tthminsurface
-            // 
-            this.tthminsurface.Location = new System.Drawing.Point(455, 40);
-            this.tthminsurface.Margin = new System.Windows.Forms.Padding(6);
-            this.tthminsurface.Name = "tthminsurface";
-            this.tthminsurface.ReadOnly = true;
-            this.tthminsurface.Size = new System.Drawing.Size(62, 31);
-            this.tthminsurface.TabIndex = 13;
-            this.tthminsurface.Text = "127";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(9, 93);
-            this.label34.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(117, 25);
-            this.label34.TabIndex = 11;
-            this.label34.Text = "黑色区域：";
             // 
             // cbthway
             // 
@@ -903,11 +1032,11 @@
             this.groupBox4.Controls.Add(this.twidthmin);
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Location = new System.Drawing.Point(36, 568);
+            this.groupBox4.Location = new System.Drawing.Point(36, 525);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox4.Size = new System.Drawing.Size(595, 342);
+            this.groupBox4.Size = new System.Drawing.Size(604, 342);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "  过滤及选择  ";
@@ -1180,7 +1309,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox2.Size = new System.Drawing.Size(595, 262);
+            this.groupBox2.Size = new System.Drawing.Size(604, 262);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "  区域识别  ";
@@ -2061,10 +2190,10 @@
             this.pview.Controls.Add(this.phwin);
             this.pview.Controls.Add(this.ptools);
             this.pview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pview.Location = new System.Drawing.Point(0, 42);
+            this.pview.Location = new System.Drawing.Point(0, 50);
             this.pview.Margin = new System.Windows.Forms.Padding(12);
             this.pview.Name = "pview";
-            this.pview.Size = new System.Drawing.Size(2536, 1464);
+            this.pview.Size = new System.Drawing.Size(2536, 1456);
             this.pview.TabIndex = 4;
             // 
             // phwin
@@ -2076,7 +2205,7 @@
             this.phwin.Location = new System.Drawing.Point(0, 0);
             this.phwin.Margin = new System.Windows.Forms.Padding(0);
             this.phwin.Name = "phwin";
-            this.phwin.Size = new System.Drawing.Size(1480, 2510);
+            this.phwin.Size = new System.Drawing.Size(1480, 2502);
             this.phwin.TabIndex = 1;
             this.phwin.TabStop = true;
             // 
@@ -2088,7 +2217,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1440, 3020);
+            this.pictureBox1.Size = new System.Drawing.Size(1440, 3012);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hwin_KeyUp);
@@ -2229,96 +2358,6 @@
             this.tbalignwidth.Text = "等宽";
             this.tbalignwidth.Click += new System.EventHandler(this.tbalignwidth_Click);
             // 
-            // thminsurface
-            // 
-            this.thminsurface.AutoSize = false;
-            this.thminsurface.BackColor = System.Drawing.SystemColors.Window;
-            this.thminsurface.LargeChange = 2;
-            this.thminsurface.Location = new System.Drawing.Point(117, 37);
-            this.thminsurface.Margin = new System.Windows.Forms.Padding(0);
-            this.thminsurface.Maximum = 255;
-            this.thminsurface.Name = "thminsurface";
-            this.thminsurface.Size = new System.Drawing.Size(332, 47);
-            this.thminsurface.TabIndex = 12;
-            this.thminsurface.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.thminsurface.Value = 127;
-            this.thminsurface.ValueChanged += new System.EventHandler(this.thminsurface_ValueChanged);
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(9, 46);
-            this.label35.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(117, 25);
-            this.label35.TabIndex = 10;
-            this.label35.Text = "白色区域：";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(28, 164);
-            this.label38.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(78, 25);
-            this.label38.TabIndex = 43;
-            this.label38.Text = "宽度:   ";
-            // 
-            // barwidth
-            // 
-            this.barwidth.AutoSize = false;
-            this.barwidth.BackColor = System.Drawing.SystemColors.Window;
-            this.barwidth.LargeChange = 2;
-            this.barwidth.Location = new System.Drawing.Point(112, 158);
-            this.barwidth.Margin = new System.Windows.Forms.Padding(0);
-            this.barwidth.Maximum = 1000;
-            this.barwidth.Name = "barwidth";
-            this.barwidth.Size = new System.Drawing.Size(332, 54);
-            this.barwidth.TabIndex = 44;
-            this.barwidth.TickStyle = System.Windows.Forms.TickStyle.None;
-            // 
-            // tbwidth
-            // 
-            this.tbwidth.Location = new System.Drawing.Point(458, 158);
-            this.tbwidth.Margin = new System.Windows.Forms.Padding(6);
-            this.tbwidth.Name = "tbwidth";
-            this.tbwidth.ReadOnly = true;
-            this.tbwidth.Size = new System.Drawing.Size(62, 31);
-            this.tbwidth.TabIndex = 45;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.thminsurface);
-            this.groupBox8.Controls.Add(this.label35);
-            this.groupBox8.Controls.Add(this.tthminsurface);
-            this.groupBox8.Controls.Add(this.thmaxsurface);
-            this.groupBox8.Controls.Add(this.label34);
-            this.groupBox8.Controls.Add(this.tthmaxsurface);
-            this.groupBox8.Location = new System.Drawing.Point(31, 100);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(536, 147);
-            this.groupBox8.TabIndex = 43;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "区域选择";
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.label38);
-            this.groupBox9.Controls.Add(this.barheight);
-            this.groupBox9.Controls.Add(this.barwidth);
-            this.groupBox9.Controls.Add(this.tbwidth);
-            this.groupBox9.Controls.Add(this.label33);
-            this.groupBox9.Controls.Add(this.tbheight);
-            this.groupBox9.Controls.Add(this.bararea);
-            this.groupBox9.Controls.Add(this.tbarea);
-            this.groupBox9.Controls.Add(this.label37);
-            this.groupBox9.Location = new System.Drawing.Point(31, 268);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(536, 222);
-            this.groupBox9.TabIndex = 44;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "缺陷过滤";
-            // 
             // frmmain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -2349,8 +2388,15 @@
             this.tabroi.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bargraythresh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barheight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barwidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bararea)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thmaxsurface)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -2377,12 +2423,6 @@
             this.pview.ResumeLayout(false);
             this.phwin.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barwidth)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2572,6 +2612,9 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TextBox tbgraythresh;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TrackBar bargraythresh;
     }
 }
 

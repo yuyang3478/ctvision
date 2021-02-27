@@ -94,6 +94,7 @@ namespace leanvision
             al.Add(hshowresult);
             al.Add(hshowstatistic);
             al.Add(posmove);
+            
             al.Add(productname);
             
             al.Add(postext1r);
