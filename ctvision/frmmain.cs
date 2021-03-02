@@ -167,6 +167,7 @@ namespace ctmeasure
 
             if (InitCamera() == true) {
                 MvApi.CameraPlay(m_hCamera);
+                MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
             }
 
             initview();
@@ -1052,6 +1053,7 @@ namespace ctmeasure
             thmaxsurface.Value = rois.croi.thmaxsurface;
             tthminsurface.Text = thminsurface.Value.ToString();
             tthmaxsurface.Text = thmaxsurface.Value.ToString();
+            tbgraythresh.Text = bargraythresh.Value.ToString();
             bararea.Value = Convert.ToInt32(rois.croi.stdsurface*10);
             tbarea.Text = (bararea.Value*1.0/10.0).ToString();
 
@@ -2122,7 +2124,7 @@ namespace ctmeasure
                 tbcameraplay.Checked = false;
             }
 
-            if (dcamera.himg == null||dcamera.himg.Width==0) {
+            if (dcamera.himg == null||dcamera.himg.Width==0||dcamera.himg.Height==0||template==null||template.Width==0||template.Height==0) {
                 MessageBox.Show("模板图片为空，请先加载图片或点击\"相机预览\"->\"停止预览\"。");
                 return;
             }else if (himgbak == null||himgbak.Width==0)
@@ -2762,6 +2764,7 @@ namespace ctmeasure
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
+                //croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.getWhiteMask(dcamera.himg, himgbak);
             }
@@ -2788,6 +2791,7 @@ namespace ctmeasure
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
+                //croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
 
                 croi.getBlackMask(dcamera.himg, himgbak);
@@ -2832,9 +2836,12 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
-                croi.stdsurface = bararea.Value*1.0/100.0;
-                
+                croi.thmaxsurface = thmaxsurface.Value; 
+                croi.grayThresh = bargraythresh.Value;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
             }
             pictureBox1.Invalidate();
@@ -3039,7 +3046,99 @@ namespace ctmeasure
 
         private void bararea_ValueChanged(object sender, EventArgs e)
         {
+            if (!bararea.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tbarea.Text = bararea.Value.ToString();
 
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.grayThresh = bargraythresh.Value;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            pictureBox1.Invalidate();
+        }
+
+        private void bargraythresh_ValueChanged(object sender, EventArgs e)
+        {
+            if (!bargraythresh.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tbgraythresh.Text = bargraythresh.Value.ToString();
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.grayThresh = bargraythresh.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            pictureBox1.Invalidate();
+        }
+
+        private void barheight_ValueChanged(object sender, EventArgs e)
+        {
+            if (!barheight.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tbheight.Text = barheight.Value.ToString();
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.grayThresh = bargraythresh.Value;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            pictureBox1.Invalidate();
+        }
+
+        private void barwidth_ValueChanged(object sender, EventArgs e)
+        {
+            if (!barwidth.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tbwidth.Text = barwidth.Value.ToString();
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.grayThresh = bargraythresh.Value;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            pictureBox1.Invalidate();
         }
 
         private void btnend_Click(object sender, EventArgs e)
@@ -3070,8 +3169,8 @@ namespace ctmeasure
             showmeasure();
         }
 
-        int county = 0;
-        int county1 = 0;
+        //int county = 0;
+        //int county1 = 0;
         public void ImageCaptureCallback(CameraHandle hCamera, IntPtr pFrameBuffer, ref tSdkFrameHead pFrameHead, IntPtr pContext)
         {
             //county += 1;

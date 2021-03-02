@@ -56,7 +56,12 @@ namespace leanvision
         public int areasurface { get; set; }//面积测量值
         public double stdsurface { get; set; }//残缺比标准
         public double msurface { get; set; }//残缺比测量值
+        public double grayThresh { get;set; }//缺陷与模板亮度差
 
+        public double minDefectArea { get; set; }//最小缺陷面积
+
+        public double minDefectWidth { get; set; }//最小缺陷宽度
+        public double minDefectHeight { get; set; }//最小缺陷长度
         [NonSerialized]
         public Mat whiteMask;//要做序列化或者保存
         [NonSerialized]
@@ -922,16 +927,17 @@ namespace leanvision
             //return false;
             if (surfacecheck == false) return true;
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
-            if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
+            if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width<=0 || roi.Height<=0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
             {
                 MessageBox.Show("ROI 超出边界");
                 return false;
             }
             Mat submat = new Mat();
             Mat subgray = new Mat();
+            srcCopy = himgbak[roi];
             Cv2.Subtract(Program.fmain.template[roi], himgbak[roi], submat, mask);
             Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
-            Cv2.Threshold(subgray,subgray, thminsurface, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
+            Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
 
 
             //Cv2.ImShow("temp", Program.fmain.template[roi]);
@@ -944,15 +950,21 @@ namespace leanvision
             HierarchyIndex[] hierarchly;
             Cv2.FindContours(subgray, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
             if (contours.Length == 0) return true;
-            double maxContourArea = 0;
-            int maxConIdx = 0;
+            
+            int idx = 0;
             for (int i = 0; i < contours.Length; i++)
             {
                 //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
                 //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
-
+               
                 var contour = contours[i];
                 double area1 = Cv2.ContourArea(contour);
+
+                if (area1 < minDefectArea) continue;
+                //Rect br = Cv2.BoundingRect(contours[i]);
+                RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
+                if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
+                idx += 1;
                 Cv2.DrawContours(
                             srcCopy,
                             contours,
@@ -963,17 +975,14 @@ namespace leanvision
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
                 
-                if (area1 > maxContourArea)
-                {
-                    maxContourArea = area1;
-                    maxConIdx = i;
-                }
+                
             }
 
             srcCopy.CopyTo(himg[roi]);
-            //Cv2.ImWrite(".\\asrcCopy.bmp", srcCopy);
-            //Cv2.ImWrite(".\\himg.bmp", himg);
+            if (idx > 0) return false;
             return true;
+            //Cv2.ImWrite(".\\asrcCopy.bmp", srcCopy);
+            //Cv2.ImWrite(".\\himg.bmp", himg); 
         }
     }//class
 

@@ -304,7 +304,7 @@
             this.tbcameraplay.Image = ((System.Drawing.Image)(resources.GetObject("tbcameraplay.Image")));
             this.tbcameraplay.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbcameraplay.Name = "tbcameraplay";
-            this.tbcameraplay.Size = new System.Drawing.Size(46, 44);
+            this.tbcameraplay.Size = new System.Drawing.Size(46, 36);
             this.tbcameraplay.Text = "toolStripButton1";
             this.tbcameraplay.ToolTipText = "相机预览";
             this.tbcameraplay.Click += new System.EventHandler(this.tbcameraplay_Click);
@@ -316,7 +316,7 @@
             this.tbio.Image = ((System.Drawing.Image)(resources.GetObject("tbio.Image")));
             this.tbio.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbio.Name = "tbio";
-            this.tbio.Size = new System.Drawing.Size(46, 44);
+            this.tbio.Size = new System.Drawing.Size(46, 36);
             this.tbio.Text = "toolStripButton2";
             this.tbio.ToolTipText = "IO设置";
             this.tbio.Click += new System.EventHandler(this.tbio_Click);
@@ -328,7 +328,7 @@
             this.tbsetting.Image = ((System.Drawing.Image)(resources.GetObject("tbsetting.Image")));
             this.tbsetting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbsetting.Name = "tbsetting";
-            this.tbsetting.Size = new System.Drawing.Size(46, 44);
+            this.tbsetting.Size = new System.Drawing.Size(46, 36);
             this.tbsetting.Text = "toolStripButton1";
             this.tbsetting.ToolTipText = "系统设置";
             this.tbsetting.Click += new System.EventHandler(this.tbsetting_Click);
@@ -346,7 +346,7 @@
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton3.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton3.Text = "toolStripButton3";
             this.toolStripButton3.ToolTipText = "加载图片";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
@@ -358,7 +358,7 @@
             this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton4.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton4.Text = "toolStripButton4";
             this.toolStripButton4.ToolTipText = "保存图片";
             this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
@@ -377,7 +377,7 @@
             this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
             this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton6.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton6.Text = "toolStripButton6";
             this.toolStripButton6.ToolTipText = "缩小";
             this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
@@ -389,7 +389,7 @@
             this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton5.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton5.Text = "toolStripButton5";
             this.toolStripButton5.ToolTipText = "放大";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
@@ -401,7 +401,7 @@
             this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
             this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton7.Name = "toolStripButton7";
-            this.toolStripButton7.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton7.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton7.Text = "toolStripButton7";
             this.toolStripButton7.ToolTipText = "适合窗口";
             this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
@@ -420,7 +420,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton2.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton2.Text = "toolStripButton2";
             this.toolStripButton2.ToolTipText = "删除";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
@@ -432,7 +432,7 @@
             this.tbdrawrect.Image = ((System.Drawing.Image)(resources.GetObject("tbdrawrect.Image")));
             this.tbdrawrect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbdrawrect.Name = "tbdrawrect";
-            this.tbdrawrect.Size = new System.Drawing.Size(46, 44);
+            this.tbdrawrect.Size = new System.Drawing.Size(46, 36);
             this.tbdrawrect.Text = "toolStripButton10";
             this.tbdrawrect.ToolTipText = "区域绘制";
             this.tbdrawrect.Click += new System.EventHandler(this.toolStripButton10_Click);
@@ -444,7 +444,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton1.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.ToolTipText = " 复制";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
@@ -454,14 +454,14 @@
             // 
             this.tbalignsize.Image = ((System.Drawing.Image)(resources.GetObject("tbalignsize.Image")));
             this.tbalignsize.Name = "tbalignsize";
-            this.tbalignsize.Size = new System.Drawing.Size(52, 50);
+            this.tbalignsize.Size = new System.Drawing.Size(52, 42);
             this.tbalignsize.Click += new System.EventHandler(this.tbalignsize_Click);
             // 
             // tbalignsamespace
             // 
             this.tbalignsamespace.Image = ((System.Drawing.Image)(resources.GetObject("tbalignsamespace.Image")));
             this.tbalignsamespace.Name = "tbalignsamespace";
-            this.tbalignsamespace.Size = new System.Drawing.Size(52, 50);
+            this.tbalignsamespace.Size = new System.Drawing.Size(52, 42);
             this.tbalignsamespace.Click += new System.EventHandler(this.tbalignsamespace_Click);
             // 
             // toolStripSeparator2
@@ -477,7 +477,7 @@
             this.tbcheckimage.Image = ((System.Drawing.Image)(resources.GetObject("tbcheckimage.Image")));
             this.tbcheckimage.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbcheckimage.Name = "tbcheckimage";
-            this.tbcheckimage.Size = new System.Drawing.Size(46, 44);
+            this.tbcheckimage.Size = new System.Drawing.Size(46, 36);
             this.tbcheckimage.Text = "toolStripButton8";
             this.tbcheckimage.ToolTipText = "NG 图片预览";
             this.tbcheckimage.Click += new System.EventHandler(this.toolStripButton8_Click);
@@ -488,7 +488,7 @@
             this.toolStripButton9.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton9.Image")));
             this.toolStripButton9.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton9.Name = "toolStripButton9";
-            this.toolStripButton9.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton9.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton9.Text = "toolStripButton9";
             this.toolStripButton9.ToolTipText = "测量记录";
             this.toolStripButton9.Click += new System.EventHandler(this.measure_log_Click);
@@ -505,7 +505,7 @@
             this.tbrunonce.Image = ((System.Drawing.Image)(resources.GetObject("tbrunonce.Image")));
             this.tbrunonce.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbrunonce.Name = "tbrunonce";
-            this.tbrunonce.Size = new System.Drawing.Size(46, 44);
+            this.tbrunonce.Size = new System.Drawing.Size(46, 36);
             this.tbrunonce.Text = "toolStripButton9";
             this.tbrunonce.ToolTipText = "单次运行";
             this.tbrunonce.Click += new System.EventHandler(this.tbrunonce_Click);
@@ -517,7 +517,7 @@
             this.tbrun.Image = ((System.Drawing.Image)(resources.GetObject("tbrun.Image")));
             this.tbrun.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbrun.Name = "tbrun";
-            this.tbrun.Size = new System.Drawing.Size(46, 44);
+            this.tbrun.Size = new System.Drawing.Size(46, 36);
             this.tbrun.Text = "toolStripButton8";
             this.tbrun.ToolTipText = "自动连续运行";
             this.tbrun.Click += new System.EventHandler(this.tbrun_Click);
@@ -529,7 +529,7 @@
             this.tbrunstrop.Image = ((System.Drawing.Image)(resources.GetObject("tbrunstrop.Image")));
             this.tbrunstrop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbrunstrop.Name = "tbrunstrop";
-            this.tbrunstrop.Size = new System.Drawing.Size(46, 44);
+            this.tbrunstrop.Size = new System.Drawing.Size(46, 36);
             this.tbrunstrop.Text = "toolStripButton9";
             this.tbrunstrop.ToolTipText = "停止";
             this.tbrunstrop.Click += new System.EventHandler(this.toolStripButton9_Click);
@@ -542,7 +542,7 @@
             this.tbexit.Image = ((System.Drawing.Image)(resources.GetObject("tbexit.Image")));
             this.tbexit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbexit.Name = "tbexit";
-            this.tbexit.Size = new System.Drawing.Size(46, 44);
+            this.tbexit.Size = new System.Drawing.Size(46, 36);
             this.tbexit.Text = "toolStripButton8";
             this.tbexit.ToolTipText = "退出";
             this.tbexit.Click += new System.EventHandler(this.tbexit_Click);
@@ -555,7 +555,7 @@
             this.tbhelp.Image = ((System.Drawing.Image)(resources.GetObject("tbhelp.Image")));
             this.tbhelp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbhelp.Name = "tbhelp";
-            this.tbhelp.Size = new System.Drawing.Size(46, 44);
+            this.tbhelp.Size = new System.Drawing.Size(46, 36);
             this.tbhelp.Text = "关于...";
             this.tbhelp.Click += new System.EventHandler(this.tbhelp_Click);
             this.tbhelp.MouseEnter += new System.EventHandler(this.tbcamera_MouseEnter);
@@ -563,7 +563,7 @@
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 50);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 42);
             // 
             // tblogmenu
             // 
@@ -571,7 +571,7 @@
             this.tblogmenu.Image = ((System.Drawing.Image)(resources.GetObject("tblogmenu.Image")));
             this.tblogmenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tblogmenu.Name = "tblogmenu";
-            this.tblogmenu.Size = new System.Drawing.Size(46, 44);
+            this.tblogmenu.Size = new System.Drawing.Size(46, 36);
             this.tblogmenu.Text = "toolStripButton10";
             this.tblogmenu.Click += new System.EventHandler(this.toolStripButton10_Click_1);
             // 
@@ -724,6 +724,7 @@
             this.bargraythresh.Size = new System.Drawing.Size(332, 58);
             this.bargraythresh.TabIndex = 46;
             this.bargraythresh.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.bargraythresh.ValueChanged += new System.EventHandler(this.bargraythresh_ValueChanged);
             // 
             // label38
             // 
@@ -747,6 +748,7 @@
             this.barheight.Size = new System.Drawing.Size(332, 48);
             this.barheight.TabIndex = 41;
             this.barheight.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.barheight.ValueChanged += new System.EventHandler(this.barheight_ValueChanged);
             // 
             // barwidth
             // 
@@ -760,6 +762,7 @@
             this.barwidth.Size = new System.Drawing.Size(332, 54);
             this.barwidth.TabIndex = 44;
             this.barwidth.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.barwidth.ValueChanged += new System.EventHandler(this.barwidth_ValueChanged);
             // 
             // tbwidth
             // 
@@ -1418,7 +1421,7 @@
             this.tabmeasure.Margin = new System.Windows.Forms.Padding(6);
             this.tabmeasure.Name = "tabmeasure";
             this.tabmeasure.Padding = new System.Windows.Forms.Padding(6);
-            this.tabmeasure.Size = new System.Drawing.Size(874, 2461);
+            this.tabmeasure.Size = new System.Drawing.Size(874, 2469);
             this.tabmeasure.TabIndex = 1;
             this.tabmeasure.Text = "检测内容";
             this.tabmeasure.UseVisualStyleBackColor = true;
@@ -1771,7 +1774,7 @@
             this.tabresult.Margin = new System.Windows.Forms.Padding(6);
             this.tabresult.Name = "tabresult";
             this.tabresult.Padding = new System.Windows.Forms.Padding(6);
-            this.tabresult.Size = new System.Drawing.Size(874, 2461);
+            this.tabresult.Size = new System.Drawing.Size(874, 2469);
             this.tabresult.TabIndex = 2;
             this.tabresult.Text = "检测结果";
             this.tabresult.UseVisualStyleBackColor = true;
@@ -2009,7 +2012,7 @@
             this.tabdata.Margin = new System.Windows.Forms.Padding(6);
             this.tabdata.Name = "tabdata";
             this.tabdata.Padding = new System.Windows.Forms.Padding(6);
-            this.tabdata.Size = new System.Drawing.Size(874, 2461);
+            this.tabdata.Size = new System.Drawing.Size(874, 2469);
             this.tabdata.TabIndex = 4;
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
@@ -2123,7 +2126,7 @@
             this.rtresult.Name = "rtresult";
             this.rtresult.ReadOnly = true;
             this.rtresult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtresult.Size = new System.Drawing.Size(850, 1194);
+            this.rtresult.Size = new System.Drawing.Size(850, 1202);
             this.rtresult.TabIndex = 15;
             this.rtresult.Text = "";
             this.rtresult.WordWrap = false;
@@ -2137,7 +2140,7 @@
             this.tbdatastatistic.Margin = new System.Windows.Forms.Padding(6);
             this.tbdatastatistic.Name = "tbdatastatistic";
             this.tbdatastatistic.Padding = new System.Windows.Forms.Padding(6);
-            this.tbdatastatistic.Size = new System.Drawing.Size(874, 2461);
+            this.tbdatastatistic.Size = new System.Drawing.Size(874, 2469);
             this.tbdatastatistic.TabIndex = 5;
             this.tbdatastatistic.Text = "数据统计";
             this.tbdatastatistic.UseVisualStyleBackColor = true;
@@ -2179,7 +2182,7 @@
             this.rtdatastatistic.Name = "rtdatastatistic";
             this.rtdatastatistic.ReadOnly = true;
             this.rtdatastatistic.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtdatastatistic.Size = new System.Drawing.Size(850, 1444);
+            this.rtdatastatistic.Size = new System.Drawing.Size(850, 1452);
             this.rtdatastatistic.TabIndex = 16;
             this.rtdatastatistic.Text = "";
             this.rtdatastatistic.WordWrap = false;
