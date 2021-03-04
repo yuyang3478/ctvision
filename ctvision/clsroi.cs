@@ -161,7 +161,7 @@ namespace leanvision
                 //Console.WriteLine("show :{0},{1},{2},{3}", col, row, col1, row1);
                 e.Graphics.DrawRectangle(Pens.Green, rect.rectangle);
                 //e.Graphics.DrawRectangles(vcommon.hcolor, rect.subRectList.ToArray());
-                e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(60)), new SolidBrush(Color.Green), Convert.ToSingle(col ), Convert.ToSingle(row ));
+                e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(60 * vcommon.viewscale)), new SolidBrush(Color.Green), Convert.ToSingle(col ), Convert.ToSingle(row ));
             }
             //if (action == "ondraw")
             //{
@@ -303,7 +303,7 @@ namespace leanvision
             //获得轮廓
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchly;
-            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxTC89L1, new OpenCvSharp.Point(0, 0));
             if (contours.Length == 0) return;
             double maxContourArea = 0;
             int maxConIdx = 0;
@@ -323,16 +323,16 @@ namespace leanvision
 
                 var contour = contours[i];
                 if (!Program.fmain.cksurfaceareamax.Checked)
-                {
-                    Cv2.DrawContours(
-                                whiteMask,
-                                contours,
-                                i,
-                                color: new Scalar(0, 255, 0),
-                                thickness: -1,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
+                { 
+                    //Cv2.DrawContours(
+                    //            whiteMask,
+                    //            contours,
+                    //            i,
+                    //            color: new Scalar(0, 255, 0),
+                    //            thickness: -1,//CV_FILLED
+                    //            lineType: LineTypes.Link8,
+                    //            hierarchy: hierarchly,
+                    //            maxLevel: int.MaxValue);
                     Rect br = Cv2.BoundingRect(contours[i]);
                     Cv2.DrawContours(
                                 whiteMask,
@@ -374,15 +374,15 @@ namespace leanvision
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (Program.fmain.cksurfaceareamax.Checked)
             {
-                Cv2.DrawContours(
-                                whiteMask,
-                                contours,
-                                maxConIdx,
-                                color: new Scalar(0, 255, 0),
-                                thickness: -1,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
+                //Cv2.DrawContours(
+                //                whiteMask,
+                //                contours,
+                //                maxConIdx,
+                //                color: new Scalar(0, 255, 0),
+                //                thickness: -1,//CV_FILLED
+                //                lineType: LineTypes.Link8,
+                //                hierarchy: hierarchly,
+                //                maxLevel: int.MaxValue);
                  
                 Cv2.DrawContours(
                             whiteMask,
@@ -486,15 +486,15 @@ namespace leanvision
                 var contour = contours[i];
                 if (!Program.fmain.cksurfaceareamax.Checked)
                 {
-                    Cv2.DrawContours(
-                                blackMask,
-                                contours,
-                                i,
-                                color: new Scalar(0, 255, 0),
-                                thickness: -1,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
+                    //Cv2.DrawContours(
+                    //            blackMask,
+                    //            contours,
+                    //            i,
+                    //            color: new Scalar(0, 255, 255),
+                    //            thickness: -1,//CV_FILLED
+                    //            lineType: LineTypes.Link8,
+                    //            hierarchy: hierarchly,
+                    //            maxLevel: int.MaxValue);
                     Rect br = Cv2.BoundingRect(contours[i]);
                     Cv2.DrawContours(
                                 blackMask,
@@ -536,15 +536,15 @@ namespace leanvision
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (Program.fmain.cksurfaceareamax.Checked)
             {
-                Cv2.DrawContours(
-                                blackMask,
-                                contours,
-                                maxConIdx,
-                                color: new Scalar(0, 255, 0),
-                                thickness: -1,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
+                //Cv2.DrawContours(
+                //                blackMask,
+                //                contours,
+                //                maxConIdx,
+                //                color: new Scalar(0, 255, 0),
+                //                thickness: -1,//CV_FILLED
+                //                lineType: LineTypes.Link8,
+                //                hierarchy: hierarchly,
+                //                maxLevel: int.MaxValue);
 
                 Cv2.DrawContours(
                             blackMask,
@@ -1186,20 +1186,22 @@ namespace leanvision
 
         internal void zoomshape(int x, int y, double oldzoom, double zscale)
         {
+            int oldimagex = (int)(x / oldzoom);  // Where in the IMAGE is it now
+            int oldimagey = (int)(y / oldzoom);
+
+            int newimagex = (int)(x / zscale);     // Where in the IMAGE will it be when the new zoom i made
+            int newimagey = (int)(y / zscale);
             foreach (roishape rs in roilist)
-            {
-                int oldimagex = (int)(x / oldzoom);  // Where in the IMAGE is it now
-                int oldimagey = (int)(y / oldzoom);
-
-                int newimagex = (int)(x / zscale);     // Where in the IMAGE will it be when the new zoom i made
-                int newimagey = (int)(y / zscale);
-
+            { 
                 rs.col = newimagex - oldimagex + rs.col;  // Where to move image to keep focus on one point
                 rs.col1 = newimagex - oldimagex + rs.col1;
                 rs.row = newimagey - oldimagey + rs.row;
-                rs.row1 = newimagey - oldimagey + rs.row1;
+                rs.row1 = newimagey - oldimagey + rs.row1; 
             }
-
+            tc1 = newimagex - oldimagex + tc1;
+            tr1 = newimagex - oldimagex + tr1;
+            tc2 = newimagex - oldimagex + tc2;
+            tr2 = newimagex - oldimagex + tr2;
         }
 
         internal void zoomshapeall(int x, int y, double oldzoom, double zscale,int imgx,int imgy)

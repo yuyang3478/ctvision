@@ -1388,6 +1388,7 @@ namespace ctmeasure
             
             if (tbrun.Checked == false) return;
             isTriggered = true;
+            MvApi.CameraSoftTrigger(m_hCamera);
             ////抓取图像，改变dcamera.himg
             //tSdkFrameHead tFrameHead;
             //IntPtr uRawBuffer;//由SDK中给RAW数据分配内存，并释放
@@ -1675,8 +1676,8 @@ namespace ctmeasure
                 saveNgPicThread = new Thread(new ThreadStart(tscreen_Tick));
                 saveNgPicThread.Start();
             }
+
             //PLC信号输出
-            
             if (tbrun.Checked){
                if (testresult == "NG") dio.sendng();
                else dio.sendok();
@@ -1986,21 +1987,32 @@ namespace ctmeasure
     private void tbcameraplay_Click(object sender, EventArgs e)
         {
             tbcameraplay.Checked = !tbcameraplay.Checked;
-
-
+            
             if (tbcameraplay.Checked)
             { 
                 foreach (ToolStripItem tb in mtools.Items)
                 {
                     if (tb.Name != "tbcameraplay" && tb.Name != "tbcamera") tb.Enabled = false;
-                } 
+                }
+                MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.CONTINUATION);
             }
             else {
-                isCaptoScreen = true;
+                
                 foreach (ToolStripItem tb in mtools.Items)
                 {
                     tb.Enabled = true; 
-                } 
+                }
+                MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
+                //提示当前帧是否保存为模板
+                if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    isCaptoScreen = true;
+                    MvApi.CameraSoftTrigger(m_hCamera);
+                }
+                else
+                {
+                    pictureBox1.Invalidate();
+                }
             }
 
             return;
@@ -3194,7 +3206,7 @@ namespace ctmeasure
                 return;
             }
             if (isCaptoScreen)
-            {
+            {   //保存为模板
                 isCaptoScreen = false;
                 //图像处理，将原始输出转换为RGB格式的位图数据，同时叠加白平衡、饱和度、LUT等ISP处理。
                 MvApi.CameraImageProcess(hCamera, pFrameBuffer, m_ImageBuffer, ref pFrameHead);
@@ -3225,8 +3237,9 @@ namespace ctmeasure
                 }
                 himgbak = dcamera.getBackImg();
                 himgbak.CopyTo(template);
+                pictureBox1.Invalidate();
                 return;
-            }else if (!tbcameraplay.Checked && !isTriggered) { return; }
+            }
             if (tbrun.Checked&& isTriggered) {
                 isTriggered = false;
                 //county1 += 1;

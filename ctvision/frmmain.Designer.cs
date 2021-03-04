@@ -280,7 +280,7 @@
             this.mtools.Location = new System.Drawing.Point(0, 0);
             this.mtools.Name = "mtools";
             this.mtools.Padding = new System.Windows.Forms.Padding(0);
-            this.mtools.Size = new System.Drawing.Size(2536, 50);
+            this.mtools.Size = new System.Drawing.Size(2536, 42);
             this.mtools.TabIndex = 0;
             this.mtools.Text = "toolStrip1";
             this.mtools.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mtools_ItemClicked);
@@ -292,7 +292,7 @@
             this.tbcamera.Image = ((System.Drawing.Image)(resources.GetObject("tbcamera.Image")));
             this.tbcamera.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbcamera.Name = "tbcamera";
-            this.tbcamera.Size = new System.Drawing.Size(46, 44);
+            this.tbcamera.Size = new System.Drawing.Size(46, 36);
             this.tbcamera.Text = "toolStripButton1";
             this.tbcamera.ToolTipText = "相机设置";
             this.tbcamera.Click += new System.EventHandler(this.tbcamera_Click);
@@ -615,7 +615,7 @@
             this.ptools.Location = new System.Drawing.Point(1638, 0);
             this.ptools.Margin = new System.Windows.Forms.Padding(6);
             this.ptools.Name = "ptools";
-            this.ptools.Size = new System.Drawing.Size(896, 1454);
+            this.ptools.Size = new System.Drawing.Size(896, 1462);
             this.ptools.TabIndex = 2;
             // 
             // tabControl1
@@ -631,7 +631,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(890, 2508);
+            this.tabControl1.Size = new System.Drawing.Size(890, 2516);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -650,7 +650,7 @@
             this.tabroi.Margin = new System.Windows.Forms.Padding(6);
             this.tabroi.Name = "tabroi";
             this.tabroi.Padding = new System.Windows.Forms.Padding(6);
-            this.tabroi.Size = new System.Drawing.Size(874, 2461);
+            this.tabroi.Size = new System.Drawing.Size(874, 2469);
             this.tabroi.TabIndex = 3;
             this.tabroi.Text = "图像识别";
             this.tabroi.UseVisualStyleBackColor = true;
@@ -1421,7 +1421,7 @@
             this.tabmeasure.Margin = new System.Windows.Forms.Padding(6);
             this.tabmeasure.Name = "tabmeasure";
             this.tabmeasure.Padding = new System.Windows.Forms.Padding(6);
-            this.tabmeasure.Size = new System.Drawing.Size(874, 2469);
+            this.tabmeasure.Size = new System.Drawing.Size(874, 2461);
             this.tabmeasure.TabIndex = 1;
             this.tabmeasure.Text = "检测内容";
             this.tabmeasure.UseVisualStyleBackColor = true;
@@ -1774,7 +1774,7 @@
             this.tabresult.Margin = new System.Windows.Forms.Padding(6);
             this.tabresult.Name = "tabresult";
             this.tabresult.Padding = new System.Windows.Forms.Padding(6);
-            this.tabresult.Size = new System.Drawing.Size(874, 2469);
+            this.tabresult.Size = new System.Drawing.Size(874, 2461);
             this.tabresult.TabIndex = 2;
             this.tabresult.Text = "检测结果";
             this.tabresult.UseVisualStyleBackColor = true;
@@ -2012,7 +2012,7 @@
             this.tabdata.Margin = new System.Windows.Forms.Padding(6);
             this.tabdata.Name = "tabdata";
             this.tabdata.Padding = new System.Windows.Forms.Padding(6);
-            this.tabdata.Size = new System.Drawing.Size(874, 2469);
+            this.tabdata.Size = new System.Drawing.Size(874, 2461);
             this.tabdata.TabIndex = 4;
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
@@ -2140,7 +2140,7 @@
             this.tbdatastatistic.Margin = new System.Windows.Forms.Padding(6);
             this.tbdatastatistic.Name = "tbdatastatistic";
             this.tbdatastatistic.Padding = new System.Windows.Forms.Padding(6);
-            this.tbdatastatistic.Size = new System.Drawing.Size(874, 2469);
+            this.tbdatastatistic.Size = new System.Drawing.Size(874, 2461);
             this.tbdatastatistic.TabIndex = 5;
             this.tbdatastatistic.Text = "数据统计";
             this.tbdatastatistic.UseVisualStyleBackColor = true;
@@ -2193,10 +2193,10 @@
             this.pview.Controls.Add(this.phwin);
             this.pview.Controls.Add(this.ptools);
             this.pview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pview.Location = new System.Drawing.Point(0, 50);
+            this.pview.Location = new System.Drawing.Point(0, 42);
             this.pview.Margin = new System.Windows.Forms.Padding(12);
             this.pview.Name = "pview";
-            this.pview.Size = new System.Drawing.Size(2536, 1456);
+            this.pview.Size = new System.Drawing.Size(2536, 1464);
             this.pview.TabIndex = 4;
             // 
             // phwin
@@ -2208,7 +2208,7 @@
             this.phwin.Location = new System.Drawing.Point(0, 0);
             this.phwin.Margin = new System.Windows.Forms.Padding(0);
             this.phwin.Name = "phwin";
-            this.phwin.Size = new System.Drawing.Size(1480, 2502);
+            this.phwin.Size = new System.Drawing.Size(1480, 2510);
             this.phwin.TabIndex = 1;
             this.phwin.TabStop = true;
             // 
@@ -2220,7 +2220,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1440, 3012);
+            this.pictureBox1.Size = new System.Drawing.Size(1440, 3020);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hwin_KeyUp);
