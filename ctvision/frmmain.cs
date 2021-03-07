@@ -424,7 +424,19 @@ namespace ctmeasure
             rois.zoomshapeall(x, y, oldzoom, zscale,imgx,imgy) ;
             vcommon.viewx = imgx = 0;
             vcommon.viewy = imgy = 0;
-            pictureBox1.Refresh();  // calls imageBox_Paint
+            if (this.pictureBox1.InvokeRequired)
+            {
+                pictureBox1.Invoke(new MethodInvoker(
+                   delegate ()
+                   {
+                       pictureBox1.Refresh();
+                   }));
+            }
+            else
+            {
+                pictureBox1.Refresh();
+            }
+            //pictureBox1.Refresh();  // calls imageBox_Paint
 
             slabelzoom.Text = "zoom: " + zscale.ToString("f2");
         }
@@ -609,7 +621,7 @@ namespace ctmeasure
         {
             if (!pictureBox1.Focused) pictureBox1.Focus();
             //movex1=e.X;movey1=e.Y;
-            slabelxy.Text = string.Format("XY: {0},{1}", e.X.ToString("f0"), e.Y.ToString("f0"));
+            slabelxy.Text = string.Format("XY: {0},{1}  scale:{2:0.00}", e.X.ToString("f0"), e.Y.ToString("f0"),zscale);
 
             if (!mouseleftpress&&!mousemidpress) return;
             //视图平移
@@ -1388,6 +1400,11 @@ namespace ctmeasure
             
             if (tbrun.Checked == false) return;
             isTriggered = true;
+            if ((zscale !=
+                (((float)phwin.Width / (float)dcamera.himg.Width))) || imgx != 0 || imgy != 0)
+            {
+                zoomall();
+            }
             MvApi.CameraSoftTrigger(m_hCamera);
             ////抓取图像，改变dcamera.himg
             //tSdkFrameHead tFrameHead;
@@ -1454,11 +1471,7 @@ namespace ctmeasure
         }
         //手动运行一次
         public void runonce(PictureBox pictureBox1) {
-            if ((zscale !=
-                (((float)phwin.Width / (float)dcamera.himg.Width))) || imgx != 0 || imgy != 0)
-            {
-                zoomall();
-            }
+            
             //vcommon.viewscale = zscale = (float)phwin.Width / (float)himgbak.Width;
             //vcommon.viewx = imgx = 0;
             //vcommon.viewy = imgy = 0;
@@ -1568,8 +1581,10 @@ namespace ctmeasure
 
             //表面检测
             foreach (roishape rs in rois.rois) {
-                if (rs.surfacecheck) {
-                    bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
+                if (true) {
+                 //if (rs.surfacecheck)
+                
+                        bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
                     //#if (areack == false) {
                     //#    testresult = "NG";
                     //#    mcon = rs.num.ToString("d3");
@@ -1677,11 +1692,11 @@ namespace ctmeasure
                 saveNgPicThread.Start();
             }
 
-            //PLC信号输出
-            if (tbrun.Checked){
-               if (testresult == "NG") dio.sendng();
-               else dio.sendok();
-            }
+            ////PLC信号输出
+            //if (tbrun.Checked){
+            //   if (testresult == "NG") dio.sendng();
+            //   else dio.sendok();
+            //}
             
             if (this.pictureBox1.InvokeRequired)
             {
@@ -3055,8 +3070,33 @@ namespace ctmeasure
         {
 
         }
+ 
 
-        private void bararea_ValueChanged(object sender, EventArgs e)
+
+        private void bargraythresh_ValueChanged(object sender, MouseEventArgs e)
+        {
+            if (!bargraythresh.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tbgraythresh.Text = bargraythresh.Value.ToString();
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.grayThresh = bargraythresh.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            MvApi.CameraSoftTrigger(m_hCamera);
+            pictureBox1.Invalidate();
+        }
+
+        private void bararea_ValueChanged(object sender, MouseEventArgs e)
         {
             if (!bararea.Focused) return;
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
@@ -3078,57 +3118,11 @@ namespace ctmeasure
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
+            MvApi.CameraSoftTrigger(m_hCamera);
             pictureBox1.Invalidate();
         }
 
-        private void bargraythresh_ValueChanged(object sender, EventArgs e)
-        {
-            if (!bargraythresh.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tbgraythresh.Text = bargraythresh.Value.ToString();
-
-            foreach (roishape croi in rois.srois.rois)
-            {
-                //赋值
-                croi.surfacecheck = cksurface.Checked;
-                croi.surfacemaxcheck = cksurfaceareamax.Checked;
-                croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
-                croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
-                
-                //croi.getWhiteMask(dcamera.himg, himgbak);
-            }
-            pictureBox1.Invalidate();
-        }
-
-        private void barheight_ValueChanged(object sender, EventArgs e)
-        {
-            if (!barheight.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tbheight.Text = barheight.Value.ToString();
-
-            foreach (roishape croi in rois.srois.rois)
-            {
-                //赋值
-                croi.surfacecheck = cksurface.Checked;
-                croi.surfacemaxcheck = cksurfaceareamax.Checked;
-                croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
-                croi.grayThresh = bargraythresh.Value;
-                croi.minDefectArea = bararea.Value;
-                croi.minDefectWidth = barwidth.Value;
-                croi.minDefectHeight = barheight.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
-
-                //croi.getWhiteMask(dcamera.himg, himgbak);
-            }
-            pictureBox1.Invalidate();
-        }
-
-        private void barwidth_ValueChanged(object sender, EventArgs e)
+        private void barwidth_ValueChanged(object sender, MouseEventArgs e)
         {
             if (!barwidth.Focused) return;
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
@@ -3152,6 +3146,35 @@ namespace ctmeasure
             }
             pictureBox1.Invalidate();
         }
+
+        private void barheight_ValueChanged(object sender, MouseEventArgs e)
+        {
+            if (!barheight.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tbheight.Text = barheight.Value.ToString();
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                //赋值
+                croi.surfacecheck = cksurface.Checked;
+                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = thmaxsurface.Value;
+                croi.grayThresh = bargraythresh.Value;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+            }
+            MvApi.CameraSoftTrigger(m_hCamera);
+            pictureBox1.Invalidate();
+        }
+
+
+         
 
         private void btnend_Click(object sender, EventArgs e)
         {
@@ -3240,12 +3263,29 @@ namespace ctmeasure
                 pictureBox1.Invalidate();
                 return;
             }
-            if (tbrun.Checked&& isTriggered) {
+            if (tbrun.Checked&& isTriggered) {// 程序为run状态
                 isTriggered = false;
                 //county1 += 1;
                 //Console.WriteLine("in triggered:{0}",county1);
                 //double stime = Environment.TickCount;
                 //图像处理，将原始输出转换为RGB格式的位图数据，同时叠加白平衡、饱和度、LUT等ISP处理。
+                MvApi.CameraImageProcess(hCamera, pFrameBuffer, m_ImageBuffer, ref pFrameHead);
+                //叠加十字线、自动曝光窗口、白平衡窗口信息(仅叠加设置为可见状态的)。   
+                MvApi.CameraImageOverlay(hCamera, m_ImageBuffer, ref pFrameHead);
+
+                dcamera.himg = new Mat(pFrameHead.iHeight, pFrameHead.iWidth, MatType.CV_8UC1, m_ImageBuffer);
+                Cv2.Flip(dcamera.himg, dcamera.himg, FlipMode.X);
+                if (dcamera.himg.Type().Channels == 1)
+                {
+                    Cv2.CvtColor(dcamera.himg, dcamera.himg, ColorConversionCodes.GRAY2BGR);
+                }
+                himgbak = dcamera.getBackImg();
+                runonce(pictureBox1);
+                //double etime = Environment.TickCount;
+                //Console.WriteLine("solution1 cost time：{0}", etime - stime);
+            }
+            else // 程序为调试状态，调整缺陷大小过滤条件（暂与上run状态逻辑相同）
+            {
                 MvApi.CameraImageProcess(hCamera, pFrameBuffer, m_ImageBuffer, ref pFrameHead);
                 //叠加十字线、自动曝光窗口、白平衡窗口信息(仅叠加设置为可见状态的)。   
                 MvApi.CameraImageOverlay(hCamera, m_ImageBuffer, ref pFrameHead);

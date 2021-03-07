@@ -259,17 +259,13 @@ namespace leanvision
                 return;
             }
             Mat ImageROI = himgback[roi];// 
+            Mat roiCopy = Mat.Zeros(ImageROI.Size(), MatType.CV_8UC3);
 
-            if (whiteMask == null||(whiteMask.Width!=ImageROI.Width||whiteMask.Height!=ImageROI.Height))
-            {
-                whiteMask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
-                //mask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC1); 
-            }
-            if (mask == null || (mask.Width != ImageROI.Width || mask.Height != ImageROI.Height))
-            {
-                mask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
-            }
-            ImageROI.CopyTo(whiteMask);
+            whiteMask = Mat.Zeros(ImageROI.Size(), MatType.CV_8UC1);
+                //new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC1);
+               
+             
+            ImageROI.CopyTo(roiCopy);
             Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
              
             ////处理ImageROI
@@ -303,7 +299,7 @@ namespace leanvision
             //获得轮廓
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchly;
-            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxTC89L1, new OpenCvSharp.Point(0, 0));
+            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
             if (contours.Length == 0) return;
             double maxContourArea = 0;
             int maxConIdx = 0;
@@ -323,19 +319,19 @@ namespace leanvision
 
                 var contour = contours[i];
                 if (!Program.fmain.cksurfaceareamax.Checked)
-                { 
-                    //Cv2.DrawContours(
-                    //            whiteMask,
-                    //            contours,
-                    //            i,
-                    //            color: new Scalar(0, 255, 0),
-                    //            thickness: -1,//CV_FILLED
-                    //            lineType: LineTypes.Link8,
-                    //            hierarchy: hierarchly,
-                    //            maxLevel: int.MaxValue);
-                    Rect br = Cv2.BoundingRect(contours[i]);
+                {
                     Cv2.DrawContours(
                                 whiteMask,
+                                contours,
+                                i,
+                                color: new Scalar(255),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                    Rect br = Cv2.BoundingRect(contours[i]);
+                    Cv2.DrawContours(
+                                roiCopy,
                                 contours,
                                 i,
                                 color: new Scalar(0, 0, 255),
@@ -374,18 +370,19 @@ namespace leanvision
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (Program.fmain.cksurfaceareamax.Checked)
             {
-                //Cv2.DrawContours(
-                //                whiteMask,
-                //                contours,
-                //                maxConIdx,
-                //                color: new Scalar(0, 255, 0),
-                //                thickness: -1,//CV_FILLED
-                //                lineType: LineTypes.Link8,
-                //                hierarchy: hierarchly,
-                //                maxLevel: int.MaxValue);
-                 
+                ImageROI = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC1);
                 Cv2.DrawContours(
-                            whiteMask,
+                                whiteMask,
+                                contours,
+                                maxConIdx,
+                                color: new Scalar(255),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+
+                Cv2.DrawContours(
+                            roiCopy,
                             contours,
                             maxConIdx,
                             color: new Scalar(0, 0, 255),
@@ -405,9 +402,8 @@ namespace leanvision
             //        20);
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
-            whiteMask.CopyTo(himg[roi]);
-            Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.GRAY2BGR);
-            Cv2.Add(ImageROI,mask,mask);
+            roiCopy.CopyTo(himg[roi]);
+            
 
 
         }
@@ -422,16 +418,11 @@ namespace leanvision
                 return;
             }
             Mat ImageROI = himgback[roi];// 
+            Mat roiCopy = Mat.Zeros(ImageROI.Size(), MatType.CV_8UC3);
 
-            if (blackMask == null || (blackMask.Width != ImageROI.Width || blackMask.Height != ImageROI.Height))
-            {
-                blackMask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
-                
-            }
-            if (mask == null || (mask.Width != ImageROI.Width || mask.Height != ImageROI.Height)) {
-                mask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
-            }
-            ImageROI.CopyTo(blackMask);
+            blackMask = Mat.Zeros(ImageROI.Size(), MatType.CV_8UC1);
+
+            ImageROI.CopyTo(roiCopy);
             Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
 
             ////处理ImageROI
@@ -486,18 +477,18 @@ namespace leanvision
                 var contour = contours[i];
                 if (!Program.fmain.cksurfaceareamax.Checked)
                 {
-                    //Cv2.DrawContours(
-                    //            blackMask,
-                    //            contours,
-                    //            i,
-                    //            color: new Scalar(0, 255, 255),
-                    //            thickness: -1,//CV_FILLED
-                    //            lineType: LineTypes.Link8,
-                    //            hierarchy: hierarchly,
-                    //            maxLevel: int.MaxValue);
-                    Rect br = Cv2.BoundingRect(contours[i]);
                     Cv2.DrawContours(
                                 blackMask,
+                                contours,
+                                i,
+                                color: new Scalar(255),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                    Rect br = Cv2.BoundingRect(contours[i]);
+                    Cv2.DrawContours(
+                                roiCopy,
                                 contours,
                                 i,
                                 color: new Scalar(0, 0, 255),
@@ -536,18 +527,18 @@ namespace leanvision
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (Program.fmain.cksurfaceareamax.Checked)
             {
-                //Cv2.DrawContours(
-                //                blackMask,
-                //                contours,
-                //                maxConIdx,
-                //                color: new Scalar(0, 255, 0),
-                //                thickness: -1,//CV_FILLED
-                //                lineType: LineTypes.Link8,
-                //                hierarchy: hierarchly,
-                //                maxLevel: int.MaxValue);
+                Cv2.DrawContours(
+                                blackMask,
+                                contours,
+                                maxConIdx,
+                                color: new Scalar(255),
+                                thickness: -1,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
 
                 Cv2.DrawContours(
-                            blackMask,
+                            roiCopy,
                             contours,
                             maxConIdx,
                             color: new Scalar(0, 0, 255),
@@ -567,9 +558,8 @@ namespace leanvision
             //        20);
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
-            blackMask.CopyTo(himg[roi]); 
-            Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.GRAY2BGR);
-            Cv2.Add(ImageROI, mask, mask);
+            roiCopy.CopyTo(himg[roi]); 
+             
         }
         public void getregion(Mat himg, Mat himgback)
         {
@@ -924,27 +914,58 @@ namespace leanvision
         public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
             //没有mask 直接计算整个bbox的匹配度
            
-            //return false;
-            if (surfacecheck == false) return true;
+            
+            //if (surfacecheck == false) return true;
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width<=0 || roi.Height<=0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
             {
                 MessageBox.Show("ROI 超出边界");
                 return false;
             }
-            Mat submat = new Mat();
-            Mat subgray = new Mat();
             srcCopy = himgbak[roi];
-            Cv2.Subtract(Program.fmain.template[roi], himgbak[roi], submat, mask);
-            Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
+            //whiteMask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
+            //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
+            Mat subgray = new Mat(new OpenCvSharp.Size( srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
+            Mat subgray1 = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
+            Mat temlateRoi = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
+            Mat himgbakRoi = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
+            //Mat grayMask = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
+
+             
+            mask = Mat.Zeros(srcCopy.Size(), MatType.CV_8UC1);
+             
+            if (whiteMask == null)
+            {
+                if ((blackMask.Width == mask.Width) && (blackMask.Height == mask.Height)){ 
+                    blackMask.CopyTo(mask);
+                }
+            }
+            else if (blackMask == null) {
+                if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height))
+                {
+                    whiteMask.CopyTo(mask);
+                }
+            }
+            else {
+                if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height)&& (blackMask.Width == mask.Width) && (blackMask.Height == mask.Height))
+                {
+                    Cv2.Add(whiteMask, blackMask, mask);
+                }
+            }
+            //Cv2.CvtColor(mask, grayMask, ColorConversionCodes.BGR2GRAY);
+            Cv2.CvtColor(Program.fmain.template[roi], temlateRoi, ColorConversionCodes.BGR2GRAY);
+            Cv2.CvtColor(himgbak[roi], himgbakRoi, ColorConversionCodes.BGR2GRAY);
+             
+            Cv2.Subtract(himgbakRoi, temlateRoi, subgray, mask);
+            Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
+            Cv2.Add(subgray, subgray1, subgray , mask);
+            double min, max;
+            Cv2.MinMaxLoc(subgray, out min, out max);
+            //Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
             Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
 
-
-            //Cv2.ImShow("temp", Program.fmain.template[roi]);
-            //Cv2.ImShow("img", himgbak[roi]);
-            //Cv2.ImWrite(".\\ahimgbak.bmp",himgbak);
-            //Cv2.ImShow("subgray", subgray);
-            //Cv2.WaitKey(10000000);
+            //Cv2.ImShow("subgray", mask);
+            //Cv2.WaitKey(10);
             //获得轮廓
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchly;

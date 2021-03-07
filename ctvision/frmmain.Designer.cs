@@ -719,12 +719,12 @@
             this.bargraythresh.LargeChange = 2;
             this.bargraythresh.Location = new System.Drawing.Point(112, 34);
             this.bargraythresh.Margin = new System.Windows.Forms.Padding(0);
-            this.bargraythresh.Maximum = 1000;
+            this.bargraythresh.Maximum = 256;
             this.bargraythresh.Name = "bargraythresh";
             this.bargraythresh.Size = new System.Drawing.Size(332, 58);
             this.bargraythresh.TabIndex = 46;
             this.bargraythresh.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.bargraythresh.ValueChanged += new System.EventHandler(this.bargraythresh_ValueChanged);
+            this.bargraythresh.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bargraythresh_ValueChanged);
             // 
             // label38
             // 
@@ -748,7 +748,7 @@
             this.barheight.Size = new System.Drawing.Size(332, 48);
             this.barheight.TabIndex = 41;
             this.barheight.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barheight.ValueChanged += new System.EventHandler(this.barheight_ValueChanged);
+            this.barheight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barheight_ValueChanged);
             // 
             // barwidth
             // 
@@ -762,7 +762,7 @@
             this.barwidth.Size = new System.Drawing.Size(332, 54);
             this.barwidth.TabIndex = 44;
             this.barwidth.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barwidth.ValueChanged += new System.EventHandler(this.barwidth_ValueChanged);
+            this.barwidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barwidth_ValueChanged);
             // 
             // tbwidth
             // 
@@ -804,7 +804,7 @@
             this.bararea.Size = new System.Drawing.Size(332, 58);
             this.bararea.TabIndex = 36;
             this.bararea.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.bararea.ValueChanged += new System.EventHandler(this.bararea_ValueChanged);
+            this.bararea.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bararea_ValueChanged);
             // 
             // tbarea
             // 
