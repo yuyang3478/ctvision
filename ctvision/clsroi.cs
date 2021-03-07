@@ -959,11 +959,12 @@ namespace leanvision
             Cv2.Subtract(himgbakRoi, temlateRoi, subgray, mask);
             Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
             Cv2.Add(subgray, subgray1, subgray , mask);
+            //drawHist(subgray);
             double min, max;
             Cv2.MinMaxLoc(subgray, out min, out max);
             //Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
             Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
-
+            
             //Cv2.ImShow("subgray", mask);
             //Cv2.WaitKey(10);
             //获得轮廓
@@ -991,7 +992,7 @@ namespace leanvision
                             contours,
                             i,
                             color: new Scalar(0, 0, 255),
-                            thickness: 3,
+                            thickness: -1,
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
@@ -1000,10 +1001,43 @@ namespace leanvision
             }
 
             srcCopy.CopyTo(himg[roi]);
+            if (Program.fmain.pictureBox1.InvokeRequired)
+            {
+                Program.fmain.pictureBox1.Invoke(new MethodInvoker(
+                   delegate ()
+                   {
+                       Program.fmain.pictureBox1.Refresh();
+                   }));
+            }
+            else
+            {
+                Program.fmain.pictureBox1.Refresh();
+            }
+            
             if (idx > 0) return false;
             return true;
             //Cv2.ImWrite(".\\asrcCopy.bmp", srcCopy);
             //Cv2.ImWrite(".\\himg.bmp", himg); 
+        }
+
+        public void drawHist(Mat src) {
+            Mat hist = new Mat();
+            Cv2.CalcHist(new Mat[] { src }, new int[] { 0 }, new Mat(), hist, 1, new int[] { 256 }, new Rangef[] { new Rangef(0, 256) });
+            Cv2.Normalize(hist, hist);
+
+            Mat result = new Mat(new OpenCvSharp.Size(256, 500), MatType.CV_8UC1, new Scalar(255));
+            for (int i = 0; i < 256; i++)
+            {
+                float v = hist.Get<float>(i);
+                int len = (int)(v * 500);
+                if (len != 0)
+                {
+                    Cv2.Line(result, i, 499, i, 500 - len, new Scalar(0));
+                }
+            }
+            Cv2.ImWrite(".\\hist.bmp", result);
+            //Cv2.ImShow("hist.bmp", result);
+            //Cv2.WaitKey(10);
         }
     }//class
 

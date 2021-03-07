@@ -2837,16 +2837,22 @@ namespace ctmeasure
         private void cksurface_Click(object sender, EventArgs e)
         {
             ckshowsurface.Checked = cksurface.Checked;
-            drawsurface();
-            if (!cksurface.Checked) showroidata();
+
+            foreach (roishape croi in rois.srois.rois)
+            {
+                croi.surfacecheck = cksurface.Checked;
+            }
+            //drawsurface();
+            //if (!cksurface.Checked) showroidata();
         }
 
         private void showsurface() {
             if (rois.croi == null) return;
             if (rois.srois.count == 0) return;
             
-            foreach (roishape croi in rois.srois.rois)
+            foreach (roishape croi in rois.rois)
             {
+                if (!croi.surfacecheck) continue;
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
             }
             pictureBox1.Invalidate();
@@ -2857,8 +2863,9 @@ namespace ctmeasure
             //if (rois.croi == null) return;
             //if (rois.srois.count == 0) return;
             
-            foreach (roishape croi in rois.srois.rois)
+            foreach (roishape croi in rois.rois)
             {
+                if (!croi.surfacecheck) continue;
                 //赋值
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
@@ -3080,16 +3087,19 @@ namespace ctmeasure
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbgraythresh.Text = bargraythresh.Value.ToString();
 
-            foreach (roishape croi in rois.srois.rois)
+            foreach (roishape croi in rois.rois)
             {
+                if (!croi.surfacecheck) continue;
                 //赋值
-                croi.surfacecheck = cksurface.Checked;
-                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                //croi.surfacecheck = cksurface.Checked;
+                //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
-
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.minDefectWidth = barwidth.Value;
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
             MvApi.CameraSoftTrigger(m_hCamera);
@@ -3105,21 +3115,22 @@ namespace ctmeasure
 
             foreach (roishape croi in rois.srois.rois)
             {
+                if (!croi.surfacecheck) continue;
                 //赋值
-                croi.surfacecheck = cksurface.Checked;
-                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                //croi.surfacecheck = cksurface.Checked;
+                //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.minDefectArea = bararea.Value;
-                croi.minDefectWidth = barwidth.Value;
-                croi.minDefectHeight = barheight.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
             MvApi.CameraSoftTrigger(m_hCamera);
-            pictureBox1.Invalidate();
+            pictureBox1.Refresh();
         }
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
@@ -3131,16 +3142,17 @@ namespace ctmeasure
 
             foreach (roishape croi in rois.srois.rois)
             {
+                if (!croi.surfacecheck) continue;
                 //赋值
-                croi.surfacecheck = cksurface.Checked;
-                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                //croi.surfacecheck = cksurface.Checked;
+                //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.minDefectArea = bararea.Value;
-                croi.minDefectWidth = barwidth.Value;
-                croi.minDefectHeight = barheight.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
@@ -3156,16 +3168,17 @@ namespace ctmeasure
 
             foreach (roishape croi in rois.srois.rois)
             {
+                if (!croi.surfacecheck) continue;
                 //赋值
-                croi.surfacecheck = cksurface.Checked;
-                croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                //croi.surfacecheck = cksurface.Checked;
+                //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.minDefectArea = bararea.Value;
-                croi.minDefectWidth = barwidth.Value;
-                croi.minDefectHeight = barheight.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                croi.minDefectArea = bararea.Value;
+                croi.minDefectHeight = barheight.Value;
+                croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }

@@ -2601,7 +2601,7 @@
         private System.Windows.Forms.Button btnend;
         private System.Windows.Forms.Button btnstart;
         //public HalconDotNet.HWindowControl hwin;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        public System.Windows.Forms.PictureBox pictureBox1;
         private MPbPanel phwin;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tblogmenu;
