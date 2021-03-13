@@ -401,7 +401,7 @@ namespace leanvision
             //        new Scalar(255, 0, 0),
             //        20);
 
-            //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
+            //Cv2.ImShow("whitemask1", whiteMask);
             roiCopy.CopyTo(himg[roi]);
             
 
@@ -913,8 +913,6 @@ namespace leanvision
        
         public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
             //没有mask 直接计算整个bbox的匹配度
-           
-            
             //if (surfacecheck == false) return true;
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width<=0 || roi.Height<=0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
@@ -923,7 +921,7 @@ namespace leanvision
                 return false;
             }
             srcCopy = himgbak[roi];
-            //whiteMask = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC3);
+             
             //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
             Mat subgray = new Mat(new OpenCvSharp.Size( srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
             Mat subgray1 = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
@@ -953,6 +951,8 @@ namespace leanvision
                 }
             }
             //Cv2.CvtColor(mask, grayMask, ColorConversionCodes.BGR2GRAY);
+            //Cv2.ImShow("whitemask", whiteMask);
+            //Cv2.ImShow("subgray", mask);
             Cv2.CvtColor(Program.fmain.template[roi], temlateRoi, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(himgbak[roi], himgbakRoi, ColorConversionCodes.BGR2GRAY);
              
@@ -960,12 +960,12 @@ namespace leanvision
             Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
             Cv2.Add(subgray, subgray1, subgray , mask);
             //drawHist(subgray);
-            double min, max;
-            Cv2.MinMaxLoc(subgray, out min, out max);
+            //double min, max;
+            //Cv2.MinMaxLoc(subgray, out min, out max);
             //Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
             Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
+
             
-            //Cv2.ImShow("subgray", mask);
             //Cv2.WaitKey(10);
             //获得轮廓
             OpenCvSharp.Point[][] contours;
@@ -1016,8 +1016,7 @@ namespace leanvision
             
             if (idx > 0) return false;
             return true;
-            //Cv2.ImWrite(".\\asrcCopy.bmp", srcCopy);
-            //Cv2.ImWrite(".\\himg.bmp", himg); 
+            
         }
 
         public void drawHist(Mat src) {

@@ -2226,6 +2226,10 @@ namespace ctmeasure
             foreach (ToolStripItem tb in mtools.Items) {
                 if(tb.Name!="toolStripButton8") tb.Enabled = false;
             }
+            //foreach (Control ctr in tabControl1.Controls)
+            //{
+            //    ctr.Enabled = false; 
+            //}
             //tbrunonce.Enabled = true;
             tbrun.Enabled = true;
             tbrunstrop.Enabled = true;
@@ -2774,12 +2778,7 @@ namespace ctmeasure
 
         private void thminsurface_ValueChanged(object sender, EventArgs e)
         {
-            if (!thminsurface.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tthminsurface.Text = thminsurface.Value.ToString();
-            drawWhiteRegion();
-            //drawsurface();
+            
         }
 
         public void drawWhiteRegion() {
@@ -2793,8 +2792,11 @@ namespace ctmeasure
                 croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                template.CopyTo(himgbak);
+                template.CopyTo(dcamera.himg); 
                 croi.getWhiteMask(dcamera.himg, himgbak);
             }
+            
             pictureBox1.Invalidate(); 
         }
 
@@ -2820,7 +2822,8 @@ namespace ctmeasure
                 croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
-
+                template.CopyTo(himgbak);
+                template.CopyTo(dcamera.himg);
                 croi.getBlackMask(dcamera.himg, himgbak);
             }
             pictureBox1.Invalidate();
@@ -3131,6 +3134,16 @@ namespace ctmeasure
             }
             MvApi.CameraSoftTrigger(m_hCamera);
             pictureBox1.Refresh();
+        }
+
+        private void thminsurface_ValueChanged(object sender, MouseEventArgs e)
+        {
+            //if (!thminsurface.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            tthminsurface.Text = thminsurface.Value.ToString();
+            drawWhiteRegion();
+            //drawsurface();
         }
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)

@@ -719,7 +719,7 @@
             this.bargraythresh.LargeChange = 2;
             this.bargraythresh.Location = new System.Drawing.Point(112, 34);
             this.bargraythresh.Margin = new System.Windows.Forms.Padding(0);
-            this.bargraythresh.Maximum = 256;
+            this.bargraythresh.Maximum = 254;
             this.bargraythresh.Name = "bargraythresh";
             this.bargraythresh.Size = new System.Drawing.Size(332, 58);
             this.bargraythresh.TabIndex = 46;
@@ -848,13 +848,14 @@
             this.thminsurface.LargeChange = 2;
             this.thminsurface.Location = new System.Drawing.Point(117, 37);
             this.thminsurface.Margin = new System.Windows.Forms.Padding(0);
-            this.thminsurface.Maximum = 255;
+            this.thminsurface.Maximum = 254;
             this.thminsurface.Name = "thminsurface";
             this.thminsurface.Size = new System.Drawing.Size(332, 47);
             this.thminsurface.TabIndex = 12;
             this.thminsurface.TickStyle = System.Windows.Forms.TickStyle.None;
             this.thminsurface.Value = 127;
             this.thminsurface.ValueChanged += new System.EventHandler(this.thminsurface_ValueChanged);
+            this.thminsurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.thminsurface_ValueChanged);
             // 
             // label35
             // 
@@ -883,7 +884,7 @@
             this.thmaxsurface.LargeChange = 2;
             this.thmaxsurface.Location = new System.Drawing.Point(117, 87);
             this.thmaxsurface.Margin = new System.Windows.Forms.Padding(0);
-            this.thmaxsurface.Maximum = 255;
+            this.thmaxsurface.Maximum = 254;
             this.thmaxsurface.Name = "thmaxsurface";
             this.thmaxsurface.Size = new System.Drawing.Size(332, 52);
             this.thmaxsurface.TabIndex = 14;
@@ -1421,7 +1422,7 @@
             this.tabmeasure.Margin = new System.Windows.Forms.Padding(6);
             this.tabmeasure.Name = "tabmeasure";
             this.tabmeasure.Padding = new System.Windows.Forms.Padding(6);
-            this.tabmeasure.Size = new System.Drawing.Size(874, 2461);
+            this.tabmeasure.Size = new System.Drawing.Size(874, 2469);
             this.tabmeasure.TabIndex = 1;
             this.tabmeasure.Text = "检测内容";
             this.tabmeasure.UseVisualStyleBackColor = true;
@@ -1774,7 +1775,7 @@
             this.tabresult.Margin = new System.Windows.Forms.Padding(6);
             this.tabresult.Name = "tabresult";
             this.tabresult.Padding = new System.Windows.Forms.Padding(6);
-            this.tabresult.Size = new System.Drawing.Size(874, 2461);
+            this.tabresult.Size = new System.Drawing.Size(874, 2469);
             this.tabresult.TabIndex = 2;
             this.tabresult.Text = "检测结果";
             this.tabresult.UseVisualStyleBackColor = true;
@@ -2012,7 +2013,7 @@
             this.tabdata.Margin = new System.Windows.Forms.Padding(6);
             this.tabdata.Name = "tabdata";
             this.tabdata.Padding = new System.Windows.Forms.Padding(6);
-            this.tabdata.Size = new System.Drawing.Size(874, 2461);
+            this.tabdata.Size = new System.Drawing.Size(874, 2469);
             this.tabdata.TabIndex = 4;
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
@@ -2140,7 +2141,7 @@
             this.tbdatastatistic.Margin = new System.Windows.Forms.Padding(6);
             this.tbdatastatistic.Name = "tbdatastatistic";
             this.tbdatastatistic.Padding = new System.Windows.Forms.Padding(6);
-            this.tbdatastatistic.Size = new System.Drawing.Size(874, 2461);
+            this.tbdatastatistic.Size = new System.Drawing.Size(874, 2469);
             this.tbdatastatistic.TabIndex = 5;
             this.tbdatastatistic.Text = "数据统计";
             this.tbdatastatistic.UseVisualStyleBackColor = true;
