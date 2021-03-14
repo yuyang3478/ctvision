@@ -104,7 +104,7 @@ namespace ctmeasure
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnlogin);
             this.Name = "frmlogin";
-            this.Text = "frmlogin";
+            this.Text = "登陆";
             this.Shown += new System.EventHandler(this.frmlogin_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

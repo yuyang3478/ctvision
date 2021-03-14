@@ -353,6 +353,12 @@ namespace ctmeasure
             if (dcamera.ih == 0) dcamera.ih = pictureBox1.Height;
             iw = dcamera.iw; ih = dcamera.ih;
 
+            //未选择任何区域情况下，默认“表面检测区域”不可用
+            foreach (Control control in groupBox6.Controls)
+            {
+                control.Enabled = false;
+            }
+            
 
             //zscale = vcommon.viewscale;
             //imgx = Convert.ToInt32(vcommon.viewx);
@@ -603,7 +609,20 @@ namespace ctmeasure
             //检查是否选中roi
             //#pictureBox1.Invalidate();
             rois.mousedown(e.X, e.Y);
-
+            if (rois.srois.count > 0)
+            {
+                foreach (Control control in groupBox6.Controls)
+                {
+                    control.Enabled = true;
+                }
+            }
+            else
+            {
+                foreach (Control control in groupBox6.Controls)
+                {
+                    control.Enabled = false;
+                }
+            }
             if (tbrun.Checked) return;
             if (!mouseleftpress) return;
             
@@ -615,6 +634,7 @@ namespace ctmeasure
             if (tb_magic.Checked) { showmagicwindow(e.X, e.Y); return; }
             onselect = true;
             rois.action = "onselect";
+            
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -689,6 +709,20 @@ namespace ctmeasure
                 tb_magic.Checked = false;
                 tb_move.Checked = false;
                 Cursor = Cursors.Default;
+                if (rois.srois.count == 0)
+                {
+                    foreach (Control control in groupBox6.Controls)
+                    {
+                        control.Enabled = false;
+                    }
+                }
+                else
+                {
+                    foreach (Control control in groupBox6.Controls)
+                    {
+                        control.Enabled = true;
+                    }
+                }
                 return;
             }
 
@@ -713,8 +747,20 @@ namespace ctmeasure
             }
             if (onselect) onselect = false;
             rois.mouseup( himgbak, e.X, e.Y,iw,ih);
-             
-            
+
+            if (rois.srois.count == 0)
+            {
+                foreach (Control control in groupBox6.Controls)
+                {
+                    control.Enabled = false;
+                }
+            }
+            else {
+                foreach (Control control in groupBox6.Controls)
+                {
+                    control.Enabled = true;
+                }
+            }
             pictureBox1.Refresh();
             showroidata();
         }
@@ -1809,7 +1855,7 @@ namespace ctmeasure
             foreach (roishape rs in rois.rois) {
                 cbbase.Items.Add(rs.num.ToString("d3"));
                 cbmroi1.Items.Add(rs.num.ToString("d3"));
-                cbmroi2.Items.Add(rs.num.ToString("d3"));
+                cbmroi2.Items.Add(rs.num.ToString("d3")); 
             }
             if (rois.broi > -1) cbbase.SelectedIndex = cbbase.Items.IndexOf(rois.broi.ToString("d3"));
             rois.srois.clear();
@@ -1946,7 +1992,7 @@ namespace ctmeasure
             vcommon.showstatistic();
             truntime.Text = "";
             rtresult.Text = "";
-
+            
             //pictureBox1.Invalidate();
         }
 
@@ -2315,6 +2361,16 @@ namespace ctmeasure
             //    rois.srois.add(rs);
             //}
             showroidata();
+            foreach (roishape rs in rois.rois)
+            {
+                if (rs.surfacecheck)
+                {
+                    if (rs.thminsurface > 0)
+                        rs.getWhiteMask(dcamera.himg, himgbak);
+                    if (rs.thmaxsurface > 0)
+                        rs.getBlackMask(dcamera.himg, himgbak);
+                }
+            }
             //pictureBox1.Invalidate();
         }
 
@@ -2783,6 +2839,7 @@ namespace ctmeasure
 
         public void drawWhiteRegion() {
 
+            
             foreach (roishape croi in rois.srois.rois)
             {
                 //赋值
@@ -2792,27 +2849,18 @@ namespace ctmeasure
                 croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
-                template.CopyTo(himgbak);
-                template.CopyTo(dcamera.himg); 
+                
                 croi.getWhiteMask(dcamera.himg, himgbak);
             }
             
             pictureBox1.Invalidate(); 
         }
-
-        private void thmaxsurface_ValueChanged(object sender, EventArgs e)
-        {
-            if (!thmaxsurface.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            if (thmaxsurface.Value < thminsurface.Value) thminsurface.Value = thmaxsurface.Value;
-            tthmaxsurface.Text = thmaxsurface.Value.ToString();
-            drawBlackRegion();
-            //drawsurface();
-        }
+         
 
         public void drawBlackRegion()
         {
-
+            template.CopyTo(himgbak);
+            template.CopyTo(dcamera.himg);
             foreach (roishape croi in rois.srois.rois)
             {
                 //赋值
@@ -2822,8 +2870,7 @@ namespace ctmeasure
                 croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 croi.stdsurface = bararea.Value * 1.0 / 100.0;
-                template.CopyTo(himgbak);
-                template.CopyTo(dcamera.himg);
+                
                 croi.getBlackMask(dcamera.himg, himgbak);
             }
             pictureBox1.Invalidate();
@@ -2832,10 +2879,7 @@ namespace ctmeasure
 
         private void stdsurface_ValueChanged(object sender, EventArgs e)
         {
-            if (!bararea.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            tbarea.Text = (bararea.Value*1.0/100.0).ToString();
-            drawsurface();
+
         }
         private void cksurface_Click(object sender, EventArgs e)
         {
@@ -3089,7 +3133,10 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbgraythresh.Text = bargraythresh.Value.ToString();
-
+            if (thminsurface.Value == 0 && thmaxsurface.Value == 0) {
+                MessageBox.Show("请先选择亮/暗区域");
+                return;
+            }
             foreach (roishape croi in rois.rois)
             {
                 if (!croi.surfacecheck) continue;
@@ -3115,7 +3162,11 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbarea.Text = bararea.Value.ToString();
-
+            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
+            {
+                MessageBox.Show("请先选择亮/暗区域");
+                return;
+            }
             foreach (roishape croi in rois.srois.rois)
             {
                 if (!croi.surfacecheck) continue;
@@ -3146,13 +3197,36 @@ namespace ctmeasure
             //drawsurface();
         }
 
+        private void thmaxsurface_MouseUp(object sender, MouseEventArgs e)
+        {
+            
+            if (!thmaxsurface.Focused) return;
+            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thminsurface.Value = thmaxsurface.Value;
+            tthmaxsurface.Text = thmaxsurface.Value.ToString();
+            drawBlackRegion();
+            //drawsurface();
+        }
+
+        private void barshrink_ValueChanged(object sender, EventArgs e)
+        {
+            tbshrink.Text = barshrink.Value.ToString();
+            foreach (roishape cr in rois.srois.rois) {
+                cr.shrinkPixel = (double)barshrink.Value;
+            }
+        }
+
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
         {
             if (!barwidth.Focused) return;
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbwidth.Text = barwidth.Value.ToString();
-
+            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
+            {
+                MessageBox.Show("请先选择亮/暗区域");
+                return;
+            }
             foreach (roishape croi in rois.srois.rois)
             {
                 if (!croi.surfacecheck) continue;
@@ -3178,7 +3252,11 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbheight.Text = barheight.Value.ToString();
-
+            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
+            {
+                MessageBox.Show("请先选择亮/暗区域");
+                return;
+            }
             foreach (roishape croi in rois.srois.rois)
             {
                 if (!croi.surfacecheck) continue;
