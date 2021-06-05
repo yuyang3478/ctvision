@@ -410,11 +410,8 @@ namespace leanvision
             //        new Scalar(255, 0, 0),
             //        20);
             //Cv2.ImWrite(".\\aaa_ImageROI.bmp", ImageROI);
-            Cv2.ImWrite(".\\aaa_whitemask.bmp", whiteMask);
+            //Cv2.ImWrite(".\\aaa_whitemask.bmp", whiteMask);
             roiCopy.CopyTo(himg[roi]);
-            
-
-
         }
         public void getBlackMask(Mat himg, Mat himgback)
         {
@@ -577,9 +574,13 @@ namespace leanvision
             roiCopy.CopyTo(himg[roi]); 
              
         }
+
+        //进行空位测距
+        //阈值分割定位空位中心点
+        //根据中心点进行尺寸相关测量
+        //为保证测量精度，原始图像不进行缩放。定位中心点更准确，发挥出高分辨率图像优势。
         public void getregion(Mat himg, Mat himgback)
         {
-
             //double wRatio = himg.Width * 1.0 / iw;// hw.Width;
             //double hRatio = himg.Height * 1.0 / ih;// hw.Height;
             //double hshift = (ih * wRatio * 1.0 - himg.Height) / 2.0;
@@ -938,7 +939,7 @@ namespace leanvision
                 return false;
             }
             srcCopy = himgbak[roi];
-             
+            
             //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
             Mat subgray = new Mat(new OpenCvSharp.Size( srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
             Mat subgray1 = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);

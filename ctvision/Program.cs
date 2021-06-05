@@ -16,19 +16,11 @@ namespace ctmeasure
         public static frmmain fmain;
         public static softkeyyt skey;
         public static string keypath;
+        public static verifyInstall vi;
 
         [STAThread]
         static void Main()
        {
-            //using var src = new Mat("lenna.jpg", ImreadModes.Grayscale);
-            //using var dst = new Mat();
-
-            //Cv2.Canny(src, dst, 50, 200);
-            //using (new Window("src image", src))
-            //using (new Window("dst image", dst))
-            //{
-            //    Cv2.WaitKey();
-            //}
 
             Process[] proc = Process.GetProcessesByName(Application.ProductName);
             if (proc.Length > 1)
@@ -41,6 +33,13 @@ namespace ctmeasure
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+
+                if (! Apphelper.IsRegistryKeyExist()) {
+                    vi = new verifyInstall();
+                    vi.StartPosition = FormStartPosition.CenterParent;
+                    vi.ShowDialog();
+                }
+                 
                 fmain = new frmmain();
                 skey = new softkeyyt();
                 if (!getkey()) { Application.Exit(); return; };

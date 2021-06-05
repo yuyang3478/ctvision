@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using AxMSCommLib;
-using MSCommLib;
 using System.Threading;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -40,10 +38,9 @@ namespace leanvision
         public clsio() {
             //mscom= Program.fmain.mscom;
             //mscom.OnComm += new EventHandler(this.mscom_OnComm);
-            //comopen();
+            comopen();
             loaddata();
             serialPort.DataReceived += this.mscom_OnComm;
-
 
         }
          
