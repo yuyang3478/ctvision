@@ -1628,9 +1628,11 @@ namespace ctmeasure
             //表面检测
             foreach (roishape rs in rois.rois) {
                 if (true) {
-                 //if (rs.surfacecheck)
-                
-                        bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
+                    //if (rs.surfacecheck)
+                    double stime1 = Environment.TickCount;
+                    bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
+                    double etime1 = Environment.TickCount;
+                    Console.WriteLine("表面检测耗时： ",etime1 - stime);
                     //#if (areack == false) {
                     //#    testresult = "NG";
                     //#    mcon = rs.num.ToString("d3");
