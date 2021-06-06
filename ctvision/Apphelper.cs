@@ -21,9 +21,9 @@ namespace ctmeasure
             string ds = GetHardDiskSN();
             string n_p = ds + name.Trim() + password.Trim();
             string hash = GetSha1Hash(n_p);
-            string rhash = "8191DFA2A060AA510742DBF0F3E09BD303EBCEB0";
+            //string rhash = "8191DFA2A060AA510742DBF0F3E09BD303EBCEB0";
              
-            if (!string.Equals(hash,rhash)) {
+            if ((!name.Equals("AMX"))||(!password.Equals("songuiop"))) {
                 MessageBox.Show("用户名或密码错误！\n 不能在未授权主机中运行。\n");
                 //StreamWriter sw = new StreamWriter("c:\\info.txt");
                 //sw.WriteLine(hash);
@@ -33,7 +33,7 @@ namespace ctmeasure
 
                 return false;
                 
-            }else if (!IsRegistryKeyExist())
+            }else// if (!IsRegistryKeyExist())
             {//保存数据到注册表
                 CreateRegistFile();
                 WriteValue(hash);

@@ -34,7 +34,10 @@ namespace ctmeasure
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                if (! Apphelper.IsRegistryKeyExist()) {
+                string ds = Apphelper.GetHardDiskSN();
+                string n_p = ds + "AMXsonguiop";
+                string hash = Apphelper.GetSha1Hash(n_p);
+                if ((!Apphelper.IsRegistryKeyExist())||(! Apphelper.getValue().Equals(hash))) {
                     vi = new verifyInstall();
                     vi.StartPosition = FormStartPosition.CenterParent;
                     vi.ShowDialog();

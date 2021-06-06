@@ -938,6 +938,7 @@ namespace leanvision
                 MessageBox.Show("ROI 超出边界");
                 return false;
             }
+            double stime1 = Environment.TickCount;
             srcCopy = himgbak[roi];
             
             //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
@@ -975,6 +976,8 @@ namespace leanvision
             //Cv2.CvtColor(mask, grayMask, ColorConversionCodes.BGR2GRAY);
             //Cv2.ImShow("whitemask", whiteMask);
             //Cv2.ImShow("subgray", mask);
+           
+             
             Cv2.CvtColor(Program.fmain.template[roi], temlateRoi, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(himgbak[roi], himgbakRoi, ColorConversionCodes.BGR2GRAY);
              
@@ -982,7 +985,9 @@ namespace leanvision
             Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
 
             Cv2.Add(subgray, subgray1, subgray , mask);
-            
+            double etime1 = Environment.TickCount;
+            Console.WriteLine("Subtract耗时： {0}", etime1 - stime1);
+
             //drawHist(subgray);
             //double min, max;
             //Cv2.MinMaxLoc(subgray, out min, out max);
@@ -1021,10 +1026,9 @@ namespace leanvision
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
-                
-                
             }
-
+            double etime2 = Environment.TickCount;
+            Console.WriteLine("Find draw Contours 耗时： {0}", etime2 - etime1);
             srcCopy.CopyTo(himg[roi]);
             if (Program.fmain.pictureBox1.InvokeRequired)
             {

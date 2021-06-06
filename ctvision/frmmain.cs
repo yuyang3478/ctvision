@@ -183,7 +183,7 @@ namespace ctmeasure
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             //设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
-            aTimer.Interval = 1000;
+            aTimer.Interval = 3000;
 
             //设置是执行一次（false）还是一直执行(true)，默认为true
             aTimer.AutoReset = true;
@@ -1632,7 +1632,7 @@ namespace ctmeasure
                     double stime1 = Environment.TickCount;
                     bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
                     double etime1 = Environment.TickCount;
-                    Console.WriteLine("表面检测耗时： ",etime1 - stime);
+                    Console.WriteLine("表面检测耗时： {0}", etime1 - stime1);
                     //#if (areack == false) {
                     //#    testresult = "NG";
                     //#    mcon = rs.num.ToString("d3");
