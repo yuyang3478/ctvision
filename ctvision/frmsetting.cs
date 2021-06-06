@@ -88,6 +88,7 @@ namespace ctmeasure
             vcommon.picpath = tbpic.Text.ToString().Trim();
             vcommon.filepath = tbfile.Text.ToString().Trim();
 
+            vcommon.savedata();
             this.Close();
         }
 

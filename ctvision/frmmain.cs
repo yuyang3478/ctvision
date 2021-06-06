@@ -186,10 +186,10 @@ namespace ctmeasure
             aTimer.Interval = 1000;
 
             //设置是执行一次（false）还是一直执行(true)，默认为true
-            aTimer.AutoReset = true;
+            aTimer.AutoReset = false;
 
             //开始计时
-            aTimer.Enabled = true;
+            aTimer.Enabled = false;
 
             Console.WriteLine("按任意键退出程序。");
             Console.ReadLine();
@@ -278,7 +278,7 @@ namespace ctmeasure
 
                     if (!tbcameraplay.Checked)
                     {
-                        if (tbrun.Checked)
+                        if (tbrun.Checked|| isRunOrRunOnceChecked)
                         {
                             //double stime1 = Environment.TickCount;
                             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
@@ -311,21 +311,27 @@ namespace ctmeasure
             catch { }
             //Console.Write("文本");
             //更新roi
+
+
             if (tplay.Enabled == false)
             {
                 try
-                { 
-                    if (rois != null) rois.paintroi(pictureBox1, e); 
+                {
+                    if (rois != null)
+                        rois.paintroi(pictureBox1, e);
                 }
                 catch { }
             }
+
+
             //if (tbrun.Checked)
             //{
             //    rois.showtext(e);
             //}
-            if (rois != null) { 
-                rois.showtext(e);
-            }
+            //if (rois != null) { 
+            //    rois.showtext(e);
+            //}
+
 
             //更新视图
             //#HSystem.SetSystem("flush_graphic", "true");
@@ -1522,7 +1528,7 @@ namespace ctmeasure
             //vcommon.viewx = imgx = 0;
             //vcommon.viewy = imgy = 0;
             //pictureBox1.Refresh();
-            double stime = Environment.TickCount;
+            double estime = Environment.TickCount;
             //if (lbpass.Visible == false) Console.WriteLine("");
             //初始化
             if (this.lbpass.InvokeRequired){lbpass.Invoke(new MethodInvoker(delegate (){ lbpass.Visible = false;}));}
@@ -1632,14 +1638,27 @@ namespace ctmeasure
                     double stime1 = Environment.TickCount;
                     bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
                     double etime1 = Environment.TickCount;
-                    Console.WriteLine("表面检测耗时： ",etime1 - stime);
-                    //#if (areack == false) {
-                    //#    testresult = "NG";
-                    //#    mcon = rs.num.ToString("d3");
-                    //#    rtresult.SelectionColor = Color.Red;
-                    //#    rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.stdsurface+"%","   ", rs.msurface.ToString("f2")+"%", "NG"));
-                    //#    i++;
-                    //#}
+                    Console.WriteLine("表面检测耗时： {0}",etime1 - stime1);
+                    if (areack == false) {
+                        testresult = "NG";
+                        mcon = rs.num.ToString("d3");
+                        if (this.rtresult.InvokeRequired)
+                        {
+                            rtresult.Invoke(new MethodInvoker(delegate ()
+                            {
+                                rtresult.SelectionColor = Color.Red;
+                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.stdsurface+"%","   ", rs.msurface.ToString("f2")+"%", "NG"));
+
+                            }));
+                        }
+                        else
+                        {
+                            rtresult.SelectionColor = Color.Red;
+                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.stdsurface+"%","   ", rs.msurface.ToString("f2")+"%", "NG"));
+
+                        }
+                        i++;
+                    }
                 }
             }
 
@@ -1661,10 +1680,7 @@ namespace ctmeasure
             }
             vcommon.qty++;
             vcommon.showstatistic();
-            //时间
-            double etime = Environment.TickCount;
-            if (this.truntime.InvokeRequired) { truntime.Invoke(new MethodInvoker(delegate () { truntime.Text = (etime - stime).ToString(); })); }
-            else { truntime.Text = (etime - stime).ToString(); }
+            
             
 
             //显示测量数据统计结果
@@ -1757,7 +1773,12 @@ namespace ctmeasure
             else
             { 
                 pictureBox1.Refresh(); 
-            } 
+            }
+
+            //时间
+            double eetime = Environment.TickCount;
+            if (this.truntime.InvokeRequired) { truntime.Invoke(new MethodInvoker(delegate () { truntime.Text = (eetime - estime).ToString(); })); }
+            else { truntime.Text = (eetime - estime).ToString(); }
             //rois.text1 = testresult;
         }
         //===========检测内容
@@ -1903,7 +1924,7 @@ namespace ctmeasure
             //加载数据
             if (!Program.getversion()) return;
             tpart.Text = "";
-            if (fn == "") return;
+            //if (fn == "") return;
             if (!File.Exists(fn)) fn=Application.StartupPath+"\\default.lvd";
              
             ArrayList data;
@@ -2202,12 +2223,14 @@ namespace ctmeasure
             if (dcamera.himg == null||dcamera.himg.Width==0||dcamera.himg.Height==0||template==null||template.Width==0||template.Height==0) {
                 MessageBox.Show("模板图片为空，请先加载图片或点击\"相机预览\"->\"停止预览\"。");
                 return;
-            }else if (himgbak == null||himgbak.Width==0)
-            {
-                himgbak = dcamera.getBackImg();
             }
-            zoomall();
-            runonce(pictureBox1);
+            if ((zscale !=
+                (((float)phwin.Width / (float)dcamera.himg.Width))) || imgx != 0 || imgy != 0)
+            {
+                zoomall();
+            }
+            MvApi.CameraSoftTrigger(m_hCamera);
+            //runonce(pictureBox1);
             isRunOrRunOnceChecked = false;
 
             ////显示测试区域
@@ -2351,9 +2374,10 @@ namespace ctmeasure
         {
             loadmeasurename();
             ondrawingstr = "phi";
-            if (vcommon.productname!="") {
-                openfile(vcommon.productname);
-            }
+            //if (vcommon.productname!="") {
+                
+            //}
+            openfile(vcommon.productname);
             vcommon.viewscale = zscale;
             vcommon.viewx = imgx;
             vcommon.viewy = imgy;
