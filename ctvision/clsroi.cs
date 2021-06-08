@@ -929,6 +929,7 @@ namespace leanvision
         };
        
         public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
+            
             //没有mask 直接计算整个bbox的匹配度
             if (surfacecheck == false) return true;
             if (thminsurface ==0 && thmaxsurface == 0) return true;
@@ -994,6 +995,7 @@ namespace leanvision
             //Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
             Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
             //Cv2.ImWrite(".\\aaa_subgray.bmp", subgray);
+            
 
             //Cv2.WaitKey(10);
             //获得轮廓
@@ -1017,32 +1019,39 @@ namespace leanvision
                 if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
                 idx += 1;
                 //Scalar color = new Scalar(new Random().Next(0,255), new Random().Next(0, 255), new Random().Next(0, 255));
-                Cv2.DrawContours(
+             
+            }
+
+            //double start = Environment.TickCount;
+            Cv2.DrawContours(
                             srcCopy,
                             contours,
-                            i,
-                            color:  new Scalar(0, 0, 255),
+                            -1,
+                            color: new Scalar(0, 0, 255),
                             thickness: 2,
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
+                
+                
             }
-            double etime2 = Environment.TickCount;
-            Console.WriteLine("Find draw Contours 耗时： {0}", etime2 - etime1);
+
             srcCopy.CopyTo(himg[roi]);
-            if (Program.fmain.pictureBox1.InvokeRequired)
-            {
-                Program.fmain.pictureBox1.Invoke(new MethodInvoker(
-                   delegate ()
-                   {
-                       Program.fmain.pictureBox1.Refresh();
-                   }));
-            }
-            else
-            {
-                Program.fmain.pictureBox1.Refresh();
-            }
-            
+            //double end = Environment.TickCount;
+            //Console.WriteLine("--->:{0},{1}", contours.Length, end - start);
+            //if (Program.fmain.pictureBox1.InvokeRequired)
+            //{
+            //    Program.fmain.pictureBox1.Invoke(new MethodInvoker(
+            //       delegate ()
+            //       {
+            //           Program.fmain.pictureBox1.Refresh();
+            //       }));
+            //}
+            //else
+            //{
+            //    Program.fmain.pictureBox1.Refresh();
+            //}
+
             if (idx > 0) return false;
             return true;
             
@@ -1516,7 +1525,7 @@ namespace leanvision
                 cr.show(e);
             }
             srois.paintroi(e);
-            //showtext(e);
+            showtext(e);
         }
 
         //public void paintroi() {
