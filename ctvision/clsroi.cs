@@ -610,6 +610,7 @@ namespace leanvision
             {
                 srcCopy = new Mat();
             }
+            
             ImageROI.CopyTo(srcCopy);
             Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
             if ((thmin + thmax) / 2.0 < 127)
@@ -617,9 +618,11 @@ namespace leanvision
                 Cv2.BitwiseNot(ImageROI, ImageROI);
             }
             //处理ImageROI
-            if (closingcircle == 0) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(9, 9)); }
-            if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
-            if (closingcircle == 2) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
+            if (closingcircle == 0) { 
+                Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(9, 9));
+            }
+            else if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
+            else { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
 
             Cv2.Threshold(ImageROI, ImageROI, thmin, thmax, ThresholdTypes.Binary);//thmin, thmax
             //Cv2.ImShow("BitwiseNot", ImageROI);
@@ -642,7 +645,7 @@ namespace leanvision
                 Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Open, kernel);
                 Cv2.MorphologyEx(ImageROI, ImageROI, MorphTypes.Close, kernel);
             }
-
+            
 
             //获得轮廓
             OpenCvSharp.Point[][] contours;
@@ -660,6 +663,7 @@ namespace leanvision
             {
                 thickns = 3;
             }
+            
             for (int i = 0; i < contours.Length; i++)
             {
                 //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
@@ -668,15 +672,15 @@ namespace leanvision
                 var contour = contours[i];
                 if (!areamaxcheck && combinecheck)
                 {
-                    Cv2.DrawContours(
-                                srcCopy,
-                                contours,
-                                i,
-                                color: new Scalar(0, 0, 255),
-                                thickness: thickns,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
+                    //Cv2.DrawContours(
+                    //            srcCopy,
+                    //            contours,
+                    //            i,
+                    //            color: new Scalar(0, 0, 255),
+                    //            thickness: thickns,//CV_FILLED
+                    //            lineType: LineTypes.Link8,
+                    //            hierarchy: hierarchly,
+                    //            maxLevel: int.MaxValue);
                     Rect br = Cv2.BoundingRect(contours[i]);
                     if ((br.X + br.Width) > brx1)
                     {
@@ -704,7 +708,7 @@ namespace leanvision
                     maxConIdx = i;
                 }
             }
-
+            
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (areamaxcheck && !combinecheck)
             {
@@ -728,7 +732,8 @@ namespace leanvision
             //        new Scalar(255, 0, 0),
             //        20);
 
-
+            
+            
             mmt = Cv2.Moments(contours[maxConIdx]);
             double cx = mmt.M10 / mmt.M00, cy = mmt.M01 / mmt.M00;
             if (!areamaxcheck && combinecheck)
@@ -774,7 +779,7 @@ namespace leanvision
 
             //Cv2.ImShow("DrawContours srcCopy.", srcCopy);
             //Cv2.WaitKey(10000000);
-
+             
             //计算特征
             if (contours.Length == 0)
             {
@@ -800,13 +805,17 @@ namespace leanvision
                 //循环进行绘制
                 Point2f center;  //定义圆中心坐标
                 float radius;  //定义圆半径
-                Cv2.MinEnclosingCircle(contours[maxConIdx], out center, out radius);
-                cr = roi.Y + center.Y;
-                cc = roi.X + center.X;
-                cradius = Convert.ToDouble(radius);
+                //Cv2.MinEnclosingCircle(contours[maxConIdx], out center, out radius);
+                //cr = roi.Y + center.Y;
+                //cc = roi.X + center.X;
+                //cradius = Convert.ToDouble(radius);
+                cr = gr;
+                cc = gc;
+                cradius = (cr + gr) / 2;
+                
             }
 
-
+             
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
             //srcCopy.CopyTo(himg[roi]);
@@ -1031,10 +1040,10 @@ namespace leanvision
                             thickness: 2,
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
-                            maxLevel: int.MaxValue);
+                            maxLevel: 0);
                 
                 
-            }
+             
 
             srcCopy.CopyTo(himg[roi]);
             //double end = Environment.TickCount;
@@ -1696,6 +1705,7 @@ namespace leanvision
             foreach (roishape rs in roilist)
             {
                 if (rs.num==broi) continue;
+               
                 rs.getregion(dcamera.himg, Program.fmain.himgbak);
             }
         }
