@@ -8,7 +8,7 @@ namespace leanvision
     {
         public Rectangle rectangle;
         public List<Rectangle> subRectList;
-        private int m_nOffset = 20;
+        private int m_nOffset = 40;
 
         public RectangleList()
         {

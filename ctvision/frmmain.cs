@@ -102,7 +102,7 @@ namespace ctmeasure
         public bool isLoginSuccess = false;
         public static string templateFile = "";
         public Mat template = new Mat();
-
+        
 
 
         [DllImport("gdi32.dll")]
@@ -183,7 +183,7 @@ namespace ctmeasure
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             //设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
-            aTimer.Interval = 3000;
+            aTimer.Interval = 500;
 
             //设置是执行一次（false）还是一直执行(true)，默认为true
             aTimer.AutoReset = false;
@@ -232,6 +232,7 @@ namespace ctmeasure
             //int len = trigger.Trim().Length;
             //string rstr = trigger.ToUpper();
             //if (rstr == "0A") return;
+            
             if (true)
             {
                 //if (fio != null) fio.triggeron();
@@ -240,6 +241,7 @@ namespace ctmeasure
                 run();
                 //if (fio != null) fio.triggeroff();
             }
+            
             Console.WriteLine("触发的事件发生在： {0}", e.SignalTime);
         }
 
@@ -287,6 +289,7 @@ namespace ctmeasure
                             Cv2.Resize(dcamera.himg, temp, new OpenCvSharp.Size(dcamera.himg.Width * zscale, dcamera.himg.Height * zscale));
                             e.Graphics.DrawImage(temp.ToBitmap(), imgx, imgy);//140ms
 
+                            rois.painttext(pictureBox1, e);
                             //double etime1 = Environment.TickCount;
                             //Console.WriteLine("e.Graphics.DrawImage cost time ：{0}", etime1 - stime1);
                         }
@@ -305,6 +308,16 @@ namespace ctmeasure
                             e.Graphics.ScaleTransform(Convert.ToSingle(zscale), Convert.ToSingle(zscale));
                             e.Graphics.DrawImage(dcamera.himg.ToBitmap(), imgx, imgy);//140ms
 
+                            if (tplay.Enabled == false)
+                            {
+                                try
+                                {
+                                    if (rois != null)
+                                        rois.paintroi(pictureBox1, e);
+                                }
+                                catch { }
+                            }
+
                         }
                         //    double stime = Environment.TickCount;
                         //    pictureBox1.Image = dcamera.himg.ToBitmap();
@@ -320,22 +333,15 @@ namespace ctmeasure
             //更新roi
 
 
-            if (tplay.Enabled == false)
-            {
-                try
-                {
-                    if (rois != null)
-                        rois.paintroi(pictureBox1, e);
-                }
-                catch { }
-            }
+
 
 
             //if (tbrun.Checked)
             //{
             //    rois.showtext(e);
             //}
-            //if (rois != null) { 
+            //if (rois != null)
+            //{
             //    rois.showtext(e);
             //}
 
@@ -1125,8 +1131,8 @@ namespace ctmeasure
             tthminsurface.Text = thminsurface.Value.ToString();
             tthmaxsurface.Text = thmaxsurface.Value.ToString();
             tbgraythresh.Text = bargraythresh.Value.ToString();
-            bararea.Value = Convert.ToInt32(rois.croi.stdsurface*10);
-            tbarea.Text = (bararea.Value*1.0/10.0).ToString();
+            //bararea.Value = Convert.ToInt32(rois.croi.stdsurface*10);
+            //tbarea.Text = (bararea.Value*1.0/10.0).ToString();
 
             if (cbthway.SelectedIndex == 0) {
                 thmin.Enabled = true;
@@ -1417,8 +1423,22 @@ namespace ctmeasure
             dgview.Rows.Clear();
             string mcon = "";
             int i=0;
+            
+            //foreach(clsmeasure cs in mrois.ilist)
+            //{
+            //    if (cs.roi1 == null || cs.roi2 == null)
+            //    {
+            //        mrois.removeat(idx);
+            //        idx += 1; 
+            //    }
+            //}
+            //int count = mrois.ilist.Count;
+            //for (int idx = 0; idx < count; idx++) {
+            //    clsmeasure cs = mrois[idx];
+            //}
+
             foreach (clsmeasure cs in mrois.ilist)
-            {
+            { 
                 dgview.Rows.Add();
                 i = dgview.Rows.Count - 1;
                 if (cs.roi1 == null) mcon = "";
@@ -1659,14 +1679,14 @@ namespace ctmeasure
                             rtresult.Invoke(new MethodInvoker(delegate ()
                             {
                                 rtresult.SelectionColor = Color.Red;
-                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.stdsurface+"%","   ", rs.msurface.ToString("f2")+"%", "NG"));
+                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.minDefectArea+"pixel","   ", rs.msurface.ToString("f2")+"%", "NG"));
 
                             }));
                         }
                         else
                         {
                             rtresult.SelectionColor = Color.Red;
-                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.stdsurface+"%","   ", rs.msurface.ToString("f2")+"%", "NG"));
+                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.minDefectArea+ "pixel", "   ", rs.msurface.ToString("f2")+"%", "NG"));
 
                         }
                         i++;
@@ -2106,11 +2126,17 @@ namespace ctmeasure
                 {
                     isCaptoScreen = true;
                     MvApi.CameraSoftTrigger(m_hCamera);
+                    Thread.Sleep(150);
+                    initview();
+                    btnnewproduct_Click(null, null);
                 }
                 else
                 {
                     pictureBox1.Invalidate();
                 }
+                //Thread.Sleep(50);
+                //btnsaveproduct_Click(null, null);
+                //btnloadproduct_Click(null, null);
             }
 
             return;
@@ -2227,7 +2253,7 @@ namespace ctmeasure
         }
         private void tbrunonce_Click(object sender, EventArgs e)
         { 
-            isRunOrRunOnceChecked = true;
+            
              
             if (tbcameraplay.Checked) {
                 tplay.Enabled = false;
@@ -2245,7 +2271,7 @@ namespace ctmeasure
             }
             MvApi.CameraSoftTrigger(m_hCamera);
             //runonce(pictureBox1);
-            isRunOrRunOnceChecked = false;
+            
 
             ////显示测试区域
             //if (ckregion.Checked)
@@ -2294,7 +2320,7 @@ namespace ctmeasure
 
         private void tbrun_Click(object sender, EventArgs e)
         {
-            //isRunOrRunOnceChecked = !isRunOrRunOnceChecked;
+             
            
             //关闭播放，移动，放大镜功能
             btnpixelunit.Enabled = false;
@@ -2324,7 +2350,7 @@ namespace ctmeasure
             toolStripButton7_Click(null, null);
             tabControl1.SelectedIndex = 3;
 
-            //isRunOrRunOnceChecked = false;
+             
         }
 
         private void toolStripButton9_Click(object sender, EventArgs e)
@@ -2888,7 +2914,7 @@ namespace ctmeasure
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 
                 croi.getWhiteMask(dcamera.himg, himgbak);
             }
@@ -2899,8 +2925,8 @@ namespace ctmeasure
 
         public void drawBlackRegion()
         {
-            template.CopyTo(himgbak);
-            template.CopyTo(dcamera.himg);
+            //template.CopyTo(himgbak);
+            //template.CopyTo(dcamera.himg);
             foreach (roishape croi in rois.srois.rois)
             {
                 //赋值
@@ -2909,7 +2935,7 @@ namespace ctmeasure
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 
                 croi.getBlackMask(dcamera.himg, himgbak);
             }
@@ -2962,7 +2988,7 @@ namespace ctmeasure
                 croi.minDefectArea = bararea.Value;
                 croi.minDefectWidth = barwidth.Value;
                 croi.minDefectHeight = barheight.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
             }
             pictureBox1.Invalidate();
@@ -3186,14 +3212,14 @@ namespace ctmeasure
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
             MvApi.CameraSoftTrigger(m_hCamera);
-            pictureBox1.Invalidate();
+            //pictureBox1.Invalidate();
         }
 
         private void bararea_ValueChanged(object sender, MouseEventArgs e)
@@ -3216,15 +3242,15 @@ namespace ctmeasure
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
-            MvApi.CameraSoftTrigger(m_hCamera);
-            pictureBox1.Refresh();
+            //MvApi.CameraSoftTrigger(m_hCamera);
+            //pictureBox1.Refresh();
         }
 
         private void thminsurface_ValueChanged(object sender, MouseEventArgs e)
@@ -3276,7 +3302,7 @@ namespace ctmeasure
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
@@ -3306,7 +3332,7 @@ namespace ctmeasure
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
-                croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
@@ -3354,7 +3380,7 @@ namespace ctmeasure
         {
             //county += 1;
             //Console.WriteLine("in callback:{0}",county);
-            
+            isRunOrRunOnceChecked = true;
             if (tbcameraplay.Checked)
             {
                 //图像处理，将原始输出转换为RGB格式的位图数据，同时叠加白平衡、饱和度、LUT等ISP处理。
@@ -3402,9 +3428,13 @@ namespace ctmeasure
                 {
                     Cv2.CvtColor(dcamera.himg, dcamera.himg, ColorConversionCodes.GRAY2BGR);
                 }
+                //himgbak = dcamera.getBackImg();
+                //himgbak = dcamera.getBackImg();
+                //himgbak.CopyTo(template);
                 himgbak = dcamera.getBackImg();
                 himgbak.CopyTo(template);
-                pictureBox1.Invalidate();
+                
+                //pictureBox1.Invalidate();
                 return;
             }
             if (tbrun.Checked&& isTriggered) {// 程序为run状态
@@ -3445,6 +3475,7 @@ namespace ctmeasure
                 //double etime = Environment.TickCount;
                 //Console.WriteLine("solution1 cost time：{0}", etime - stime);
             }
+            isRunOrRunOnceChecked = false;
         }
 
 

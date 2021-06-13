@@ -56,7 +56,7 @@ namespace leanvision
         public int thminsurface { get; set; }//最小阀值
         public int thmaxsurface { get; set; }//最大阀值
         public int areasurface { get; set; }//面积测量值
-        public double stdsurface { get; set; }//残缺比标准
+        //public double stdsurface { get; set; }//残缺比标准
         public double msurface { get; set; }//残缺比测量值
         public double grayThresh { get;set; }//缺陷与模板亮度差
 
@@ -164,7 +164,7 @@ namespace leanvision
                 //Console.WriteLine("show :{0},{1},{2},{3}", col, row, col1, row1);
                 e.Graphics.DrawRectangle(Pens.Green, rect.rectangle);
                 //e.Graphics.DrawRectangles(vcommon.hcolor, rect.subRectList.ToArray());
-                e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(60 * vcommon.viewscale)), new SolidBrush(Color.Green), Convert.ToSingle(col ), Convert.ToSingle(row ));
+                e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(180 * vcommon.viewscale)), new SolidBrush(Color.Green), Convert.ToSingle(col ), Convert.ToSingle(row ));
             }
             //if (action == "ondraw")
             //{
@@ -395,7 +395,7 @@ namespace leanvision
                             contours,
                             maxConIdx,
                             color: new Scalar(0, 0, 255),
-                            thickness: 1,//CV_FILLED
+                            thickness: 3,//CV_FILLED
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
@@ -555,7 +555,7 @@ namespace leanvision
                             contours,
                             maxConIdx,
                             color: new Scalar(0, 0, 255),
-                            thickness: 1,//CV_FILLED
+                            thickness: 3,//CV_FILLED
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
@@ -594,8 +594,10 @@ namespace leanvision
                 //MessageBox.Show("ROI 超出边界");
                 return;
             }
-            Mat ImageROI = himgback[roi];// 
-
+            Mat ImageROI = new Mat();// himgback[roi];// 
+            srcCopy = new Mat();
+            himgback[roi].CopyTo(ImageROI);
+            ImageROI.CopyTo(srcCopy);
             //if (origImagePart.Width == 0 || origImagePart.Height == 0) {
             //    new Mat(himg, roi).CopyTo(origImagePart );
             //}
@@ -606,12 +608,12 @@ namespace leanvision
             //Cv2.WaitKey(10000000);
             //origImagePart.CopyTo(srcCopy);
             //origImagePart.CopyTo(ImageROI);
-            if (srcCopy == null)
-            {
-                srcCopy = new Mat();
-            }
+            //if (srcCopy == null)
+            //{
+            //    srcCopy = new Mat();
+            //}
             
-            ImageROI.CopyTo(srcCopy);
+            //ImageROI.CopyTo(srcCopy);
             Cv2.CvtColor(ImageROI, ImageROI, ColorConversionCodes.BGRA2GRAY);
             if ((thmin + thmax) / 2.0 < 127)
             {
@@ -1012,7 +1014,11 @@ namespace leanvision
             HierarchyIndex[] hierarchly;
             Cv2.FindContours(subgray, out contours, out hierarchly, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
             if (contours.Length == 0) return true;
-            
+
+            double minarea = int.MaxValue;
+            int minareaIdx = 0;
+            double maxarea = int.MinValue;
+            int maxareaIdx = int.MinValue;
             int idx = 0;
             for (int i = 0; i < contours.Length; i++)
             {
@@ -1021,29 +1027,49 @@ namespace leanvision
                
                 var contour = contours[i];
                 double area1 = Cv2.ContourArea(contour);
-
+                
                 if (area1 < minDefectArea) continue;
                 //Rect br = Cv2.BoundingRect(contours[i]);
                 RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
                 if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
+                if (area1 < minarea)
+                {
+                    minarea = area1;
+                    minareaIdx = i;
+                }
+                if (area1 > maxarea) {
+                    maxarea = area1;
+                    maxareaIdx = i;
+                }
                 idx += 1;
                 //Scalar color = new Scalar(new Random().Next(0,255), new Random().Next(0, 255), new Random().Next(0, 255));
              
             }
-
+            if (idx > 0) { 
+                Cv2.DrawContours(
+                    srcCopy,
+                    contours,
+                    minareaIdx,
+                    color: new Scalar(0, 0, 255),
+                    thickness: -1,
+                    lineType: LineTypes.Link8,
+                    hierarchy: hierarchly,
+                    maxLevel: 0);
+                Cv2.DrawContours(
+                    srcCopy,
+                    contours,
+                    maxareaIdx,
+                    color: new Scalar(0, 0, 255),
+                    thickness: -1,
+                    lineType: LineTypes.Link8,
+                    hierarchy: hierarchly,
+                    maxLevel: 0); 
+            }
             //double start = Environment.TickCount;
-            Cv2.DrawContours(
-                            srcCopy,
-                            contours,
-                            -1,
-                            color: new Scalar(0, 0, 255),
-                            thickness: 2,
-                            lineType: LineTypes.Link8,
-                            hierarchy: hierarchly,
-                            maxLevel: 0);
-                
-                
-             
+
+
+
+
 
             srcCopy.CopyTo(himg[roi]);
             //double end = Environment.TickCount;
@@ -1510,6 +1536,14 @@ namespace leanvision
             brow = 0; bcol = 0;
         }
 
+        public void painttext(PictureBox pb, PaintEventArgs e) {
+            //foreach (roishape cr in roilist)
+            //{
+            //    cr.show(e);
+            //}
+            //srois.paintroi(e);
+            showtext(e,true);
+        }
 
         /// 绘制roi到窗口控件
         public void paintroi(PictureBox pb, PaintEventArgs e)
@@ -1534,7 +1568,7 @@ namespace leanvision
                 cr.show(e);
             }
             srois.paintroi(e);
-            showtext(e);
+            showtext(e,false);
         }
 
         //public void paintroi() {
@@ -1547,7 +1581,7 @@ namespace leanvision
         //    showtext(hwd);
         //}
 
-        public void showtext(PaintEventArgs e) {
+        public void showtext(PaintEventArgs e,bool isrun) {
             //string text1 = "OK";
             SolidBrush drawBrush;
             if (text1 == "OK") drawBrush = new SolidBrush(Color.Blue);
@@ -1580,41 +1614,59 @@ namespace leanvision
                     tmptr2 = tmptr2 / 4;
                     linel = linel / 4;
                 }
-                Font drawFont = new Font("Arial", (int)(1.3 * tfontsize)); //*vcommon.viewscale
-
-                if (text1 != "") { 
-                    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle( tmptc1 - linel), Convert.ToSingle(tmptr1), Convert.ToSingle(tmptc1 + linel), Convert.ToSingle(tmptr1));
-                    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 - linel), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 + linel));
-                     
-                    e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1), drawFormat);
-                        //g.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(500), Convert.ToSingle(500), drawFormat);
+                if (isrun) { 
+                    Font drawFont = new Font("Arial", (int)(1.3 * tfontsize * vcommon.viewscale));  
+                    if (text1 != "") { 
+                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle( (tmptc1 - linel) * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale), Convert.ToSingle((tmptc1 + linel) * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale));
+                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle((tmptr1 - linel) * vcommon.viewscale), Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle((tmptr1 + linel) * vcommon.viewscale));
+                        e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale), drawFormat);
+                    }
+                }
+                else
+                {
+                    Font drawFont = new Font("Arial", (int)(1.3 * tfontsize)); 
+                    if (text1 != "")
+                    {
+                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 - linel), Convert.ToSingle(tmptr1), Convert.ToSingle(tmptc1 + linel), Convert.ToSingle(tmptr1));
+                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 - linel), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 + linel));
+                        e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1), drawFormat);
+                         
+                    }
                 }
 
-                int tr = (int)(tmptr2);
-                int tc = (int)(tmptc2);
+                string[] ostr = text2.Split('\r');
+                if (isrun) { 
+                    int tr = (int)(tmptr2 * vcommon.viewscale);
+                    int tc = (int)(tmptc2 * vcommon.viewscale);
 
-                e.Graphics.DrawLine(new Pen(drawBrush),tc- linel, tr, tc + linel, tr);
-                e.Graphics.DrawLine(new Pen(drawBrush), tc, tr- linel, tc, tr+ linel);
+                    e.Graphics.DrawLine(new Pen(drawBrush),Convert.ToSingle((tc- linel) * vcommon.viewscale),Convert.ToSingle( tr * vcommon.viewscale),Convert.ToSingle( (tc + linel) * vcommon.viewscale),Convert.ToSingle( tr * vcommon.viewscale));
+                    e.Graphics.DrawLine(new Pen(drawBrush),Convert.ToSingle( tc * vcommon.viewscale),Convert.ToSingle( (tr- linel) * vcommon.viewscale),Convert.ToSingle( tc * vcommon.viewscale),Convert.ToSingle( (tr+ linel) * vcommon.viewscale));
 
+                    foreach (string str in ostr)
+                    {
+                        Font drawFont = new Font("Arial", (int)(0.5 * tfontsize * vcommon.viewscale));//* vcommon.viewscale
+                        e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc * vcommon.viewscale), Convert.ToSingle(tr * vcommon.viewscale), drawFormat);
+                        tr += margin1;
+                    }
+                }
+                else
+                {
+                    int tr = (int)(tmptr2 );
+                    int tc = (int)(tmptc2 );
+
+                    e.Graphics.DrawLine(new Pen(drawBrush),(tc - linel) , tr, tc + linel, tr);
+                    e.Graphics.DrawLine(new Pen(drawBrush), tc, tr - linel, tc, tr + linel);
+                    foreach (string str in ostr)
+                    {
+                        Font drawFont = new Font("Arial", (int)(0.5 * tfontsize));
+                        e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);
+                        tr += margin1;
+                    }
+                }
                 //e.Graphics.DrawRectangle(Pens.Green, rect.rectangle);
                 ////e.Graphics.DrawRectangles(vcommon.hcolor, rect.subRectList.ToArray());
                 //e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(60)), new SolidBrush(Color.Green), Convert.ToSingle(col), Convert.ToSingle(row));
-
-                
-                //hw.SetTposition(tr, tc);
-                string[] ostr = text2.Split('\r');
-                
-                foreach (string str in ostr)
-                {
-                    drawFont = new Font("Arial", (int)(0.5 * tfontsize ));//* vcommon.viewscale
-                    //StringFormat drawFormat = new StringFormat();
-                    //g.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tr), Convert.ToSingle(tc), drawFormat);
-                    e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);
-                    tr += margin1;
-                    //hw.WriteString(str);
-                    //tr += (int)(0.5 * vcommon.fontsize + 15);
-                    //hw.SetTposition(tr, tc);
-                }
+                 
 
             }
         }
