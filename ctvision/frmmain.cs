@@ -97,7 +97,7 @@ namespace ctmeasure
         private string data = "";
         private bool isCsvTitleUpdated = true;
         private bool isTriggered = false;
-        private bool isCaptoScreen = false;
+        private bool isSaveToTemplate = false;
         public bool isRunOrRunOnceChecked = false;
         public bool isLoginSuccess = false;
         public static string templateFile = "";
@@ -919,9 +919,9 @@ namespace ctmeasure
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             dlgsave.FileName = "";
-            dlgsave.Filter = "photo files|*.jpg";
+            dlgsave.Filter = "photo files|*.bmp";
             dlgsave.InitialDirectory = "";
-            dlgsave.DefaultExt = ".jpg";
+            dlgsave.DefaultExt = ".bmp";
             if (dlgsave.ShowDialog() == DialogResult.OK) {
                 //pictureBox1.Image.Save(dlgsave.FileName);
                 dcamera.savephoto(dlgsave.FileName);
@@ -1664,7 +1664,7 @@ namespace ctmeasure
 
             //表面检测
             foreach (roishape rs in rois.rois) {
-                if (true) {
+                if (rs.surfacecheck) {
                     //if (rs.surfacecheck)
                     double stime1 = Environment.TickCount;
                     bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
@@ -2104,6 +2104,15 @@ namespace ctmeasure
 
     private void tbcameraplay_Click(object sender, EventArgs e)
         {
+            if (m_hCamera < 1)//还未初始化相机
+            {
+                if (InitCamera() == true)
+                {
+                    MvApi.CameraPlay(m_hCamera);
+                    //BtnPlay.Text = "Pause";
+                }
+            }
+
             tbcameraplay.Checked = !tbcameraplay.Checked;
             
             if (tbcameraplay.Checked)
@@ -2121,84 +2130,85 @@ namespace ctmeasure
                     tb.Enabled = true; 
                 }
                 MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
+                tbrunonce_Click(null, null);
                 //提示当前帧是否保存为模板
-                if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    isCaptoScreen = true;
-                    MvApi.CameraSoftTrigger(m_hCamera);
-                    Thread.Sleep(150);
-                    initview();
-                    btnnewproduct_Click(null, null);
-                }
-                else
-                {
-                    pictureBox1.Invalidate();
-                }
+                //if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                //{
+                //    isSaveToTemplate = true;
+                //    //MvApi.CameraSoftTrigger(m_hCamera);
+                //    //Thread.Sleep(150);
+                //    //initview();
+                //    //btnnewproduct_Click(null, null);
+                //}
+                //else
+                //{
+                //    pictureBox1.Invalidate();
+                //}
                 //Thread.Sleep(50);
                 //btnsaveproduct_Click(null, null);
                 //btnloadproduct_Click(null, null);
             }
 
-            return;
+            //return;
             
-            if (m_hCamera < 1)//还未初始化相机
-            {
-                if (InitCamera() == true)
-                {
-                    MvApi.CameraPlay(m_hCamera);
-                    //BtnPlay.Text = "Pause";
-                }
-            }
-            else//已经初始化
-            {
-                if (tbcameraplay.Checked)
-                {
-                    //m_bExitCaptureThread = false;
-                    MvApi.CameraPlay(m_hCamera);
-                    //tplay.Enabled = true;
-                }
-                else
-                {
-                    tSdkFrameHead tFrameHead;
-                    IntPtr uRawBuffer;//由SDK中给RAW数据分配内存，并释放
-                    if (MvApi.CameraSnapToBuffer(m_hCamera, out tFrameHead, out uRawBuffer, 500) == CameraSdkStatus.CAMERA_STATUS_SUCCESS)
-                    {
-                        //此时，uRawBuffer指向了相机原始数据的缓冲区地址，默认情况下为8bit位宽的Bayer格式，如果
-                        //您需要解析bayer数据，此时就可以直接处理了，后续的操作演示了如何将原始数据转换为RGB格式
-                        //并显示在窗口上。
+            //if (m_hCamera < 1)//还未初始化相机
+            //{
+            //    if (InitCamera() == true)
+            //    {
+            //        MvApi.CameraPlay(m_hCamera);
+            //        //BtnPlay.Text = "Pause";
+            //    }
+            //}
+            //else//已经初始化
+            //{
+            //    if (tbcameraplay.Checked)
+            //    {
+            //        //m_bExitCaptureThread = false;
+            //        MvApi.CameraPlay(m_hCamera);
+            //        //tplay.Enabled = true;
+            //    }
+            //    else
+            //    {
+            //        tSdkFrameHead tFrameHead;
+            //        IntPtr uRawBuffer;//由SDK中给RAW数据分配内存，并释放
+            //        if (MvApi.CameraSnapToBuffer(m_hCamera, out tFrameHead, out uRawBuffer, 500) == CameraSdkStatus.CAMERA_STATUS_SUCCESS)
+            //        {
+            //            //此时，uRawBuffer指向了相机原始数据的缓冲区地址，默认情况下为8bit位宽的Bayer格式，如果
+            //            //您需要解析bayer数据，此时就可以直接处理了，后续的操作演示了如何将原始数据转换为RGB格式
+            //            //并显示在窗口上。
 
-                        //将相机输出的原始数据转换为RGB格式到内存m_ImageBufferSnapshot中
-                        MvApi.CameraImageProcess(m_hCamera, uRawBuffer, m_ImageBufferSnapshot, ref tFrameHead);
-                        //CameraSnapToBuffer成功调用后必须用CameraReleaseImageBuffer释放SDK中分配的RAW数据缓冲区
-                        //否则，将造成死锁现象，预览通道和抓拍通道会被一直阻塞，直到调用CameraReleaseImageBuffer释放后解锁。
-                        MvApi.CameraReleaseImageBuffer(m_hCamera, uRawBuffer);
-                        //更新抓拍显示窗口。
+            //            //将相机输出的原始数据转换为RGB格式到内存m_ImageBufferSnapshot中
+            //            MvApi.CameraImageProcess(m_hCamera, uRawBuffer, m_ImageBufferSnapshot, ref tFrameHead);
+            //            //CameraSnapToBuffer成功调用后必须用CameraReleaseImageBuffer释放SDK中分配的RAW数据缓冲区
+            //            //否则，将造成死锁现象，预览通道和抓拍通道会被一直阻塞，直到调用CameraReleaseImageBuffer释放后解锁。
+            //            MvApi.CameraReleaseImageBuffer(m_hCamera, uRawBuffer);
+            //            //更新抓拍显示窗口。
 
-                        double stime = Environment.TickCount;
-                        dcamera.himg = new Mat(tFrameHead.iHeight, tFrameHead.iWidth, MatType.CV_8UC1, m_ImageBufferSnapshot);//.CvtColor(ColorConversionCodes.RGB2BGR);
-                        //Cv2.ImWrite(".\\himgrgb.bmp",dcamera.himg);
-                        //Cv2.ImWrite(".\\himgbgr.bmp", dcamera.himg.CvtColor(ColorConversionCodes.RGB2BGR)); 
-                        Cv2.Flip(dcamera.himg, dcamera.himg, FlipMode.X);
-                        if (dcamera.himg.Type().Channels == 1)
-                        {
-                            Cv2.CvtColor(dcamera.himg, dcamera.himg, ColorConversionCodes.GRAY2BGR);
-                        } 
-                        himgbak = dcamera.getBackImg();
-                        MvApi.CameraPause(m_hCamera);
-                        double etime = Environment.TickCount;
-                        Console.WriteLine("solution1 cost time：{0}", etime - stime);
-                        //vcommon.viewscale = zscale =(float)phwin.Width / (float)himgbak.Width;
+            //            double stime = Environment.TickCount;
+            //            dcamera.himg = new Mat(tFrameHead.iHeight, tFrameHead.iWidth, MatType.CV_8UC1, m_ImageBufferSnapshot);//.CvtColor(ColorConversionCodes.RGB2BGR);
+            //            //Cv2.ImWrite(".\\himgrgb.bmp",dcamera.himg);
+            //            //Cv2.ImWrite(".\\himgbgr.bmp", dcamera.himg.CvtColor(ColorConversionCodes.RGB2BGR)); 
+            //            Cv2.Flip(dcamera.himg, dcamera.himg, FlipMode.X);
+            //            if (dcamera.himg.Type().Channels == 1)
+            //            {
+            //                Cv2.CvtColor(dcamera.himg, dcamera.himg, ColorConversionCodes.GRAY2BGR);
+            //            } 
+            //            himgbak = dcamera.getBackImg();
+            //            MvApi.CameraPause(m_hCamera);
+            //            double etime = Environment.TickCount;
+            //            Console.WriteLine("solution1 cost time：{0}", etime - stime);
+            //            //vcommon.viewscale = zscale =(float)phwin.Width / (float)himgbak.Width;
                         
-                        //vcommon.viewx = imgx = 0;
-                        //vcommon.viewy = imgy = 0; 
-                        //pictureBox1.Refresh();
-                        //phwin.Refresh();
-                        //btnnewproduct_Click(null, null);
-                    }
+            //            //vcommon.viewx = imgx = 0;
+            //            //vcommon.viewy = imgy = 0; 
+            //            //pictureBox1.Refresh();
+            //            //phwin.Refresh();
+            //            //btnnewproduct_Click(null, null);
+            //        }
                     
-                    //tplay.Enabled = false;
-                }
-            }
+            //        //tplay.Enabled = false;
+            //    }
+            //}
 
             //pictureBox1.Invalidate();
             //if (tbcameraplay.Checked)
@@ -2437,7 +2447,7 @@ namespace ctmeasure
                         rs.getBlackMask(dcamera.himg, himgbak);
                 }
             }
-            //pictureBox1.Invalidate();
+            pictureBox1.Invalidate();
         }
 
         private void tbsetting_Click(object sender, EventArgs e)
@@ -3398,9 +3408,9 @@ namespace ctmeasure
                 }
                 return;
             }
-            if (isCaptoScreen)
+            if (isSaveToTemplate)
             {   //保存为模板
-                isCaptoScreen = false;
+                isSaveToTemplate = false;
                 //图像处理，将原始输出转换为RGB格式的位图数据，同时叠加白平衡、饱和度、LUT等ISP处理。
                 MvApi.CameraImageProcess(hCamera, pFrameBuffer, m_ImageBuffer, ref pFrameHead);
                 //叠加十字线、自动曝光窗口、白平衡窗口信息(仅叠加设置为可见状态的)。   
@@ -3431,8 +3441,8 @@ namespace ctmeasure
                 //himgbak = dcamera.getBackImg();
                 //himgbak = dcamera.getBackImg();
                 //himgbak.CopyTo(template);
-                himgbak = dcamera.getBackImg();
-                himgbak.CopyTo(template);
+                //himgbak = dcamera.getBackImg();
+                //himgbak.CopyTo(template);
                 
                 //pictureBox1.Invalidate();
                 return;
