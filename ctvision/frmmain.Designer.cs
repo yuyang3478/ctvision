@@ -1545,6 +1545,7 @@
             this.tmname.Size = new System.Drawing.Size(155, 20);
             this.tmname.TabIndex = 38;
             this.tmname.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tmname_KeyDown);
+            this.tmname.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tmname_KeyPress);
             this.tmname.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tmname_KeyUp);
             this.tmname.Leave += new System.EventHandler(this.tmname_Leave);
             // 

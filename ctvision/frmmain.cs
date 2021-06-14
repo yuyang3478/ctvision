@@ -103,7 +103,7 @@ namespace ctmeasure
         public static string templateFile = "";
         public Mat template = new Mat();
         
-
+        
 
         [DllImport("gdi32.dll")]
         static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
@@ -2653,26 +2653,65 @@ namespace ctmeasure
         private void tmname_Leave(object sender, EventArgs e)
         {
             string tname = tmname.Text.Trim();
+            //string tn = tmname.Text;
+            //int id = tmname.SelectedIndex;
+            //if (id <= 9) {
+            //    tmname.Text = tempCombName;
+            //}
+
             if (tmname.FindString(tname) < 0) tmname.Items.Add(tname);
+
         }
 
         private void tmname_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Delete) {
-                string tn = tmname.Text;
-                int tnindex = tmname.Items.IndexOf(tn);
-                if (tnindex > 0) tmname.Items.RemoveAt(tnindex);
-            }
+            return;
+            //if (e.KeyData == Keys.Delete) {
+            //    string tn = tmname.Text;
+            //    int tnindex = tmname.Items.IndexOf(tn);
+            //    if (tnindex > 0) tmname.Items.RemoveAt(tnindex);
+            //}
         }
 
         private void tmname_KeyDown(object sender, KeyEventArgs e)
         {
+            //if (e.KeyData == Keys.Delete || (e.KeyData == Keys.Back)) {
+            //    string tn = tmname.Text;
+            //    if (tn.Equals("W 值") || tn.Equals("S 值") || tn.Equals("E 值") || tn.Equals("F 值") || tn.Equals("P 值") || tn.Equals("P0 值") || tn.Equals("P2 值") || tn.Equals("D0 值") || tn.Equals("A0 值") || tn.Equals("B0 值")) {
+            //        tmname.Text = tn;
+            //        return;
+            //    }
+            //}
+            //tmname.SelectedItem
+             
             if (e.KeyData == Keys.Delete) {
+                
                 string tn = tmname.Text;
                 int id = tmname.Items.IndexOf(tn);
-                if (id > 9) tmname.Items.RemoveAt(id);
+                if (id > 9)
+                {
+                    tmname.Items.RemoveAt(id);
+                }
+                else {
+                    e.Handled = true;
+                }
             }
         }
+
+        private void tmname_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int idx = tmname.SelectedIndex;
+            Console.WriteLine(idx);
+            if (idx <= 9&&idx>=0)
+            {
+                e.Handled = true;
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+
         private void loadmeasurename() {
             StreamReader sr = new StreamReader(Application.StartupPath + "\\mname.dat");
             string rstr = sr.ReadToEnd();
@@ -3026,36 +3065,52 @@ namespace ctmeasure
 
         private void btnpixelunit_Click(object sender, EventArgs e)
         {
-            //自动计算像素比例
-            double pvx = dcamera.xpixel;
-            double pvy = dcamera.ypixel;
-            if (pvx == 0) pvx = 1;
-            if (pvy == 0) pvy = 1;
-            double pvxsum = 0.0, pvysum = 0.0;
-            int pvxnum = 0, pvynum = 0;
-            foreach (clsmeasure cm in mrois.ilist)
+            //自动校准
+            string mcon = "";
+            foreach (clsmeasure cs in mrois.ilist)
             {
-                if (cm.mvalue == 0) cm.mvalue = 1;
-                if (cm.mtype == 0)
-                {
-                    pvxsum += cm.mstd / (cm.mvalue / pvx);
-                    pvxnum++;
-                }
-                if (cm.mtype == 1) {
-                    pvysum += cm.mstd / (cm.mvalue / pvy);
-                    pvynum++;
-                }
+                dgview.Rows.Add();
+                i = dgview.Rows.Count - 1;
+                if (cs.roi1 == null) mcon = "";
+                else mcon = cs.roi1.num.ToString("d3");
+                if (cs.roi2 == null) mcon += "> ";
+                else mcon += ">" + cs.roi2.num.ToString("d3");
+                dgview[0, i].Value = cs.mname;
+                dgview[1, i].Value = mcon + " " + cs.mtypename();
+                dgview[2, i].Value = cs.mstd;
+                dgview[3, i].Value = cs.mllimit;
+                dgview[4, i].Value = cs.mulimit;
             }
+            ////自动计算像素比例
+            //double pvx = dcamera.xpixel;
+            //double pvy = dcamera.ypixel;
+            //if (pvx == 0) pvx = 1;
+            //if (pvy == 0) pvy = 1;
+            //double pvxsum = 0.0, pvysum = 0.0;
+            //int pvxnum = 0, pvynum = 0;
+            //foreach (clsmeasure cm in mrois.ilist)
+            //{
+            //    if (cm.mvalue == 0) cm.mvalue = 1;
+            //    if (cm.mtype == 0)
+            //    {
+            //        pvxsum += cm.mstd / (cm.mvalue / pvx);
+            //        pvxnum++;
+            //    }
+            //    if (cm.mtype == 1) {
+            //        pvysum += cm.mstd / (cm.mvalue / pvy);
+            //        pvynum++;
+            //    }
+            //}
 
-            if (pvxnum > 0) pvxsum = pvxsum / pvxnum;
-            if (pvynum > 0) pvysum = pvysum / pvynum;
-            if (pvxsum == 0) pvxsum = pvysum;
-            if (pvysum == 0) pvysum = pvxsum;
-            if (pvxsum == 0) pvxsum = 1;
-            if (pvysum == 0) pvysum = 1;
-            dcamera.xpixel = Math.Abs(pvxsum);
-            dcamera.ypixel = Math.Abs(pvysum);
-            runonce(pictureBox1);
+            //if (pvxnum > 0) pvxsum = pvxsum / pvxnum;
+            //if (pvynum > 0) pvysum = pvysum / pvynum;
+            //if (pvxsum == 0) pvxsum = pvysum;
+            //if (pvysum == 0) pvysum = pvxsum;
+            //if (pvxsum == 0) pvxsum = 1;
+            //if (pvysum == 0) pvysum = 1;
+            //dcamera.xpixel = Math.Abs(pvxsum);
+            //dcamera.ypixel = Math.Abs(pvysum);
+            //runonce(pictureBox1);
         }
 
         private void ckdisplayng_Click(object sender, EventArgs e)
@@ -3291,6 +3346,10 @@ namespace ctmeasure
                 cr.shrinkPixel = (double)barshrink.Value;
             }
         }
+
+        
+
+        
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
         {
