@@ -1994,7 +1994,6 @@
             // btnpixelunit
             // 
             this.btnpixelunit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnpixelunit.Enabled = false;
             this.btnpixelunit.Location = new System.Drawing.Point(327, 90);
             this.btnpixelunit.Name = "btnpixelunit";
             this.btnpixelunit.Size = new System.Drawing.Size(47, 20);

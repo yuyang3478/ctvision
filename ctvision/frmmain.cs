@@ -3061,26 +3061,33 @@ namespace ctmeasure
 
         }
 
-        
-
         private void btnpixelunit_Click(object sender, EventArgs e)
         {
             //自动校准
             string mcon = "";
+            int i = 0;
             foreach (clsmeasure cs in mrois.ilist)
             {
-                dgview.Rows.Add();
-                i = dgview.Rows.Count - 1;
-                if (cs.roi1 == null) mcon = "";
-                else mcon = cs.roi1.num.ToString("d3");
-                if (cs.roi2 == null) mcon += "> ";
-                else mcon += ">" + cs.roi2.num.ToString("d3");
-                dgview[0, i].Value = cs.mname;
-                dgview[1, i].Value = mcon + " " + cs.mtypename();
-                dgview[2, i].Value = cs.mstd;
-                dgview[3, i].Value = cs.mllimit;
-                dgview[4, i].Value = cs.mulimit;
+                if (cs.mresult.Equals("NG"))
+                {
+                    double std = cs.mstd;
+                    double realv = cs.mvalue;
+                    cs.moffset = std - realv;
+                } 
+                //dgview.Rows.Add();
+                //i = dgview.Rows.Count - 1;
+                //if (cs.roi1 == null) mcon = "";
+                //else mcon = cs.roi1.num.ToString("d3");
+                //if (cs.roi2 == null) mcon += "> ";
+                //else mcon += ">" + cs.roi2.num.ToString("d3");
+                //dgview[0, i].Value = cs.mname;
+                //dgview[1, i].Value = mcon + " " + cs.mtypename();
+                //dgview[2, i].Value = cs.mstd;
+                //dgview[3, i].Value = cs.mllimit;
+                //dgview[4, i].Value = cs.mulimit;
+
             }
+            dgupdatemeasureall();
             ////自动计算像素比例
             //double pvx = dcamera.xpixel;
             //double pvy = dcamera.ypixel;
