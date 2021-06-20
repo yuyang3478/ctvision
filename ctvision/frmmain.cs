@@ -31,7 +31,7 @@ namespace ctmeasure
         public Mat himgbak;
         //视图控制: 放大, 缩小, 平移
         private Rectangle vrect;
-        private double zscale = 1.0;
+        public double zscale = 1.0;
         private int iw = 1, ih = 1;
         //private double movex,movey,movex1,movey1,motionx,motiony;
         System.Drawing.Point mouseDown;
@@ -289,7 +289,7 @@ namespace ctmeasure
                             Cv2.Resize(dcamera.himg, temp, new OpenCvSharp.Size(dcamera.himg.Width * zscale, dcamera.himg.Height * zscale));
                             e.Graphics.DrawImage(temp.ToBitmap(), imgx, imgy);//140ms
 
-                            rois.painttext(pictureBox1, e);
+                            rois.painttext(zscale, e,true);
                             //double etime1 = Environment.TickCount;
                             //Console.WriteLine("e.Graphics.DrawImage cost time ：{0}", etime1 - stime1);
                         }
@@ -313,7 +313,7 @@ namespace ctmeasure
                                 try
                                 {
                                     if (rois != null)
-                                        rois.paintroi(pictureBox1, e);
+                                        rois.paintroi(zscale, pictureBox1, e);
                                 }
                                 catch { }
                             }
@@ -723,6 +723,8 @@ namespace ctmeasure
                 tbdrawrect.Checked = false;
                 rois.srois.clear();
                 rois.croi = null;
+                template.CopyTo(dcamera.himg);
+                template.CopyTo(himgbak);
                 pictureBox1.Invalidate();
                 showroidata();
                 tb_magic.Checked = false;
@@ -1464,7 +1466,7 @@ namespace ctmeasure
             tmstd.Text = mroi.mstd.ToString();
             tmllimit.Text = mroi.mllimit.ToString();
             tmulimit.Text = mroi.mulimit.ToString();
-            tmoffset.Text = mroi.moffset.ToString();
+            tmoffset.Text = mroi.moffset.ToString("#0.000"); ;
         }
 
         private void dgview_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -1679,14 +1681,14 @@ namespace ctmeasure
                             rtresult.Invoke(new MethodInvoker(delegate ()
                             {
                                 rtresult.SelectionColor = Color.Red;
-                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.minDefectArea+"pixel","   ", rs.msurface.ToString("f2")+"%", "NG"));
+                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon,  rs.minDefectArea+"pix", " 0 ", " 0 ", Convert.ToInt32( rs.defectArea).ToString()+ "pix", "NG"));
 
                             }));
                         }
                         else
                         {
                             rtresult.SelectionColor = Color.Red;
-                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n", i, "表面检测", mcon, "    ", rs.minDefectArea+ "pixel", "   ", rs.msurface.ToString("f2")+"%", "NG"));
+                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea+ "pix", " 0 ", " 0 ", Convert.ToInt32( rs.defectArea).ToString()+ "pix", "NG"));
 
                         }
                         i++;
@@ -2130,7 +2132,12 @@ namespace ctmeasure
                     tb.Enabled = true; 
                 }
                 MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
-                tbrunonce_Click(null, null);
+                template.CopyTo(dcamera.himg);
+                template.CopyTo(himgbak);
+                pictureBox1.Invalidate();
+                //frmmain_Shown(null,null);
+                //MvApi.CameraSoftTrigger(m_hCamera);
+                //tbrunonce_Click(null, null);
                 //提示当前帧是否保存为模板
                 //if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 //{
@@ -3071,7 +3078,7 @@ namespace ctmeasure
                 if (cs.mresult.Equals("NG"))
                 {
                     double std = cs.mstd;
-                    double realv = cs.mvalue;
+                    double realv = cs.mvalue-cs.moffset;
                     cs.moffset = std - realv;
                 } 
                 //dgview.Rows.Add();
@@ -3472,6 +3479,7 @@ namespace ctmeasure
                     m_bEraseBk = true;
                     m_tFrameHead = pFrameHead;
                 }
+                isRunOrRunOnceChecked = false;
                 return;
             }
             if (isSaveToTemplate)
@@ -3509,8 +3517,9 @@ namespace ctmeasure
                 //himgbak.CopyTo(template);
                 //himgbak = dcamera.getBackImg();
                 //himgbak.CopyTo(template);
-                
+
                 //pictureBox1.Invalidate();
+                isRunOrRunOnceChecked = false;
                 return;
             }
             if (tbrun.Checked&& isTriggered) {// 程序为run状态

@@ -65,6 +65,9 @@ namespace leanvision
         public double minDefectWidth { get; set; }//最小缺陷宽度
         public double minDefectHeight { get; set; }//最小缺陷长度
         public double shrinkPixel { get; set; }
+
+        public double defectArea { get; set; }//实际缺陷面积
+
         [NonSerialized]
         public Mat whiteMask;//要做序列化或者保存
         [NonSerialized]
@@ -344,7 +347,7 @@ namespace leanvision
                                 contours,
                                 i,
                                 color: new Scalar(0, 0, 255),
-                                thickness: 1,//CV_FILLED
+                                thickness: 3,//CV_FILLED
                                 lineType: LineTypes.Link8,
                                 hierarchy: hierarchly,
                                 maxLevel: int.MaxValue);
@@ -505,7 +508,7 @@ namespace leanvision
                                 contours,
                                 i,
                                 color: new Scalar(0, 0, 255),
-                                thickness: 1,//CV_FILLED
+                                thickness: 3,//CV_FILLED
                                 lineType: LineTypes.Link8,
                                 hierarchy: hierarchly,
                                 maxLevel: int.MaxValue);
@@ -1063,7 +1066,8 @@ namespace leanvision
                     thickness: -1,
                     lineType: LineTypes.Link8,
                     hierarchy: hierarchly,
-                    maxLevel: 0); 
+                    maxLevel: 0);
+                defectArea = maxarea;
             }
             //double start = Environment.TickCount;
 
@@ -1136,7 +1140,7 @@ namespace leanvision
 
         /// mouse 事件
         private double mousex, mousey, mousex1,mousey1;
-        public double tr1, tc1, tr2, tc2;//两个显示文本的位置
+        public double tr1 = 20, tc1=20, tr2=100, tc2=100;//两个显示文本的位置
 
         /// 初始化
         public roimanager()
@@ -1269,13 +1273,13 @@ namespace leanvision
             //是否选中文本
             double tmx = mx/vcommon.viewscale  ;
             double tmy = my/vcommon.viewscale  ;
-            Console.WriteLine("mouse down:{0} {1}", tmx, tmy);
+            //Console.WriteLine("mouse down:{0} {1}", tmx, tmy);
             if (action == "")
             {
-                
+                //Program.fmain.zscale;
                 //Console.WriteLine("{0} {1} {2} {3}",tc1,tr1,tc2,tr2);
-                if (tmx > (tc1 - 40) && tmx < (tc1 + 40) && tmy > (tr1 - 40) && tmy < (tr1 + 40)) action = "ontext1";
-                else if (tmx > (tc2 - 40) && tmx < (tc2 + 840) && tmy > (tr2 - 40) && tmy < (tr2 + 40)) action = "ontext2";
+                if (mx > (tc1 - 40) && mx < (tc1 + 40) && my > (tr1 - 40) && my < (tr1 + 40)) action = "ontext1";
+                else if (mx > (tc2 - 40) && mx < (tc2 + 840) && my > (tr2 - 40) && my < (tr2 + 40)) action = "ontext2";
                 if (action == "ontext1" || action == "ontext2") return;
             }
             //if (action == "onselect") return;
@@ -1402,11 +1406,11 @@ namespace leanvision
             }
 
             if (action == "ontext1") {
-                tr1 = my*4; tc1 = mx*4;
+                tr1 = my; tc1 = mx;
                 return;
             }
             if (action == "ontext2") {
-                tr2 = my*4; tc2 = mx*4;
+                tr2 = my; tc2 = mx;
                 return;
             }
             
@@ -1536,17 +1540,17 @@ namespace leanvision
             brow = 0; bcol = 0;
         }
 
-        public void painttext(PictureBox pb, PaintEventArgs e) {
+        public void painttext(double zscale, PaintEventArgs e,bool isrun) {
             //foreach (roishape cr in roilist)
             //{
             //    cr.show(e);
             //}
             //srois.paintroi(e);
-            showtext(e,true);
+            showtext(zscale,e, isrun);
         }
 
         /// 绘制roi到窗口控件
-        public void paintroi(PictureBox pb, PaintEventArgs e)
+        public void paintroi(double zscale,PictureBox pb, PaintEventArgs e)
         {
             
             if (action == "ondraw")
@@ -1568,7 +1572,7 @@ namespace leanvision
                 cr.show(e);
             }
             srois.paintroi(e);
-            showtext(e,false);
+            showtext(zscale,e, false);
         }
 
         //public void paintroi() {
@@ -1581,7 +1585,7 @@ namespace leanvision
         //    showtext(hwd);
         //}
 
-        public void showtext(PaintEventArgs e,bool isrun) {
+        public void showtext(double zscale,PaintEventArgs e,bool isrun) {
             //string text1 = "OK";
             SolidBrush drawBrush;
             if (text1 == "OK") drawBrush = new SolidBrush(Color.Blue);
@@ -1589,86 +1593,135 @@ namespace leanvision
             //string fs = Math.Round(1.0 * vcommon.fontsize * vcommon.viewscale, 0).ToString(); 
             StringFormat drawFormat = new StringFormat();
 
-            e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(vcommon.viewx - 80), Convert.ToSingle(vcommon.viewy), Convert.ToSingle(vcommon.viewx+ 80), Convert.ToSingle(vcommon.viewy));
-            e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(vcommon.viewx), Convert.ToSingle(vcommon.viewy-80), Convert.ToSingle(vcommon.viewx), Convert.ToSingle(vcommon.viewy + 80));
-            double tmptc1 = tc1;
-            double tmptr1 = tr1;
-            double tmptc2 = tc2;
-            double tmptr2 = tr2;
-            int linel = 40;
-            if (isshowtext) {
-                
-                int tfontsize = vcommon.fontsize;
-                int margin = 5+ Math.Abs(tfontsize-80)/4;
-                int margin1 = 20 + Math.Abs(tfontsize - 80)/4 ;
-                if (!Program.fmain.tbrun.Checked) {
-                    tfontsize = tfontsize * 4;
-                    margin = 100 + Math.Abs(tfontsize - 80)/4;
-                    margin1 = 80 + Math.Abs(tfontsize - 80)/4;
-                }
-                else
+            e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(vcommon.viewx - 40), Convert.ToSingle(vcommon.viewy), Convert.ToSingle(vcommon.viewx+ 40), Convert.ToSingle(vcommon.viewy));
+            e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(vcommon.viewx), Convert.ToSingle(vcommon.viewy-40), Convert.ToSingle(vcommon.viewx), Convert.ToSingle(vcommon.viewy + 40));
+            int tfontsize = vcommon.fontsize;
+            int linel = 25;
+            Font drawFont;
+            drawFont = new Font("Arial", (int)(tfontsize));
+            StringFormat sf = new StringFormat(StringFormat.GenericTypographic);
+            SizeF margin = e.Graphics.MeasureString("OK", drawFont, 1000, sf);
+            int tr = (int)(tr2);
+            int tc = (int)(tc2);
+            if (isrun)
+            {
+                if (!text1.Equals(""))
                 {
-                    tmptc1 = tmptc1 / 4;
-                    tmptr1 = tmptr1 / 4;
-                    tmptc2 = tmptc2 / 4;
-                    tmptr2 = tmptr2 / 4;
-                    linel = linel / 4;
+                    //十字线
+                    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tc1 - linel), Convert.ToSingle(tr1), Convert.ToSingle(tc1 + linel), Convert.ToSingle(tr1));
+                    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tc1), Convert.ToSingle(tr1 - linel), Convert.ToSingle(tc1), Convert.ToSingle(tr1 + linel));
+                    // OK NG
+                    e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tc1), Convert.ToSingle(tr1), drawFormat);
                 }
-                if (isrun) { 
-                    Font drawFont = new Font("Arial", (int)(1.3 * tfontsize * vcommon.viewscale));  
-                    if (text1 != "") { 
-                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle( (tmptc1 - linel) * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale), Convert.ToSingle((tmptc1 + linel) * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale));
-                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle((tmptr1 - linel) * vcommon.viewscale), Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle((tmptr1 + linel) * vcommon.viewscale));
-                        e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale), drawFormat);
-                    }
-                }
-                else
-                {
-                    Font drawFont = new Font("Arial", (int)(1.3 * tfontsize)); 
-                    if (text1 != "")
-                    {
-                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 - linel), Convert.ToSingle(tmptr1), Convert.ToSingle(tmptc1 + linel), Convert.ToSingle(tmptr1));
-                        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 - linel), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 + linel));
-                        e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1), drawFormat);
-                         
-                    }
-                }
-
                 string[] ostr = text2.Split('\r');
-                if (isrun) { 
-                    int tr = (int)(tmptr2 * vcommon.viewscale);
-                    int tc = (int)(tmptc2 * vcommon.viewscale);
+                //int margin1 = 80 + Math.Abs(tfontsize - 80) / 4;
 
-                    e.Graphics.DrawLine(new Pen(drawBrush),Convert.ToSingle((tc- linel) * vcommon.viewscale),Convert.ToSingle( tr * vcommon.viewscale),Convert.ToSingle( (tc + linel) * vcommon.viewscale),Convert.ToSingle( tr * vcommon.viewscale));
-                    e.Graphics.DrawLine(new Pen(drawBrush),Convert.ToSingle( tc * vcommon.viewscale),Convert.ToSingle( (tr- linel) * vcommon.viewscale),Convert.ToSingle( tc * vcommon.viewscale),Convert.ToSingle( (tr+ linel) * vcommon.viewscale));
 
-                    foreach (string str in ostr)
-                    {
-                        Font drawFont = new Font("Arial", (int)(0.5 * tfontsize * vcommon.viewscale));//* vcommon.viewscale
-                        e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc * vcommon.viewscale), Convert.ToSingle(tr * vcommon.viewscale), drawFormat);
-                        tr += margin1;
-                    }
-                }
-                else
+                e.Graphics.DrawLine(new Pen(drawBrush), (tc - linel), tr, tc + linel, tr);
+                e.Graphics.DrawLine(new Pen(drawBrush), tc, tr - linel, tc, tr + linel);
+                foreach (string str in ostr)
                 {
-                    int tr = (int)(tmptr2 );
-                    int tc = (int)(tmptc2 );
-
-                    e.Graphics.DrawLine(new Pen(drawBrush),(tc - linel) , tr, tc + linel, tr);
-                    e.Graphics.DrawLine(new Pen(drawBrush), tc, tr - linel, tc, tr + linel);
-                    foreach (string str in ostr)
-                    {
-                        Font drawFont = new Font("Arial", (int)(0.5 * tfontsize));
-                        e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);
-                        tr += margin1;
-                    }
+                     
+                    e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);
+                    tr += Convert.ToInt32(margin.Height);
                 }
-                //e.Graphics.DrawRectangle(Pens.Green, rect.rectangle);
-                ////e.Graphics.DrawRectangles(vcommon.hcolor, rect.subRectList.ToArray());
-                //e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(60)), new SolidBrush(Color.Green), Convert.ToSingle(col), Convert.ToSingle(row));
+            }
+            else {
+                tfontsize = Convert.ToInt32( tfontsize / zscale);
+                margin.Height = Convert.ToInt32(margin.Height / zscale);
+                tr = Convert.ToInt32(tr / zscale);
+                tc = Convert.ToInt32(tc / zscale);
+                drawFont = new Font("Arial", (int)(tfontsize ));
+                e.Graphics.DrawLine(new Pen(drawBrush), (tc - linel), tr, tc + linel, tr);
+                e.Graphics.DrawLine(new Pen(drawBrush), tc, tr - linel, tc, tr + linel);
+                tr += Convert.ToInt32(margin.Height);
+                e.Graphics.DrawString("data...", drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);
+            }
+            return;
+            //double tmptc1 = tc1;
+            //double tmptr1 = tr1;
+            //double tmptc2 = tc2;
+            //double tmptr2 = tr2;
+            //int linel = 40;
+            //if (isshowtext) {
+                
+            //    int tfontsize = vcommon.fontsize;
+            //    int margin = 5+ Math.Abs(tfontsize-80)/4;
+            //    int margin1 = 20 + Math.Abs(tfontsize - 80)/4 ;
+            //    if (!Program.fmain.tbrun.Checked) {
+            //        tfontsize = tfontsize * 4;
+            //        margin = 100 + Math.Abs(tfontsize - 80)/4;
+            //        margin1 = 80 + Math.Abs(tfontsize - 80)/4;
+            //    }
+            //    else
+            //    {
+            //        tmptc1 = tmptc1 / 4;
+            //        tmptr1 = tmptr1 / 4;
+            //        tmptc2 = tmptc2 / 4;
+            //        tmptr2 = tmptr2 / 4;
+            //        linel = linel / 4;
+            //    }
+            //    //text1 = OK/NG
+            //    Font drawFont;
+            //    if (isrun) { 
+            //        drawFont = new Font("Arial", (int)(1.3 * tfontsize * vcommon.viewscale));  
+            //        //if (text1 != "") { 
+            //        //    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle( (tmptc1 - linel) * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale), Convert.ToSingle((tmptc1 + linel) * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale));
+            //        //    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle((tmptr1 - linel) * vcommon.viewscale), Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle((tmptr1 + linel) * vcommon.viewscale));
+            //        //    e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1 * vcommon.viewscale), Convert.ToSingle(tmptr1 * vcommon.viewscale), drawFormat);
+            //        //}
+            //    }
+            //    else
+            //    {
+            //        drawFont = new Font("Arial", (int)(1.3 * tfontsize)); 
+            //        //if (text1 != "")
+            //        //{
+            //        //    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 - linel), Convert.ToSingle(tmptr1), Convert.ToSingle(tmptc1 + linel), Convert.ToSingle(tmptr1));
+            //        //    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 - linel), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 + linel));
+            //        //    e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1), drawFormat);
+                         
+            //        //}
+            //    }
+            //    if (!text1.Equals("")) {
+            //        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1 - linel), Convert.ToSingle(tmptr1), Convert.ToSingle(tmptc1 + linel), Convert.ToSingle(tmptr1));
+            //        e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 - linel), Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1 + linel));
+            //        e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tmptc1), Convert.ToSingle(tmptr1), drawFormat);
+            //    }
+            //    string[] ostr = text2.Split('\r');
+            //    if (isrun) { 
+            //        int tr = (int)(tmptr2 * vcommon.viewscale);
+            //        int tc = (int)(tmptc2 * vcommon.viewscale);
+
+            //        e.Graphics.DrawLine(new Pen(drawBrush),Convert.ToSingle((tc- linel) * vcommon.viewscale),Convert.ToSingle( tr * vcommon.viewscale),Convert.ToSingle( (tc + linel) * vcommon.viewscale),Convert.ToSingle( tr * vcommon.viewscale));
+            //        e.Graphics.DrawLine(new Pen(drawBrush),Convert.ToSingle( tc * vcommon.viewscale),Convert.ToSingle( (tr- linel) * vcommon.viewscale),Convert.ToSingle( tc * vcommon.viewscale),Convert.ToSingle( (tr+ linel) * vcommon.viewscale));
+
+            //        foreach (string str in ostr)
+            //        {
+            //            drawFont = new Font("Arial", (int)(0.5 * tfontsize * vcommon.viewscale));
+            //            e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc * vcommon.viewscale), Convert.ToSingle(tr * vcommon.viewscale), drawFormat);
+            //            tr += margin1;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        int tr = (int)(tmptr2 );
+            //        int tc = (int)(tmptc2 );
+
+            //        e.Graphics.DrawLine(new Pen(drawBrush),(tc - linel) , tr, tc + linel, tr);
+            //        e.Graphics.DrawLine(new Pen(drawBrush), tc, tr - linel, tc, tr + linel);
+            //        foreach (string str in ostr)
+            //        {
+            //            drawFont = new Font("Arial", (int)(0.5 * tfontsize));
+            //            e.Graphics.DrawString(str.Trim(), drawFont, drawBrush, Convert.ToSingle(tc), Convert.ToSingle(tr), drawFormat);
+            //            tr += margin1;
+            //        }
+            //    }
+            //    //e.Graphics.DrawRectangle(Pens.Green, rect.rectangle);
+            //    ////e.Graphics.DrawRectangles(vcommon.hcolor, rect.subRectList.ToArray());
+            //    //e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(60)), new SolidBrush(Color.Green), Convert.ToSingle(col), Convert.ToSingle(row));
                  
 
-            }
+            //}
         }
 
         //public void showtext(HWindow hwd)

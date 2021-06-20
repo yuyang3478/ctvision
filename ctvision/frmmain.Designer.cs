@@ -691,7 +691,7 @@
             this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.groupBox9.Size = new System.Drawing.Size(268, 129);
+            this.groupBox9.Size = new System.Drawing.Size(268, 76);
             this.groupBox9.TabIndex = 44;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "缺陷过滤";
@@ -736,6 +736,7 @@
             this.label38.Size = new System.Drawing.Size(41, 12);
             this.label38.TabIndex = 43;
             this.label38.Text = "宽度: ";
+            this.label38.Visible = false;
             // 
             // barheight
             // 
@@ -750,6 +751,7 @@
             this.barheight.TabIndex = 41;
             this.barheight.TickStyle = System.Windows.Forms.TickStyle.None;
             this.barheight.Value = 10;
+            this.barheight.Visible = false;
             this.barheight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barheight_ValueChanged);
             // 
             // barwidth
@@ -765,6 +767,7 @@
             this.barwidth.TabIndex = 44;
             this.barwidth.TickStyle = System.Windows.Forms.TickStyle.None;
             this.barwidth.Value = 10;
+            this.barwidth.Visible = false;
             this.barwidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barwidth_ValueChanged);
             // 
             // tbwidth
@@ -774,6 +777,7 @@
             this.tbwidth.ReadOnly = true;
             this.tbwidth.Size = new System.Drawing.Size(33, 21);
             this.tbwidth.TabIndex = 45;
+            this.tbwidth.Visible = false;
             // 
             // label33
             // 
@@ -791,6 +795,7 @@
             this.tbheight.ReadOnly = true;
             this.tbheight.Size = new System.Drawing.Size(33, 21);
             this.tbheight.TabIndex = 42;
+            this.tbheight.Visible = false;
             // 
             // bararea
             // 
@@ -823,6 +828,7 @@
             this.label37.Size = new System.Drawing.Size(41, 12);
             this.label37.TabIndex = 40;
             this.label37.Text = "长度: ";
+            this.label37.Visible = false;
             this.label37.Click += new System.EventHandler(this.label37_Click);
             // 
             // groupBox8
