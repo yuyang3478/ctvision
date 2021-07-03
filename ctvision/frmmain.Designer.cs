@@ -59,6 +59,8 @@
             this.tbhelp = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tblogmenu = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnbugmode = new System.Windows.Forms.ToolStripButton();
             this.mstatus = new System.Windows.Forms.StatusStrip();
             this.slabeltips = new System.Windows.Forms.ToolStripStatusLabel();
             this.slabelxy = new System.Windows.Forms.ToolStripStatusLabel();
@@ -280,7 +282,9 @@
             this.tbexit,
             this.tbhelp,
             this.toolStripSeparator6,
-            this.tblogmenu});
+            this.tblogmenu,
+            this.toolStripSeparator7,
+            this.btnbugmode});
             this.mtools.Location = new System.Drawing.Point(0, 0);
             this.mtools.Name = "mtools";
             this.mtools.Padding = new System.Windows.Forms.Padding(0);
@@ -581,6 +585,22 @@
             this.tblogmenu.Text = "toolStripButton10";
             this.tblogmenu.ToolTipText = "管理员登陆";
             this.tblogmenu.Click += new System.EventHandler(this.toolStripButton10_Click_1);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 39);
+            // 
+            // btnbugmode
+            // 
+            this.btnbugmode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnbugmode.Image = ((System.Drawing.Image)(resources.GetObject("btnbugmode.Image")));
+            this.btnbugmode.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnbugmode.Name = "btnbugmode";
+            this.btnbugmode.Size = new System.Drawing.Size(36, 36);
+            this.btnbugmode.Text = "调试模式，自动触发";
+            this.btnbugmode.Visible = false;
+            this.btnbugmode.Click += new System.EventHandler(this.btnbugmode_Click);
             // 
             // mstatus
             // 
@@ -2553,6 +2573,8 @@
         private System.Windows.Forms.TextBox tbshrink;
         private System.Windows.Forms.TrackBar barshrink;
         private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        public System.Windows.Forms.ToolStripButton btnbugmode;
     }
 }
 

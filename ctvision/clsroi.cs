@@ -58,15 +58,15 @@ namespace leanvision
         public int areasurface { get; set; }//面积测量值
         //public double stdsurface { get; set; }//残缺比标准
         public double msurface { get; set; }//残缺比测量值
-        public double grayThresh { get;set; }//缺陷与模板亮度差
+        public int grayThresh { get;set; }//缺陷与模板亮度差
 
-        public double minDefectArea { get; set; }//最小缺陷面积
+        public int minDefectArea { get; set; }//最小缺陷面积
 
-        public double minDefectWidth { get; set; }//最小缺陷宽度
-        public double minDefectHeight { get; set; }//最小缺陷长度
-        public double shrinkPixel { get; set; }
+        public int minDefectWidth { get; set; }//最小缺陷宽度
+        public int minDefectHeight { get; set; }//最小缺陷长度
+        public int shrinkPixel { get; set; }
 
-        public double defectArea { get; set; }//实际缺陷面积
+        public int defectArea { get; set; }//实际缺陷面积
 
         [NonSerialized]
         public Mat whiteMask;//要做序列化或者保存
@@ -966,23 +966,28 @@ namespace leanvision
              
             mask = Mat.Zeros(srcCopy.Size(), MatType.CV_8UC1);
             
-            if (whiteMask == null)
+            if (whiteMask == null&& blackMask!=null)
             {
                 if ((blackMask.Width == mask.Width) && (blackMask.Height == mask.Height)){ 
                     blackMask.CopyTo(mask);
                 }
             }
-            else if (blackMask == null) {
+            else if (blackMask == null&&whiteMask!=null) {
                 if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height))
                 {
                     whiteMask.CopyTo(mask);
                 }
             }
-            else {
+            else if (blackMask != null && whiteMask != null)
+            {
                 if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height)&& (blackMask.Width == mask.Width) && (blackMask.Height == mask.Height))
                 {
                     Cv2.Add(whiteMask, blackMask, mask);
                 }
+            }
+            else
+            {
+                Console.WriteLine("BOTH BLACK MASK AND WHITEMASK ARE NULL");
             }
             //Cv2.ImWrite(".\\aa_whitemask.bmp",whiteMask);
             //Cv2.ImWrite(".\\aa_blackMask.bmp", blackMask);
@@ -1018,9 +1023,9 @@ namespace leanvision
             Cv2.FindContours(subgray, out contours, out hierarchly, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
             if (contours.Length == 0) return true;
 
-            double minarea = int.MaxValue;
+            int minarea = int.MaxValue;
             int minareaIdx = 0;
-            double maxarea = int.MinValue;
+            int maxarea = int.MinValue;
             int maxareaIdx = int.MinValue;
             int idx = 0;
             for (int i = 0; i < contours.Length; i++)
@@ -1029,7 +1034,7 @@ namespace leanvision
                 //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
                
                 var contour = contours[i];
-                double area1 = Cv2.ContourArea(contour);
+                int area1 = Convert.ToInt32( Cv2.ContourArea(contour));
                 
                 if (area1 < minDefectArea) continue;
                 //Rect br = Cv2.BoundingRect(contours[i]);
@@ -1772,7 +1777,16 @@ namespace leanvision
                 nrs.areamax = rs.areamax;
                 nrs.areamaxcheck = rs.areamaxcheck;
                 nrs.closingcircle = rs.closingcircle;
-                nums++;
+                nrs.grayThresh = rs.grayThresh;
+                nrs.minDefectArea = rs.minDefectArea;
+                nrs.minDefectHeight = rs.minDefectHeight;
+                nrs.minDefectWidth = rs.minDefectWidth;
+                nrs.shrinkPixel = rs.shrinkPixel;
+                nrs.thminsurface = rs.thminsurface;
+                nrs.thmaxsurface = rs.thmaxsurface;
+                nrs.surfacecheck = rs.surfacecheck;
+                nrs.surfacemaxcheck = rs.surfacemaxcheck;
+            nums++;
                 nrs.num = nums;
                 roilist.Add(nrs);
             }

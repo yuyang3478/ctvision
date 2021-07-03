@@ -102,8 +102,7 @@ namespace ctmeasure
         public bool isLoginSuccess = false;
         public static string templateFile = "";
         public Mat template = new Mat();
-        
-        
+        private bool bugmode = true;
 
         [DllImport("gdi32.dll")]
         static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
@@ -175,21 +174,7 @@ namespace ctmeasure
             
             //verifylog();
 
-            //调试代码
-            //实例化Timer类，设置间隔时间为10000毫秒； 
-            aTimer = new System.Timers.Timer(1000);
 
-            //注册计时器的事件
-            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-
-            //设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
-            aTimer.Interval = 500;
-
-            //设置是执行一次（false）还是一直执行(true)，默认为true
-            aTimer.AutoReset = false;
-
-            //开始计时
-            aTimer.Enabled = false;
 
             Console.WriteLine("按任意键退出程序。");
             Console.ReadLine();
@@ -723,9 +708,9 @@ namespace ctmeasure
                 tbdrawrect.Checked = false;
                 rois.srois.clear();
                 rois.croi = null;
-                template.CopyTo(dcamera.himg);
-                template.CopyTo(himgbak);
-                pictureBox1.Invalidate();
+                //template.CopyTo(dcamera.himg);
+                //template.CopyTo(himgbak);
+                //pictureBox1.Invalidate();
                 showroidata();
                 tb_magic.Checked = false;
                 tb_move.Checked = false;
@@ -926,7 +911,7 @@ namespace ctmeasure
             dlgsave.DefaultExt = ".bmp";
             if (dlgsave.ShowDialog() == DialogResult.OK) {
                 //pictureBox1.Image.Save(dlgsave.FileName);
-                dcamera.savephoto(dlgsave.FileName);
+                dcamera.savephoto(dlgsave.FileName,himgbak);
             }
         }
 
@@ -1130,9 +1115,15 @@ namespace ctmeasure
             cksurfaceareamax.Checked = rois.croi.surfacemaxcheck;
             thminsurface.Value = rois.croi.thminsurface;
             thmaxsurface.Value = rois.croi.thmaxsurface;
+            barshrink.Value = rois.croi.shrinkPixel;
+            bargraythresh.Value = rois.croi.grayThresh;
+            bararea.Value = rois.croi.minDefectArea;
             tthminsurface.Text = thminsurface.Value.ToString();
             tthmaxsurface.Text = thmaxsurface.Value.ToString();
             tbgraythresh.Text = bargraythresh.Value.ToString();
+            tbshrink.Text = barshrink.Value.ToString();
+            tbgraythresh.Text = bargraythresh.Value.ToString();
+            tbarea.Text = bararea.Value.ToString();
             //bararea.Value = Convert.ToInt32(rois.croi.stdsurface*10);
             //tbarea.Text = (bararea.Value*1.0/10.0).ToString();
 
@@ -1823,7 +1814,7 @@ namespace ctmeasure
         private void btnsaveproduct_Click(object sender, EventArgs e)
         {
             if (himgbak == null) {
-                MessageBox.Show("保存失败，模板为空！");
+                MessageBox.Show("保存失败，模板图片为空！");
                 return;
             }
             //保存数据
@@ -1905,7 +1896,7 @@ namespace ctmeasure
             dcamera.himg = Cv2.ImRead(templateFile);
             dcamera.himg.CopyTo(himgbak);
             dcamera.himg.CopyTo(template);
-            pictureBox1.Refresh();
+            //pictureBox1.Refresh();
             //更新roi列表
             cbbase.Items.Clear();
             cbbase.Items.Add("");
@@ -1957,6 +1948,7 @@ namespace ctmeasure
         }
 
         private void openfile(string fn) {
+            //return;
             //加载数据
             if (!Program.getversion()) return;
             tpart.Text = "";
@@ -2132,25 +2124,25 @@ namespace ctmeasure
                     tb.Enabled = true; 
                 }
                 MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
-                template.CopyTo(dcamera.himg);
-                template.CopyTo(himgbak);
-                pictureBox1.Invalidate();
+                //template.CopyTo(dcamera.himg);
+                //template.CopyTo(himgbak);
+                //pictureBox1.Invalidate();
                 //frmmain_Shown(null,null);
                 //MvApi.CameraSoftTrigger(m_hCamera);
                 //tbrunonce_Click(null, null);
                 //提示当前帧是否保存为模板
-                //if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                //{
-                //    isSaveToTemplate = true;
-                //    //MvApi.CameraSoftTrigger(m_hCamera);
-                //    //Thread.Sleep(150);
-                //    //initview();
-                //    //btnnewproduct_Click(null, null);
-                //}
-                //else
-                //{
-                //    pictureBox1.Invalidate();
-                //}
+                if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    isSaveToTemplate = true;
+                    MvApi.CameraSoftTrigger(m_hCamera);
+                    //Thread.Sleep(150);
+                    initview();
+                    btnnewproduct_Click(null, null);
+                }
+                else
+                {
+                    pictureBox1.Invalidate();
+                }
                 //Thread.Sleep(50);
                 //btnsaveproduct_Click(null, null);
                 //btnloadproduct_Click(null, null);
@@ -2367,11 +2359,33 @@ namespace ctmeasure
             toolStripButton7_Click(null, null);
             tabControl1.SelectedIndex = 3;
 
-             
+            if (bugmode) { 
+                //调试代码
+                //实例化Timer类，设置间隔时间为10000毫秒； 
+                aTimer = new System.Timers.Timer(1000);
+
+                //注册计时器的事件
+                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+
+                //设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
+                aTimer.Interval = 500;
+
+                //设置是执行一次（false）还是一直执行(true)，默认为true
+                aTimer.AutoReset = true;
+
+                //开始计时
+                aTimer.Enabled = true;
+            }
         }
 
         private void toolStripButton9_Click(object sender, EventArgs e)
         {
+            if (bugmode) { 
+                if (aTimer != null) { 
+                    //停止计时
+                    aTimer.Enabled = false;
+                }
+            }
             if (btnstart.Enabled == false) {
                 btnstart.Enabled = true;
                 btnend_Click(null,null);
@@ -3357,13 +3371,22 @@ namespace ctmeasure
         {
             tbshrink.Text = barshrink.Value.ToString();
             foreach (roishape cr in rois.srois.rois) {
-                cr.shrinkPixel = (double)barshrink.Value;
+                cr.shrinkPixel = barshrink.Value;
             }
         }
 
-        
-
-        
+        private void btnbugmode_Click(object sender, EventArgs e)
+        {
+            bugmode = !bugmode;
+            if (bugmode)
+            {
+                btnbugmode.Checked = true;
+            }
+            else
+            {
+                btnbugmode.Checked = false;
+            }
+        }
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
         {
@@ -3512,11 +3535,9 @@ namespace ctmeasure
                 {
                     Cv2.CvtColor(dcamera.himg, dcamera.himg, ColorConversionCodes.GRAY2BGR);
                 }
-                //himgbak = dcamera.getBackImg();
-                //himgbak = dcamera.getBackImg();
-                //himgbak.CopyTo(template);
-                //himgbak = dcamera.getBackImg();
-                //himgbak.CopyTo(template);
+                //dcamera.himg.CopyTo(himgbak);
+                dcamera.himg.CopyTo(template);
+                himgbak = dcamera.getBackImg();
 
                 //pictureBox1.Invalidate();
                 isRunOrRunOnceChecked = false;

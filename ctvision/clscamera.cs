@@ -220,9 +220,9 @@ namespace leanvision
         }
 
 
-        public void savephoto(string filename)
+        public void savephoto(string filename,Mat imgback)
         {
-            Cv2.ImWrite(filename, himg);//保存到桌面
+            Cv2.ImWrite(filename, imgback);//保存到桌面
             //himg.WriteImage("jpeg", 0, filename);
         }
         public void cameraparam() {

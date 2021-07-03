@@ -34,7 +34,8 @@ namespace ctmeasure
             }
             catch (IOException e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("登陆异常！");
+                Console.WriteLine(e.Message);
             }
             finally {
                 sr.Close();
@@ -74,6 +75,7 @@ namespace ctmeasure
                     if (tb.Name != "tbrun" && tb.Name != "tbrunstrop" && tb.Name != "tbcheckimage" && tb.Name != "tblogmenu") tb.Enabled = false;
                 }
                 Program.fmain.isLoginSuccess = false;
+                Program.fmain.btnbugmode.Visible = false;
                 this.Close();
                 return;
             }
@@ -87,7 +89,9 @@ namespace ctmeasure
             string input = uname + pwd;
             //string hash = GetSha1Hash(input);
             //Write(".\\info.txt", hash);
+
             string hash = Read(".\\info.txt");
+
             bool sucess = VerifySha1Hash(input, hash);
             if (sucess)
             {
@@ -96,6 +100,7 @@ namespace ctmeasure
                    tb.Enabled = true;
                 }
                 Program.fmain.isLoginSuccess = true;
+                Program.fmain.btnbugmode.Visible = true;
                 this.Close();
                 //MessageBox.Show("登陆成功！");
             }
