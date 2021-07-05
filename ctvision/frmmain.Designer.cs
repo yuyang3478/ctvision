@@ -745,7 +745,7 @@
             this.bargraythresh.Size = new System.Drawing.Size(166, 28);
             this.bargraythresh.TabIndex = 46;
             this.bargraythresh.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.bargraythresh.Value = 5;
+            this.bargraythresh.Value = 50;
             this.bargraythresh.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bargraythresh_ValueChanged);
             // 
             // label38

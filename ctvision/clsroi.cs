@@ -190,7 +190,13 @@ namespace leanvision
                 //MessageBox.Show("ROI 超出边界");
                 return;
             }
-            srcCopy.CopyTo(himg[roi]);
+            if (srcCopy != null) { 
+                srcCopy.CopyTo(himg[roi]);
+            }
+            else
+            {
+                Console.WriteLine("showresult srcCopy is null");
+            }
 
             //Cv2.ImShow("srcCopy", srcCopy);
             //Cv2.WaitKey(10000000);
@@ -668,7 +674,7 @@ namespace leanvision
             {
                 thickns = 3;
             }
-            
+
             for (int i = 0; i < contours.Length; i++)
             {
                 //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
@@ -717,8 +723,8 @@ namespace leanvision
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (areamaxcheck && !combinecheck)
             {
-
-
+                //Cv2.ImWrite("C:\\Users\\Administrator\\Pictures\\result.bmp", srcCopy);
+                //return;
                 Cv2.DrawContours(
                             srcCopy,
                             contours,
@@ -727,8 +733,21 @@ namespace leanvision
                             thickness: thickns,//CV_FILLED
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
-                            maxLevel: int.MaxValue);
+                            maxLevel: 0);
+                
                 boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
+            }
+            else
+            {
+                Cv2.DrawContours(
+                            srcCopy,
+                            contours,
+                            -1,
+                            color: new Scalar(0, 0, 255),
+                            thickness: thickns,//CV_FILLED
+                            lineType: LineTypes.Link8,
+                            hierarchy: hierarchly,
+                            maxLevel: int.MaxValue);
             }
 
             //Cv2.Rectangle(srcCopy,
@@ -820,7 +839,7 @@ namespace leanvision
                 
             }
 
-             
+
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
             //srcCopy.CopyTo(himg[roi]);
@@ -954,7 +973,7 @@ namespace leanvision
                 return false;
             }
             double stime1 = Environment.TickCount;
-            srcCopy = himgbak[roi];
+            himgbak[roi].CopyTo(srcCopy);
             
             //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
             Mat subgray = new Mat(new OpenCvSharp.Size( srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
@@ -982,6 +1001,7 @@ namespace leanvision
             {
                 if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height)&& (blackMask.Width == mask.Width) && (blackMask.Height == mask.Height))
                 {
+                    
                     Cv2.Add(whiteMask, blackMask, mask);
                 }
             }
@@ -996,15 +1016,18 @@ namespace leanvision
             //Cv2.CvtColor(mask, grayMask, ColorConversionCodes.BGR2GRAY);
             //Cv2.ImShow("whitemask", whiteMask);
             //Cv2.ImShow("subgray", mask);
-           
-             
+
+
             Cv2.CvtColor(Program.fmain.template[roi], temlateRoi, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(himgbak[roi], himgbakRoi, ColorConversionCodes.BGR2GRAY);
              
             Cv2.Subtract(himgbakRoi, temlateRoi, subgray, mask);
+            //Cv2.ImWrite(".\\aa_subgray.bmp", himgbak[roi]);
             Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
+            //Cv2.ImWrite(".\\aa_subgray1.bmp", subgray1);
 
             Cv2.Add(subgray, subgray1, subgray , mask);
+            //Cv2.ImWrite(".\\aa_subgray2.bmp", subgray);
             double etime1 = Environment.TickCount;
             Console.WriteLine("Subtract耗时： {0}", etime1 - stime1);
 
@@ -1012,9 +1035,11 @@ namespace leanvision
             //double min, max;
             //Cv2.MinMaxLoc(subgray, out min, out max);
             //Cv2.CvtColor(submat, subgray, ColorConversionCodes.BGR2GRAY);
-            Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
-            //Cv2.ImWrite(".\\aaa_subgray.bmp", subgray);
+            //Cv2.EqualizeHist(subgray, subgray);
             
+            Cv2.Threshold(subgray,subgray, grayThresh, 255, ThresholdTypes.Binary);
+            //Cv2.ImWrite(".\\aaa_subgray4.bmp", subgray);
+
 
             //Cv2.WaitKey(10);
             //获得轮廓
@@ -1059,19 +1084,19 @@ namespace leanvision
                     contours,
                     minareaIdx,
                     color: new Scalar(0, 0, 255),
-                    thickness: -1,
+                    thickness: 3,
                     lineType: LineTypes.Link8,
                     hierarchy: hierarchly,
-                    maxLevel: 0);
+                    maxLevel: int.MaxValue);
                 Cv2.DrawContours(
                     srcCopy,
                     contours,
                     maxareaIdx,
                     color: new Scalar(0, 0, 255),
-                    thickness: -1,
+                    thickness: 3,
                     lineType: LineTypes.Link8,
                     hierarchy: hierarchly,
-                    maxLevel: 0);
+                    maxLevel: int.MaxValue);
                 defectArea = maxarea;
             }
             //double start = Environment.TickCount;
@@ -1291,7 +1316,7 @@ namespace leanvision
             //点击在选择roi的内部开始移动，点击在某一roi手柄开始resize
             foreach (roishape cr in srois.rois)
             {
-                Console.WriteLine("draw selected roi,mouse down:{0} {1} {2} {3}", cr.col, cr.col1, cr.row,  cr.row1);
+                //Console.WriteLine("draw selected roi,mouse down:{0} {1} {2} {3}", cr.col, cr.col1, cr.row,  cr.row1);
                 if (tmx > (cr.col - 50) && tmx < (cr.col1 + 50) && tmy > (cr.row - 50) && tmy < (cr.row1 + 50))
                 {
                     //double aaa = cr.col1 - cr.col;
@@ -1334,10 +1359,10 @@ namespace leanvision
                 rs.row = newimagey - oldimagey + rs.row;
                 rs.row1 = newimagey - oldimagey + rs.row1; 
             }
-            tc1 = newimagex - oldimagex + tc1;
-            tr1 = newimagex - oldimagex + tr1;
-            tc2 = newimagex - oldimagex + tc2;
-            tr2 = newimagex - oldimagex + tr2;
+            //tc1 = newimagex - oldimagex + tc1;
+            //tr1 = newimagex - oldimagex + tr1;
+            //tc2 = newimagex - oldimagex + tc2;
+            //tr2 = newimagex - oldimagex + tr2;
         }
 
         internal void zoomshapeall(int x, int y, double oldzoom, double zscale,int imgx,int imgy)

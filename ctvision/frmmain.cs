@@ -645,7 +645,7 @@ namespace ctmeasure
         {
             if (!pictureBox1.Focused) pictureBox1.Focus();
             //movex1=e.X;movey1=e.Y;
-            slabelxy.Text = string.Format("XY: {0},{1}  scale:{2:0.00}", e.X.ToString("f0"), e.Y.ToString("f0"),zscale);
+            //slabelxy.Text = string.Format("XY: {0},{1}  scale:{2:0.00}", e.X.ToString("f0"), e.Y.ToString("f0"),zscale);
 
             if (!mouseleftpress&&!mousemidpress) return;
             //视图平移
@@ -2600,7 +2600,7 @@ namespace ctmeasure
 
         private void ckareamax_Click(object sender, EventArgs e)
         {
-            ckcombine.Checked = false;
+            ckcombine.Checked = false; 
             drawregion();
         }
 
@@ -2959,6 +2959,7 @@ namespace ctmeasure
             if (tbrun.Checked || tbcameraplay.Checked) return;
             //if (e.Delta > 0) toolStripButton6_Click(null, null);
             //else toolStripButton5_Click(null, null);
+            if (tb_move.Checked) return;
             if (e.Delta > 0) {
                 zoomImageWithMouse(sender, e, 0.9);
             }
@@ -3089,10 +3090,11 @@ namespace ctmeasure
             int i = 0;
             foreach (clsmeasure cs in mrois.ilist)
             {
-                if (cs.mresult.Equals("NG"))
+                double std = cs.mstd;
+                double realv = cs.mvalue - cs.moffset;
+                if (std-realv>0.0001)
                 {
-                    double std = cs.mstd;
-                    double realv = cs.mvalue-cs.moffset;
+                    //if (cs.mresult.Equals("NG"))
                     cs.moffset = std - realv;
                 } 
                 //dgview.Rows.Add();
@@ -3311,7 +3313,7 @@ namespace ctmeasure
                 croi.minDefectWidth = barwidth.Value;
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
-            MvApi.CameraSoftTrigger(m_hCamera);
+            //MvApi.CameraSoftTrigger(m_hCamera);
             //pictureBox1.Invalidate();
         }
 
