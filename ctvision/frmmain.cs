@@ -133,8 +133,7 @@ namespace ctmeasure
 
             //camera
             dcamera = new clscamera();
-            //IO
-            dio = new clsio();
+            
 
             //待重写
             //roi
@@ -171,11 +170,12 @@ namespace ctmeasure
 
             initview();
             //initcsv();
-            
+
             //verifylog();
 
-
-
+            
+            //IO
+            dio = new clsio();
             Console.WriteLine("按任意键退出程序。");
             Console.ReadLine();
         }
@@ -1664,7 +1664,7 @@ namespace ctmeasure
                     double etime1 = Environment.TickCount;
 
                     Console.WriteLine("表面检测耗时： {0}",etime1 - stime1);
-                    if (areack == false) {
+                    if (!areack) {
                         testresult = "NG";
                         mcon = rs.num.ToString("d3");
                         if (this.rtresult.InvokeRequired)
@@ -1693,14 +1693,14 @@ namespace ctmeasure
                 if (this.lbng.InvokeRequired) { lbng.Invoke(new MethodInvoker(delegate () { lbng.Visible = true; })); }
                 else { lbng.Visible = true; }
                 //lbng.Visible = true;
-                //if(tbrun.Checked) dio.sendng();
+                if(tbrun.Checked) dio.sendng();
                 vcommon.qtyng++;
             }
             else {
                 if (this.lbpass.InvokeRequired) { lbpass.Invoke(new MethodInvoker(delegate () { lbpass.Visible = true; })); }
                 else { lbpass.Visible = false; }
                 //lbpass.Visible = true;
-                //if(tbrun.Checked) dio.sendok();
+                if(tbrun.Checked) dio.sendok();
                 vcommon.qtypass++;
             }
             vcommon.qty++;
@@ -1944,6 +1944,7 @@ namespace ctmeasure
             rtresult.Text = "";
             if (dcamera.himg!=null && himgbak!=null)
                 showroidata();
+            //zoomall();
             pictureBox1.Invalidate();
         }
 
@@ -2344,7 +2345,7 @@ namespace ctmeasure
             tb_magic.Checked = false;
             tbdrawrect.Checked = false;
             foreach (ToolStripItem tb in mtools.Items) {
-                if(tb.Name!="toolStripButton8") tb.Enabled = false;
+                if(tb.Name!="toolStripButton8"&&tb.Name!= "tbcheckimage") tb.Enabled = false;
             }
             //foreach (Control ctr in tabControl1.Controls)
             //{
@@ -3092,7 +3093,7 @@ namespace ctmeasure
             {
                 double std = cs.mstd;
                 double realv = cs.mvalue - cs.moffset;
-                if (std-realv>0.0001)
+                if (Math.Abs(std-realv)>0.0001)
                 {
                     //if (cs.mresult.Equals("NG"))
                     cs.moffset = std - realv;
@@ -3265,7 +3266,11 @@ namespace ctmeasure
                 return;
             }
             fprint.pbegin();
-            btnstart.Enabled = false; 
+            btnstart.Enabled = false;
+            vcommon.qty = 0;
+            vcommon.qtypass = 0;
+            vcommon.qtyng = 0;
+            vcommon.qtyrate = 0;
             //button4_Click(null, null);
         }
 

@@ -84,7 +84,7 @@ namespace leanvision
         [NonSerialized]
         public int r1, c1, r2, c2;
         [NonSerialized]
-        Mat srcCopy = new Mat();
+        Mat srcCopy;
         [NonSerialized]
         Rect boundingRect;
         [NonSerialized]
@@ -111,13 +111,14 @@ namespace leanvision
             rowmax = colmax = widthmax = heightmax = areamax = 99999;
             areamaxcheck = true;
             area = ar = ac = cr = cc = cradius = gr = gc= 0;
+            
         }
 
         public roishape(string strshape, Mat himgbak, double vr1, double vc1, double vr2, double vc2):this() 
         {
             shape = strshape;
             row = vr1; col = vc1; row1 = vr2; col1 = vc2;
-           
+            srcCopy = new Mat();
         }
 
         public void repair(Mat himg, Mat himgback, int iw, int ih)
@@ -972,6 +973,8 @@ namespace leanvision
                 MessageBox.Show("ROI 超出边界");
                 return false;
             }
+            if (srcCopy==null)
+                srcCopy = new Mat();
             double stime1 = Environment.TickCount;
             himgbak[roi].CopyTo(srcCopy);
             
@@ -1020,9 +1023,13 @@ namespace leanvision
 
             Cv2.CvtColor(Program.fmain.template[roi], temlateRoi, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(himgbak[roi], himgbakRoi, ColorConversionCodes.BGR2GRAY);
-             
+            //himgbakRoi = Cv2.ImRead(".\\aa_himgbak.bmp");
+            //temlateRoi = Cv2.ImRead(".\\aa_template.bmp");
             Cv2.Subtract(himgbakRoi, temlateRoi, subgray, mask);
-            //Cv2.ImWrite(".\\aa_subgray.bmp", himgbak[roi]);
+            Cv2.ImWrite(".\\aa_template.bmp", temlateRoi);
+            Cv2.ImWrite(".\\aa_himgbak.bmp", himgbakRoi);
+            Cv2.ImWrite(".\\aa_mask.bmp", mask);
+            Cv2.ImWrite(".\\aa_subgray.bmp", subgray);
             Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
             //Cv2.ImWrite(".\\aa_subgray1.bmp", subgray1);
 
@@ -1626,11 +1633,23 @@ namespace leanvision
             e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(vcommon.viewx - 40), Convert.ToSingle(vcommon.viewy), Convert.ToSingle(vcommon.viewx+ 40), Convert.ToSingle(vcommon.viewy));
             e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(vcommon.viewx), Convert.ToSingle(vcommon.viewy-40), Convert.ToSingle(vcommon.viewx), Convert.ToSingle(vcommon.viewy + 40));
             int tfontsize = vcommon.fontsize;
-            int linel = 25;
+            int linel = 15;
             Font drawFont;
             drawFont = new Font("Arial", (int)(tfontsize));
             StringFormat sf = new StringFormat(StringFormat.GenericTypographic);
             SizeF margin = e.Graphics.MeasureString("OK", drawFont, 1000, sf);
+            int w = Program.fmain.pictureBox1.Width;
+            int h = Program.fmain.pictureBox1.Height;
+            //if (tr1 < 60 * linel) tr1 = 60 * linel;
+            //if (tr1 > h - 60 * linel) tr1 = h - 60 * linel;
+            //if (tc1 < 60 * linel) tc1 = w - 60 * linel;
+            //if (tc1 > h - 60 * linel) tc1 = h - 60 * linel;
+            //Console.WriteLine("{0},{1},{2},{3}",tr1.ToString(), tc1.ToString(), tr2.ToString(), tc2.ToString());
+            //Console.WriteLine("{0},{1}",h.ToString(), w.ToString());
+            //tc1 = 200;
+            //tr1 = 200;
+            //tc2 = 400;
+            //tr2 = 400;
             int tr = (int)(tr2);
             int tc = (int)(tc2);
             if (isrun)

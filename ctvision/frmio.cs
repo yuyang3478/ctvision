@@ -20,7 +20,7 @@ namespace ctmeasure
         private void frmio_Load(object sender, EventArgs e)
         {
             comio = Program.fmain.dio;
-            cbcomport.SelectedIndex = comio.comport-1;
+            cbcomport.SelectedIndex = comio.comport;
             ttrigger.Text = comio.trigger;
             ttriggerdelay.Text = comio.triggerdelay.ToString();
             tokon.Text = comio.sokon;
@@ -45,7 +45,7 @@ namespace ctmeasure
         {
             if (!cbcomport.Focused) return;
             comio.comclose();
-            comio.comport = cbcomport.SelectedIndex + 1;
+            comio.comport = cbcomport.SelectedIndex;
             updateio();
             comio.comopen();
         }

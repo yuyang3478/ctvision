@@ -38,8 +38,8 @@ namespace leanvision
         public clsio() {
             //mscom= Program.fmain.mscom;
             //mscom.OnComm += new EventHandler(this.mscom_OnComm);
-            comopen();
             loaddata();
+            //comopen(); 
             serialPort.DataReceived += this.mscom_OnComm;
 
         }
@@ -68,8 +68,8 @@ namespace leanvision
                 //mscom.OutBufferSize = 512;
                 //mscom.PortOpen = true;
             }
-            catch {
-                MessageBox.Show("端口打开错误！");
+            catch (Exception e){
+                MessageBox.Show(e.Message);
             }
         }
 

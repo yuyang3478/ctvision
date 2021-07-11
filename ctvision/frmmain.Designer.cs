@@ -609,7 +609,7 @@
             this.slabeltips,
             this.slabelxy,
             this.slabelzoom});
-            this.mstatus.Location = new System.Drawing.Point(0, 795);
+            this.mstatus.Location = new System.Drawing.Point(0, 711);
             this.mstatus.Name = "mstatus";
             this.mstatus.Size = new System.Drawing.Size(1265, 38);
             this.mstatus.TabIndex = 1;
@@ -640,7 +640,7 @@
             this.ptools.Dock = System.Windows.Forms.DockStyle.Right;
             this.ptools.Location = new System.Drawing.Point(815, 0);
             this.ptools.Name = "ptools";
-            this.ptools.Size = new System.Drawing.Size(448, 754);
+            this.ptools.Size = new System.Drawing.Size(448, 670);
             this.ptools.TabIndex = 2;
             // 
             // tabControl1
@@ -655,12 +655,13 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(445, 1260);
+            this.tabControl1.Size = new System.Drawing.Size(445, 676);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabroi
             // 
+            this.tabroi.AutoScroll = true;
             this.tabroi.Controls.Add(this.groupBox6);
             this.tabroi.Controls.Add(this.cbthway);
             this.tabroi.Controls.Add(this.label10);
@@ -673,7 +674,7 @@
             this.tabroi.Location = new System.Drawing.Point(4, 22);
             this.tabroi.Name = "tabroi";
             this.tabroi.Padding = new System.Windows.Forms.Padding(3);
-            this.tabroi.Size = new System.Drawing.Size(437, 1234);
+            this.tabroi.Size = new System.Drawing.Size(437, 650);
             this.tabroi.TabIndex = 3;
             this.tabroi.Text = "图像识别";
             this.tabroi.UseVisualStyleBackColor = true;
@@ -1430,6 +1431,7 @@
             // 
             // tabmeasure
             // 
+            this.tabmeasure.AutoScroll = true;
             this.tabmeasure.Controls.Add(this.btnlvcopy);
             this.tabmeasure.Controls.Add(this.groupBox5);
             this.tabmeasure.Controls.Add(this.panel1);
@@ -1440,7 +1442,7 @@
             this.tabmeasure.Location = new System.Drawing.Point(4, 22);
             this.tabmeasure.Name = "tabmeasure";
             this.tabmeasure.Padding = new System.Windows.Forms.Padding(3);
-            this.tabmeasure.Size = new System.Drawing.Size(437, 1234);
+            this.tabmeasure.Size = new System.Drawing.Size(437, 650);
             this.tabmeasure.TabIndex = 1;
             this.tabmeasure.Text = "检测内容";
             this.tabmeasure.UseVisualStyleBackColor = true;
@@ -1491,7 +1493,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 28);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(431, 275);
+            this.panel1.Size = new System.Drawing.Size(414, 275);
             this.panel1.TabIndex = 24;
             // 
             // dgview
@@ -1512,7 +1514,7 @@
             this.dgview.RowHeadersWidth = 82;
             this.dgview.RowTemplate.Height = 23;
             this.dgview.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgview.Size = new System.Drawing.Size(431, 275);
+            this.dgview.Size = new System.Drawing.Size(414, 275);
             this.dgview.TabIndex = 24;
             this.dgview.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgview_RowEnter);
             this.dgview.Click += new System.EventHandler(this.dgview_Click);
@@ -1745,7 +1747,7 @@
             this.label23.Dock = System.Windows.Forms.DockStyle.Top;
             this.label23.Location = new System.Drawing.Point(3, 3);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(431, 25);
+            this.label23.Size = new System.Drawing.Size(414, 25);
             this.label23.TabIndex = 17;
             this.label23.Text = "检测内容";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1763,7 +1765,7 @@
             this.tabresult.Location = new System.Drawing.Point(4, 22);
             this.tabresult.Name = "tabresult";
             this.tabresult.Padding = new System.Windows.Forms.Padding(3);
-            this.tabresult.Size = new System.Drawing.Size(437, 1234);
+            this.tabresult.Size = new System.Drawing.Size(437, 650);
             this.tabresult.TabIndex = 2;
             this.tabresult.Text = "检测结果";
             this.tabresult.UseVisualStyleBackColor = true;
@@ -1979,7 +1981,7 @@
             this.tabdata.Location = new System.Drawing.Point(4, 22);
             this.tabdata.Name = "tabdata";
             this.tabdata.Padding = new System.Windows.Forms.Padding(3);
-            this.tabdata.Size = new System.Drawing.Size(437, 1234);
+            this.tabdata.Size = new System.Drawing.Size(437, 650);
             this.tabdata.TabIndex = 4;
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
@@ -2082,7 +2084,7 @@
             this.rtresult.Name = "rtresult";
             this.rtresult.ReadOnly = true;
             this.rtresult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtresult.Size = new System.Drawing.Size(427, 579);
+            this.rtresult.Size = new System.Drawing.Size(427, 620);
             this.rtresult.TabIndex = 15;
             this.rtresult.Text = "";
             this.rtresult.WordWrap = false;
@@ -2095,7 +2097,7 @@
             this.tbdatastatistic.Location = new System.Drawing.Point(4, 22);
             this.tbdatastatistic.Name = "tbdatastatistic";
             this.tbdatastatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tbdatastatistic.Size = new System.Drawing.Size(437, 1234);
+            this.tbdatastatistic.Size = new System.Drawing.Size(437, 650);
             this.tbdatastatistic.TabIndex = 5;
             this.tbdatastatistic.Text = "数据统计";
             this.tbdatastatistic.UseVisualStyleBackColor = true;
@@ -2134,7 +2136,7 @@
             this.rtdatastatistic.Name = "rtdatastatistic";
             this.rtdatastatistic.ReadOnly = true;
             this.rtdatastatistic.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtdatastatistic.Size = new System.Drawing.Size(427, 699);
+            this.rtdatastatistic.Size = new System.Drawing.Size(427, 620);
             this.rtdatastatistic.TabIndex = 16;
             this.rtdatastatistic.Text = "";
             this.rtdatastatistic.WordWrap = false;
@@ -2148,7 +2150,7 @@
             this.pview.Location = new System.Drawing.Point(0, 39);
             this.pview.Margin = new System.Windows.Forms.Padding(6);
             this.pview.Name = "pview";
-            this.pview.Size = new System.Drawing.Size(1265, 756);
+            this.pview.Size = new System.Drawing.Size(1265, 672);
             this.pview.TabIndex = 4;
             // 
             // phwin
@@ -2160,7 +2162,7 @@
             this.phwin.Location = new System.Drawing.Point(0, 0);
             this.phwin.Margin = new System.Windows.Forms.Padding(0);
             this.phwin.Name = "phwin";
-            this.phwin.Size = new System.Drawing.Size(742, 1259);
+            this.phwin.Size = new System.Drawing.Size(742, 1175);
             this.phwin.TabIndex = 1;
             this.phwin.TabStop = true;
             // 
@@ -2172,7 +2174,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(720, 1502);
+            this.pictureBox1.Size = new System.Drawing.Size(720, 1418);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hwin_KeyUp);
@@ -2317,7 +2319,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1265, 833);
+            this.ClientSize = new System.Drawing.Size(1265, 749);
             this.Controls.Add(this.btnroi);
             this.Controls.Add(this.pview);
             this.Controls.Add(this.mstatus);
