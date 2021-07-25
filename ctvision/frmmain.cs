@@ -185,6 +185,7 @@ namespace ctmeasure
                 foreach (ToolStripItem tb in mtools.Items)
                 {
                     if (tb.Name != "tbrun"&& tb.Name != "tbrunstrop"&& tb.Name != "tbcheckimage" && tb.Name != "tblogmenu") tb.Enabled = false;
+                    模式ToolStripMenuItem.Enabled = false;
                 }
             }
         }
@@ -565,20 +566,17 @@ namespace ctmeasure
 
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
-            zoomall();
-            showroidata();
+            
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            zoomin(); 
-            if(tplay.Enabled==false) showroidata();
+            
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e)
         {
-            zoomout();
-            if(tplay.Enabled==false) showroidata();
+            
         }
 
         //=======================================halwin 视图控制
@@ -889,30 +887,12 @@ namespace ctmeasure
         //图片操作
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            dlgopen.FileName = "";
-            dlgopen.Filter = "photo files|*.jpg;*.bmp";
-            dlgopen.InitialDirectory = "";
-            if (dlgopen.ShowDialog() == DialogResult.OK) {
-                //pictureBox1.Image = Image.FromFile(dlgopen.FileName);
-                dcamera.loadphoto(dlgopen.FileName);
-                himgbak = dcamera.getBackImg();
-                himgbak.CopyTo(template);
-                initview();
-                btnnewproduct_Click(null, null);
-                
-            }
+            
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            dlgsave.FileName = "";
-            dlgsave.Filter = "photo files|*.bmp";
-            dlgsave.InitialDirectory = "";
-            dlgsave.DefaultExt = ".bmp";
-            if (dlgsave.ShowDialog() == DialogResult.OK) {
-                //pictureBox1.Image.Save(dlgsave.FileName);
-                dcamera.savephoto(dlgsave.FileName,himgbak);
-            }
+            
         }
 
         //------------------
@@ -2087,10 +2067,7 @@ namespace ctmeasure
         //================相机设置
         private void tbcamera_Click(object sender, EventArgs e)
         {
-            if (InitCamera() == true)
-            {
-                MvApi.CameraShowSettingPage(m_hCamera, 1);//1 show ; 0 hide
-            }
+            
             //dcamera.showSetting();
             ////fcamera = new frmcamera();
             ////fcamera.Owner = this;
@@ -2258,9 +2235,7 @@ namespace ctmeasure
 
         private void tbio_Click(object sender, EventArgs e)
         {
-            fio = new frmio();
-            fio.Owner = this;
-            fio.ShowDialog();
+            
         }
         private void tbrunonce_Click(object sender, EventArgs e)
         { 
@@ -2355,7 +2330,7 @@ namespace ctmeasure
             //tbrunonce.Enabled = true;
             tbrun.Enabled = true;
             tbrunstrop.Enabled = true;
-            tbhelp.Enabled = true;
+            //tbhelp.Enabled = true;
             tbrun.Checked = true;
             ptools.Width = 450;
             toolStripButton7_Click(null, null);
@@ -2413,8 +2388,7 @@ namespace ctmeasure
 
         private void tbhelp_Click(object sender, EventArgs e)
         {
-            frmabout fabout = new frmabout();
-            fabout.ShowDialog();
+            
         }
 
         private void tbcamera_MouseEnter(object sender, EventArgs e)
@@ -2475,10 +2449,7 @@ namespace ctmeasure
 
         private void tbsetting_Click(object sender, EventArgs e)
         {
-            frmsetting fs = new frmsetting();
-            fs.StartPosition = FormStartPosition.CenterScreen;
-            fs.ShowDialog();
-            pictureBox1.Invalidate();
+            
         }
 
         
@@ -2926,7 +2897,7 @@ namespace ctmeasure
 
         private void toolStripButton8_Click(object sender, EventArgs e)
         {
-            fprint.photosview();
+            
         }
 
         private void measure_log_Click(object sender, EventArgs e) {
@@ -3059,8 +3030,7 @@ namespace ctmeasure
                 croi.thmaxsurface = thmaxsurface.Value; 
                 croi.grayThresh = bargraythresh.Value;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectWidth = barwidth.Value;
-                croi.minDefectHeight = barheight.Value;
+                 
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
             }
@@ -3315,8 +3285,7 @@ namespace ctmeasure
                 croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
+                 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
             //MvApi.CameraSoftTrigger(m_hCamera);
@@ -3345,8 +3314,7 @@ namespace ctmeasure
                 croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
+                
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
@@ -3385,15 +3353,126 @@ namespace ctmeasure
 
         private void btnbugmode_Click(object sender, EventArgs e)
         {
-            bugmode = !bugmode;
-            if (bugmode)
+             
+        }
+
+      
+
+        private void 截图ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fprint.photosview();
+        }
+
+        private void 统计ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            measure_log_Click(sender, e);
+        }
+
+        private void 相机ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (InitCamera() == true)
             {
-                btnbugmode.Checked = true;
+                MvApi.CameraShowSettingPage(m_hCamera, 1);//1 show ; 0 hide
             }
-            else
+        }
+
+        private void 通信ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fio = new frmio();
+            fio.Owner = this;
+            fio.ShowDialog();
+        }
+
+        private void 显示ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmsetting fs = new frmsetting();
+            fs.StartPosition = FormStartPosition.CenterScreen;
+            fs.ShowDialog();
+            pictureBox1.Invalidate();
+        }
+
+        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dlgsave.FileName = "";
+            dlgsave.Filter = "photo files|*.bmp";
+            dlgsave.InitialDirectory = "";
+            dlgsave.DefaultExt = ".bmp";
+            if (dlgsave.ShowDialog() == DialogResult.OK)
             {
-                btnbugmode.Checked = false;
+                //pictureBox1.Image.Save(dlgsave.FileName);
+                dcamera.savephoto(dlgsave.FileName, himgbak);
             }
+        }
+
+        private void 加载ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dlgopen.FileName = "";
+            dlgopen.Filter = "photo files|*.jpg;*.bmp";
+            dlgopen.InitialDirectory = "";
+            if (dlgopen.ShowDialog() == DialogResult.OK)
+            {
+                //pictureBox1.Image = Image.FromFile(dlgopen.FileName);
+                dcamera.loadphoto(dlgopen.FileName);
+                himgbak = dcamera.getBackImg();
+                himgbak.CopyTo(template);
+                initview();
+                btnnewproduct_Click(null, null);
+
+            }
+        }
+
+        private void 放大ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            zoomin();
+            if (tplay.Enabled == false) showroidata();
+        }
+
+        private void 缩小ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            zoomout();
+            if (tplay.Enabled == false) showroidata();
+        }
+
+        private void 还原ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            zoomall();
+            if (tplay.Enabled == false)  showroidata();
+        }
+
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmabout fabout = new frmabout();
+            fabout.ShowDialog();
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void 调试ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bugmode = true;
+        }
+
+        private void 运行ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bugmode = false;
+        }
+
+        private void 单次ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tbrunonce_Click(sender, e);
+        }
+
+        private void 连续ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tbrun_Click(sender, e);
+        }
+
+        private void 暂停ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripButton9_Click(sender, e);
         }
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
@@ -3418,46 +3497,14 @@ namespace ctmeasure
                 croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
+                
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
             pictureBox1.Invalidate();
         }
 
-        private void barheight_ValueChanged(object sender, MouseEventArgs e)
-        {
-            if (!barheight.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tbheight.Text = barheight.Value.ToString();
-            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
-            {
-                MessageBox.Show("请先选择亮/暗区域");
-                return;
-            }
-            foreach (roishape croi in rois.srois.rois)
-            {
-                if (!croi.surfacecheck) continue;
-                //赋值
-                //croi.surfacecheck = cksurface.Checked;
-                //croi.surfacemaxcheck = cksurfaceareamax.Checked;
-                croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
-                croi.grayThresh = bargraythresh.Value;
-                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
-                croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
-
-                //croi.getWhiteMask(dcamera.himg, himgbak);
-            }
-            MvApi.CameraSoftTrigger(m_hCamera);
-            pictureBox1.Invalidate();
-        }
-
-
+         
          
 
         private void btnend_Click(object sender, EventArgs e)

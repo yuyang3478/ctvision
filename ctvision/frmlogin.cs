@@ -75,7 +75,8 @@ namespace ctmeasure
                     if (tb.Name != "tbrun" && tb.Name != "tbrunstrop" && tb.Name != "tbcheckimage" && tb.Name != "tblogmenu") tb.Enabled = false;
                 }
                 Program.fmain.isLoginSuccess = false;
-                Program.fmain.btnbugmode.Visible = false;
+                Program.fmain.模式ToolStripMenuItem.Enabled = false;
+                 
                 this.Close();
                 return;
             }
@@ -100,7 +101,8 @@ namespace ctmeasure
                    tb.Enabled = true;
                 }
                 Program.fmain.isLoginSuccess = true;
-                Program.fmain.btnbugmode.Visible = true;
+
+                Program.fmain.模式ToolStripMenuItem.Enabled = true;
                 this.Close();
                 //MessageBox.Show("登陆成功！");
             }

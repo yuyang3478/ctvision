@@ -44,7 +44,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(210, 24);
             this.label1.TabIndex = 0;
-            this.label1.Text = "载带视觉检测系统";
+            this.label1.Text = "普惠视觉检测系统";
             // 
             // lbversion
             // 
@@ -64,7 +64,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(104, 16);
             this.label3.TabIndex = 2;
-            this.label3.Text = "AMX 系列软件";
+            this.label3.Text = "普惠工业软件";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // button1
@@ -86,7 +86,7 @@
             this.lbhight.Name = "lbhight";
             this.lbhight.Size = new System.Drawing.Size(224, 16);
             this.lbhight.TabIndex = 4;
-            this.lbhight.Text = "请使用正版软件， 盗版必究！";
+            this.lbhight.Text = "请使用正版软件，盗版必究！";
             this.lbhight.Visible = false;
             // 
             // frmabout
@@ -104,7 +104,7 @@
             this.Name = "frmabout";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "关于载带视觉检测系统...";
+            this.Text = "关于普惠视觉检测系统...";
             this.Load += new System.EventHandler(this.frmabout_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
