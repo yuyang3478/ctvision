@@ -1954,6 +1954,7 @@ namespace ctmeasure
             if (!Program.getversion()) return;
             tpart.Text = "";
             //if (fn == "") return;
+
             if (!File.Exists(fn)) fn=Application.StartupPath+"\\default.lvd";
              
             ArrayList data;
@@ -3697,7 +3698,7 @@ namespace ctmeasure
             else
             {
                 MessageBox.Show("没有找到相机，如果已经接上相机，可能是权限不够，请尝试使用管理员权限运行程序。");
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
 
             return false;
