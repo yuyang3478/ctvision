@@ -68,6 +68,12 @@ namespace leanvision
 
         public int defectArea { get; set; }//实际缺陷面积
 
+        int maxWhiteConIdx = -1;
+        Point[][] whiteContours;
+
+        [NonSerialized]
+        HierarchyIndex[] whiteHierarchly;
+
         [NonSerialized]
         public Mat whiteMask;//要做序列化或者保存
         [NonSerialized]
@@ -286,7 +292,7 @@ namespace leanvision
             if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
             if (closingcircle == 2) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
 
-            Cv2.Threshold(ImageROI, ImageROI, thminsurface, 255, ThresholdTypes.Binary);//thmin, thmax
+            Cv2.Threshold(ImageROI, ImageROI, 127+thminsurface, 255, ThresholdTypes.Binary);//thmin, thmax
             //Cv2.ImShow("BitwiseNot", ImageROI);
             //Cv2.WaitKey(10000000);
             if (closingcircle == 0)
@@ -315,113 +321,44 @@ namespace leanvision
             }
 
             //获得轮廓
-            OpenCvSharp.Point[][] contours;
-            HierarchyIndex[] hierarchly;
-            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
-            if (contours.Length == 0) return;
+            //OpenCvSharp.Point[][] contours;
+            
+            Cv2.FindContours(ImageROI, out whiteContours, out whiteHierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+            if (whiteContours.Length == 0) return;
             double maxContourArea = 0;
-            int maxConIdx = 0;
-            brx = int.MaxValue;
-            bry = int.MaxValue;
-            brx1 = 0;
-            bry1 = 0;
+            maxWhiteConIdx = 0;
+            //brx = int.MaxValue;
+            //bry = int.MaxValue;
+            //brx1 = 0;
+            //bry1 = 0;
             //int thickns = -1;
             //if (Program.fmain.isRunOrRunOnceChecked)
             //{
             //    thickns = 3;
             //}
-            for (int i = 0; i < contours.Length; i++)
+            ImageROI.CopyTo(whiteMask);
+            if (!Program.fmain.cksurfaceareamax.Checked)
             {
-                //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
-                //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
 
-                var contour = contours[i];
-                if (!Program.fmain.cksurfaceareamax.Checked)
+                for (int i = 0; i < whiteContours.Length; i++)
                 {
-                    //Cv2.DrawContours(
-                    //            whiteMask,
-                    //            contours,
-                    //            i,
-                    //            color: new Scalar(255),
-                    //            thickness: -1,//CV_FILLED
-                    //            lineType: LineTypes.Link8,
-                    //            hierarchy: hierarchly,
-                    //            maxLevel: int.MaxValue);
-                    ImageROI.CopyTo(whiteMask);
-                    Rect br = Cv2.BoundingRect(contours[i]);
-                    Cv2.DrawContours(
-                                roiCopy,
-                                contours,
-                                i,
-                                color: new Scalar(0, 0, 255),
-                                thickness: 3,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
-                    
-                    if ((br.X + br.Width) > brx1)
-                    {
-                        brx1 = (br.X + br.Width);
-                    }
-                    if ((br.Y + br.Height) > bry1)
-                    {
-                        bry1 = br.Y + br.Height;
-                    }
+                    //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+                    //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
 
-                    if (br.X < brx)
+                    var contour = whiteContours[i]; 
+                    double area1 = Cv2.ContourArea(contour);
+                    if (area1 > maxContourArea)
                     {
-                        brx = br.X;
+                        maxContourArea = area1;
+                        maxWhiteConIdx = i;
                     }
-                    if (br.Y < bry)
-                    {
-                        bry = br.Y;
-                    }
-
-                }
-                double area1 = Cv2.ContourArea(contour);
-                if (area1 > maxContourArea)
-                {
-                    maxContourArea = area1;
-                    maxConIdx = i;
                 }
             }
 
-            boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
-            if (Program.fmain.cksurfaceareamax.Checked)
-            {
-                ////ImageROI = new Mat(new OpenCvSharp.Size(ImageROI.Width, ImageROI.Height), MatType.CV_8UC1);
-                //Cv2.DrawContours(
-                //                whiteMask,
-                //                contours,
-                //                maxConIdx,
-                //                color: new Scalar(255),
-                //                thickness: -1,//CV_FILLED
-                //                lineType: LineTypes.Link8,
-                //                hierarchy: hierarchly,
-                //                maxLevel: int.MaxValue);
-                ImageROI.CopyTo(whiteMask);
-                Cv2.DrawContours(
-                            roiCopy,
-                            contours,
-                            maxConIdx,
-                            color: new Scalar(0, 0, 255),
-                            thickness: 3,//CV_FILLED
-                            lineType: LineTypes.Link8,
-                            hierarchy: hierarchly,
-                            maxLevel: int.MaxValue);
-
-                 
-                boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
-            }
-
-            //Cv2.Rectangle(whiteMask,
-            //        new OpenCvSharp.Point(boundingRect.X, boundingRect.Y),
-            //        new OpenCvSharp.Point(boundingRect.X + boundingRect.Width, boundingRect.Y + boundingRect.Height),
-            //        new Scalar(255, 0, 0),
-            //        20);
+ 
             //Cv2.ImWrite(".\\aaa_ImageROI.bmp", ImageROI);
             //Cv2.ImWrite(".\\aaa_whitemask.bmp", whiteMask);
-            roiCopy.CopyTo(himg[roi]);
+            //roiCopy.CopyTo(himg[roi]);
         }
         public void getBlackMask(Mat himg, Mat himgback)
         {
@@ -446,7 +383,7 @@ namespace leanvision
             if (closingcircle == 1) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(5, 5)); }
             if (closingcircle == 2) { Cv2.Blur(ImageROI, ImageROI, new OpenCvSharp.Size(2, 2)); }
             Cv2.BitwiseNot(ImageROI, ImageROI);
-            Cv2.Threshold(ImageROI, ImageROI, thmaxsurface, 255, ThresholdTypes.Binary);//thmin, thmax
+            Cv2.Threshold(ImageROI, ImageROI, 127+thminsurface, 255, ThresholdTypes.Binary);//thmin, thmax
             //Cv2.ImShow("BitwiseNot", ImageROI);
             //Cv2.WaitKey(10000000);
             if (closingcircle == 0)
@@ -491,95 +428,75 @@ namespace leanvision
             //{
             //    thickns = 3;
             //}
-            for (int i = 0; i < contours.Length; i++)
+            ImageROI.CopyTo(blackMask);
+            if (!Program.fmain.cksurfaceareamax.Checked)
             {
+                for (int i = 0; i < contours.Length; i++)
+                {
                 //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
                 //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
 
-                var contour = contours[i];
-                if (!Program.fmain.cksurfaceareamax.Checked)
-                {
-                    //Cv2.DrawContours(
-                    //            blackMask,
-                    //            contours,
-                    //            i,
-                    //            color: new Scalar(255),
-                    //            thickness: -1,//CV_FILLED
-                    //            lineType: LineTypes.Link8,
-                    //            hierarchy: hierarchly,
-                    //            maxLevel: int.MaxValue);
-                    ImageROI.CopyTo(blackMask);
-                    Rect br = Cv2.BoundingRect(contours[i]);
-                    Cv2.DrawContours(
-                                roiCopy,
-                                contours,
-                                i,
-                                color: new Scalar(0, 0, 255),
-                                thickness: 3,//CV_FILLED
-                                lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
-                                maxLevel: int.MaxValue);
-
-                    if ((br.X + br.Width) > brx1)
+                    var contour = contours[i];
+                 
+                    double area1 = Cv2.ContourArea(contour);
+                    if (area1 > maxContourArea)
                     {
-                        brx1 = (br.X + br.Width);
+                        maxContourArea = area1;
+                        maxConIdx = i;
                     }
-                    if ((br.Y + br.Height) > bry1)
-                    {
-                        bry1 = br.Y + br.Height;
-                    }
-
-                    if (br.X < brx)
-                    {
-                        brx = br.X;
-                    }
-                    if (br.Y < bry)
-                    {
-                        bry = br.Y;
-                    }
-
                 }
-                double area1 = Cv2.ContourArea(contour);
-                if (area1 > maxContourArea)
-                {
-                    maxContourArea = area1;
-                    maxConIdx = i;
-                }
-            }
-
-            boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
+            } 
             if (Program.fmain.cksurfaceareamax.Checked)
-            {
-                //Cv2.DrawContours(
-                //                blackMask,
-                //                contours,
-                //                maxConIdx,
-                //                color: new Scalar(255),
-                //                thickness: -1,//CV_FILLED
-                //                lineType: LineTypes.Link8,
-                //                hierarchy: hierarchly,
-                //                maxLevel: int.MaxValue);
-                ImageROI.CopyTo(blackMask);
+            { 
                 Cv2.DrawContours(
                             roiCopy,
                             contours,
                             maxConIdx,
-                            color: new Scalar(0, 0, 255),
+                            color: new Scalar(0, 255,0),
+                            thickness: 3,//CV_FILLED
+                            lineType: LineTypes.Link8,
+                            hierarchy: hierarchly,
+                            maxLevel: 0);
+
+            }
+            else
+            {
+                Cv2.DrawContours(
+                            roiCopy,
+                            contours,
+                            -1,
+                            color: new Scalar(0, 255, 0),
                             thickness: 3,//CV_FILLED
                             lineType: LineTypes.Link8,
                             hierarchy: hierarchly,
                             maxLevel: int.MaxValue);
-
-
-                boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
             }
 
-            //Cv2.Rectangle(blackMask,
-            //        new OpenCvSharp.Point(boundingRect.X, boundingRect.Y),
-            //        new OpenCvSharp.Point(boundingRect.X + boundingRect.Width, boundingRect.Y + boundingRect.Height),
-            //        new Scalar(255, 0, 0),
-            //        20);
-
+            if (Program.fmain.cksurfaceareamax.Checked)
+            {
+                //ImageROI.CopyTo(whiteMask);
+                Cv2.DrawContours(
+                            roiCopy,
+                            whiteContours,
+                            maxWhiteConIdx,
+                            color: new Scalar(0, 0, 255),
+                            thickness: 3,//CV_FILLED
+                            lineType: LineTypes.Link8,
+                            hierarchy: whiteHierarchly,
+                            maxLevel: 0);
+            }
+            else
+            {
+                Cv2.DrawContours(
+                           roiCopy,
+                           whiteContours,
+                           -1,
+                           color: new Scalar(0, 0, 255),
+                           thickness: 3,//CV_FILLED
+                           lineType: LineTypes.Link8,
+                           hierarchy: whiteHierarchly,
+                           maxLevel: int.MaxValue);
+            }
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
             roiCopy.CopyTo(himg[roi]); 
              
@@ -970,7 +887,7 @@ namespace leanvision
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width<=0 || roi.Height<=0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
             {
-                MessageBox.Show("ROI 超出边界");
+                //MessageBox.Show("ROI 超出边界");
                 return false;
             }
             if (srcCopy==null)
@@ -1011,6 +928,7 @@ namespace leanvision
             else
             {
                 Console.WriteLine("BOTH BLACK MASK AND WHITEMASK ARE NULL");
+                return true;
             }
             //Cv2.ImWrite(".\\aa_whitemask.bmp",whiteMask);
             //Cv2.ImWrite(".\\aa_blackMask.bmp", blackMask);
@@ -1026,10 +944,10 @@ namespace leanvision
             //himgbakRoi = Cv2.ImRead(".\\aa_himgbak.bmp");
             //temlateRoi = Cv2.ImRead(".\\aa_template.bmp");
             Cv2.Subtract(himgbakRoi, temlateRoi, subgray, mask);
-            Cv2.ImWrite(".\\aa_template.bmp", temlateRoi);
-            Cv2.ImWrite(".\\aa_himgbak.bmp", himgbakRoi);
-            Cv2.ImWrite(".\\aa_mask.bmp", mask);
-            Cv2.ImWrite(".\\aa_subgray.bmp", subgray);
+            //Cv2.ImWrite(".\\aa_template.bmp", temlateRoi);
+            //Cv2.ImWrite(".\\aa_himgbak.bmp", himgbakRoi);
+            //Cv2.ImWrite(".\\aa_mask.bmp", mask);
+            //Cv2.ImWrite(".\\aa_subgray.bmp", subgray);
             Cv2.Subtract(temlateRoi, himgbakRoi, subgray1, mask);
             //Cv2.ImWrite(".\\aa_subgray1.bmp", subgray1);
 
@@ -1821,12 +1739,12 @@ namespace leanvision
                 nrs.areamax = rs.areamax;
                 nrs.areamaxcheck = rs.areamaxcheck;
                 nrs.closingcircle = rs.closingcircle;
-                nrs.grayThresh = rs.grayThresh;
-                nrs.minDefectArea = rs.minDefectArea;
+                nrs.grayThresh = rs.grayThresh;//
+                nrs.minDefectArea = rs.minDefectArea;//
                 nrs.minDefectHeight = rs.minDefectHeight;
                 nrs.minDefectWidth = rs.minDefectWidth;
-                nrs.shrinkPixel = rs.shrinkPixel;
-                nrs.thminsurface = rs.thminsurface;
+                nrs.shrinkPixel = rs.shrinkPixel;//
+                nrs.thminsurface = rs.thminsurface;//
                 nrs.thmaxsurface = rs.thmaxsurface;
                 nrs.surfacecheck = rs.surfacecheck;
                 nrs.surfacemaxcheck = rs.surfacemaxcheck;

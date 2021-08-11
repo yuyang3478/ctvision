@@ -1114,12 +1114,12 @@ namespace ctmeasure
             cksurface.Checked = rois.croi.surfacecheck;
             cksurfaceareamax.Checked = rois.croi.surfacemaxcheck;
             thminsurface.Value = rois.croi.thminsurface;
-            thmaxsurface.Value = rois.croi.thmaxsurface;
+            //thmaxsurface.Value = rois.croi.thmaxsurface;
             barshrink.Value = rois.croi.shrinkPixel;
             bargraythresh.Value = rois.croi.grayThresh;
             bararea.Value = rois.croi.minDefectArea;
             tthminsurface.Text = thminsurface.Value.ToString();
-            tthmaxsurface.Text = thmaxsurface.Value.ToString();
+            //tthmaxsurface.Text = thmaxsurface.Value.ToString();
             tbgraythresh.Text = bargraythresh.Value.ToString();
             tbshrink.Text = barshrink.Value.ToString();
             tbgraythresh.Text = bargraythresh.Value.ToString();
@@ -1163,8 +1163,8 @@ namespace ctmeasure
             cksurface.Checked = false;
             thminsurface.Value = 0;
             tthminsurface.Text = "0";
-            thmaxsurface.Value = 0;
-            tthmaxsurface.Text = "0";
+            //thmaxsurface.Value = 0;
+            //tthmaxsurface.Text = "0";
             bararea.Value = 0;
             tbarea.Text = "0";
         }
@@ -1662,7 +1662,8 @@ namespace ctmeasure
                     double stime1 = Environment.TickCount;
                     bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
                     double etime1 = Environment.TickCount;
-
+                    // true 没有缺陷
+                    // false 有缺陷
                     Console.WriteLine("表面检测耗时： {0}",etime1 - stime1);
                     if (!areack) {
                         testresult = "NG";
@@ -1954,7 +1955,8 @@ namespace ctmeasure
             if (!Program.getversion()) return;
             tpart.Text = "";
             //if (fn == "") return;
-            if (!File.Exists(fn)) fn=Application.StartupPath+"\\default.lvd";
+            if (!File.Exists(fn))
+                fn =Application.StartupPath+"\\default.lvd";
              
             ArrayList data;
             FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read);
@@ -2136,9 +2138,9 @@ namespace ctmeasure
                 {
                     isSaveToTemplate = true;
                     MvApi.CameraSoftTrigger(m_hCamera);
-                    //Thread.Sleep(150);
+                    Thread.Sleep(1000);
                     initview();
-                    btnnewproduct_Click(null, null);
+                    //btnnewproduct_Click(null, null);
                 }
                 else
                 {
@@ -2359,7 +2361,19 @@ namespace ctmeasure
             ptools.Width = 450;
             toolStripButton7_Click(null, null);
             tabControl1.SelectedIndex = 3;
-
+            foreach (roishape rs in rois.rois)
+            {
+                if (rs.surfacecheck&&rs.shrinkPixel>0&&rs.thminsurface>0&&rs.grayThresh>0&&rs.minDefectArea>0)
+                {
+                    /*tthminsurface.Text = thminsurface.Value.ToString();*/
+                    if (rs.whiteMask == null) { 
+                        drawWhiteRegion();
+                    }
+                    if (rs.blackMask == null) { 
+                        drawBlackRegion();
+                    }
+                }
+            }
             if (bugmode) { 
                 //调试代码
                 //实例化Timer类，设置间隔时间为10000毫秒； 
@@ -2984,14 +2998,15 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
+                //croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 
                 croi.getWhiteMask(dcamera.himg, himgbak);
+                //croi.getBlackMask(dcamera.himg, himgbak);
             }
             
-            pictureBox1.Invalidate(); 
+            //pictureBox1.Invalidate(); 
         }
          
 
@@ -3005,7 +3020,7 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
+                //croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 
@@ -3055,11 +3070,11 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value; 
+                //croi.thmaxsurface = thmaxsurface.Value; 
                 croi.grayThresh = bargraythresh.Value;
                 croi.minDefectArea = bararea.Value;
                 croi.minDefectWidth = barwidth.Value;
-                croi.minDefectHeight = barheight.Value;
+                //croi.minDefectHeight = barheight.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
             }
@@ -3299,7 +3314,7 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbgraythresh.Text = bargraythresh.Value.ToString();
-            if (thminsurface.Value == 0 && thmaxsurface.Value == 0) {
+            if (thminsurface.Value == 0) {
                 MessageBox.Show("请先选择亮/暗区域");
                 return;
             }
@@ -3310,11 +3325,11 @@ namespace ctmeasure
                 //croi.surfacecheck = cksurface.Checked;
                 //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
+                //croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
+                //croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
@@ -3328,7 +3343,7 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbarea.Text = bararea.Value.ToString();
-            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
+            if (thminsurface.Value == 0)
             {
                 MessageBox.Show("请先选择亮/暗区域");
                 return;
@@ -3340,11 +3355,11 @@ namespace ctmeasure
                 //croi.surfacecheck = cksurface.Checked;
                 //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
+                //croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
+                //croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
@@ -3360,19 +3375,10 @@ namespace ctmeasure
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tthminsurface.Text = thminsurface.Value.ToString();
             drawWhiteRegion();
-            //drawsurface();
-        }
-
-        private void thmaxsurface_MouseUp(object sender, MouseEventArgs e)
-        {
-            
-            if (!thmaxsurface.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            //if (thmaxsurface.Value < thminsurface.Value) thminsurface.Value = thmaxsurface.Value;
-            tthmaxsurface.Text = thmaxsurface.Value.ToString();
             drawBlackRegion();
             //drawsurface();
         }
+         
 
         private void barshrink_ValueChanged(object sender, EventArgs e)
         {
@@ -3380,6 +3386,11 @@ namespace ctmeasure
             foreach (roishape cr in rois.srois.rois) {
                 cr.shrinkPixel = barshrink.Value;
             }
+        }
+
+        private void label35_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void btnbugmode_Click(object sender, EventArgs e)
@@ -3401,7 +3412,7 @@ namespace ctmeasure
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
             tbwidth.Text = barwidth.Value.ToString();
-            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
+            if (thminsurface.Value == 0)
             {
                 MessageBox.Show("请先选择亮/暗区域");
                 return;
@@ -3413,11 +3424,11 @@ namespace ctmeasure
                 //croi.surfacecheck = cksurface.Checked;
                 //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
+                //croi.thmaxsurface = thmaxsurface.Value;
                 croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
+                //croi.minDefectHeight = barheight.Value;
                 croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
@@ -3425,38 +3436,7 @@ namespace ctmeasure
             pictureBox1.Invalidate();
         }
 
-        private void barheight_ValueChanged(object sender, MouseEventArgs e)
-        {
-            if (!barheight.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
-            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tbheight.Text = barheight.Value.ToString();
-            if (thminsurface.Value == 0 && thmaxsurface.Value == 0)
-            {
-                MessageBox.Show("请先选择亮/暗区域");
-                return;
-            }
-            foreach (roishape croi in rois.srois.rois)
-            {
-                if (!croi.surfacecheck) continue;
-                //赋值
-                //croi.surfacecheck = cksurface.Checked;
-                //croi.surfacemaxcheck = cksurfaceareamax.Checked;
-                croi.thminsurface = thminsurface.Value;
-                croi.thmaxsurface = thmaxsurface.Value;
-                croi.grayThresh = bargraythresh.Value;
-                //croi.stdsurface = bararea.Value * 1.0 / 100.0;
-                croi.minDefectArea = bararea.Value;
-                croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
-
-                //croi.getWhiteMask(dcamera.himg, himgbak);
-            }
-            MvApi.CameraSoftTrigger(m_hCamera);
-            pictureBox1.Invalidate();
-        }
-
-
+         
          
 
         private void btnend_Click(object sender, EventArgs e)

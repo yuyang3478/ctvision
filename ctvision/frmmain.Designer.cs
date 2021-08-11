@@ -74,14 +74,11 @@
             this.label39 = new System.Windows.Forms.Label();
             this.bargraythresh = new System.Windows.Forms.TrackBar();
             this.label38 = new System.Windows.Forms.Label();
-            this.barheight = new System.Windows.Forms.TrackBar();
             this.barwidth = new System.Windows.Forms.TrackBar();
             this.tbwidth = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
-            this.tbheight = new System.Windows.Forms.TextBox();
             this.bararea = new System.Windows.Forms.TrackBar();
             this.tbarea = new System.Windows.Forms.TextBox();
-            this.label37 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tbshrink = new System.Windows.Forms.TextBox();
             this.barshrink = new System.Windows.Forms.TrackBar();
@@ -89,9 +86,6 @@
             this.thminsurface = new System.Windows.Forms.TrackBar();
             this.label35 = new System.Windows.Forms.Label();
             this.tthminsurface = new System.Windows.Forms.TextBox();
-            this.thmaxsurface = new System.Windows.Forms.TrackBar();
-            this.label34 = new System.Windows.Forms.Label();
-            this.tthmaxsurface = new System.Windows.Forms.TextBox();
             this.cksurfaceareamax = new System.Windows.Forms.CheckBox();
             this.ckshowsurface = new System.Windows.Forms.CheckBox();
             this.cksurface = new System.Windows.Forms.CheckBox();
@@ -225,13 +219,11 @@
             this.groupBox6.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bargraythresh)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barheight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barwidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bararea)).BeginInit();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barshrink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thmaxsurface)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thmax)).BeginInit();
@@ -700,14 +692,11 @@
             this.groupBox9.Controls.Add(this.label39);
             this.groupBox9.Controls.Add(this.bargraythresh);
             this.groupBox9.Controls.Add(this.label38);
-            this.groupBox9.Controls.Add(this.barheight);
             this.groupBox9.Controls.Add(this.barwidth);
             this.groupBox9.Controls.Add(this.tbwidth);
             this.groupBox9.Controls.Add(this.label33);
-            this.groupBox9.Controls.Add(this.tbheight);
             this.groupBox9.Controls.Add(this.bararea);
             this.groupBox9.Controls.Add(this.tbarea);
-            this.groupBox9.Controls.Add(this.label37);
             this.groupBox9.Location = new System.Drawing.Point(17, 172);
             this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.groupBox9.Name = "groupBox9";
@@ -759,22 +748,6 @@
             this.label38.Text = "宽度: ";
             this.label38.Visible = false;
             // 
-            // barheight
-            // 
-            this.barheight.AutoSize = false;
-            this.barheight.BackColor = System.Drawing.SystemColors.Window;
-            this.barheight.LargeChange = 2;
-            this.barheight.Location = new System.Drawing.Point(56, 71);
-            this.barheight.Margin = new System.Windows.Forms.Padding(0);
-            this.barheight.Maximum = 100;
-            this.barheight.Name = "barheight";
-            this.barheight.Size = new System.Drawing.Size(166, 23);
-            this.barheight.TabIndex = 41;
-            this.barheight.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barheight.Value = 10;
-            this.barheight.Visible = false;
-            this.barheight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barheight_ValueChanged);
-            // 
             // barwidth
             // 
             this.barwidth.AutoSize = false;
@@ -809,15 +782,6 @@
             this.label33.TabIndex = 35;
             this.label33.Text = "面积: ";
             // 
-            // tbheight
-            // 
-            this.tbheight.Location = new System.Drawing.Point(229, 71);
-            this.tbheight.Name = "tbheight";
-            this.tbheight.ReadOnly = true;
-            this.tbheight.Size = new System.Drawing.Size(33, 21);
-            this.tbheight.TabIndex = 42;
-            this.tbheight.Visible = false;
-            // 
             // bararea
             // 
             this.bararea.AutoSize = false;
@@ -841,17 +805,6 @@
             this.tbarea.Size = new System.Drawing.Size(33, 21);
             this.tbarea.TabIndex = 37;
             // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(14, 73);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(41, 12);
-            this.label37.TabIndex = 40;
-            this.label37.Text = "长度: ";
-            this.label37.Visible = false;
-            this.label37.Click += new System.EventHandler(this.label37_Click);
-            // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.tbshrink);
@@ -860,21 +813,18 @@
             this.groupBox8.Controls.Add(this.thminsurface);
             this.groupBox8.Controls.Add(this.label35);
             this.groupBox8.Controls.Add(this.tthminsurface);
-            this.groupBox8.Controls.Add(this.thmaxsurface);
-            this.groupBox8.Controls.Add(this.label34);
-            this.groupBox8.Controls.Add(this.tthmaxsurface);
             this.groupBox8.Location = new System.Drawing.Point(16, 48);
             this.groupBox8.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.groupBox8.Size = new System.Drawing.Size(268, 109);
+            this.groupBox8.Size = new System.Drawing.Size(268, 87);
             this.groupBox8.TabIndex = 43;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "区域选择";
             // 
             // tbshrink
             // 
-            this.tbshrink.Location = new System.Drawing.Point(228, 70);
+            this.tbshrink.Location = new System.Drawing.Point(228, 25);
             this.tbshrink.Name = "tbshrink";
             this.tbshrink.ReadOnly = true;
             this.tbshrink.Size = new System.Drawing.Size(33, 21);
@@ -886,7 +836,7 @@
             this.barshrink.AutoSize = false;
             this.barshrink.BackColor = System.Drawing.SystemColors.Window;
             this.barshrink.LargeChange = 2;
-            this.barshrink.Location = new System.Drawing.Point(59, 67);
+            this.barshrink.Location = new System.Drawing.Point(59, 22);
             this.barshrink.Margin = new System.Windows.Forms.Padding(0);
             this.barshrink.Maximum = 50;
             this.barshrink.Name = "barshrink";
@@ -899,7 +849,7 @@
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(4, 70);
+            this.label40.Location = new System.Drawing.Point(4, 25);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(65, 12);
             this.label40.TabIndex = 16;
@@ -910,66 +860,33 @@
             this.thminsurface.AutoSize = false;
             this.thminsurface.BackColor = System.Drawing.SystemColors.Window;
             this.thminsurface.LargeChange = 2;
-            this.thminsurface.Location = new System.Drawing.Point(58, 18);
+            this.thminsurface.Location = new System.Drawing.Point(58, 50);
             this.thminsurface.Margin = new System.Windows.Forms.Padding(0);
-            this.thminsurface.Maximum = 254;
+            this.thminsurface.Maximum = 127;
             this.thminsurface.Name = "thminsurface";
             this.thminsurface.Size = new System.Drawing.Size(166, 23);
             this.thminsurface.TabIndex = 12;
             this.thminsurface.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.thminsurface.Value = 127;
             this.thminsurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.thminsurface_ValueChanged);
             // 
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(4, 22);
+            this.label35.Location = new System.Drawing.Point(4, 54);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(65, 12);
             this.label35.TabIndex = 10;
-            this.label35.Text = "白色区域：";
+            this.label35.Text = "亮暗区域：";
+            this.label35.Click += new System.EventHandler(this.label35_Click);
             // 
             // tthminsurface
             // 
-            this.tthminsurface.Location = new System.Drawing.Point(228, 19);
+            this.tthminsurface.Location = new System.Drawing.Point(228, 51);
             this.tthminsurface.Name = "tthminsurface";
             this.tthminsurface.ReadOnly = true;
             this.tthminsurface.Size = new System.Drawing.Size(33, 21);
             this.tthminsurface.TabIndex = 13;
             this.tthminsurface.Text = "127";
-            // 
-            // thmaxsurface
-            // 
-            this.thmaxsurface.AutoSize = false;
-            this.thmaxsurface.BackColor = System.Drawing.SystemColors.Window;
-            this.thmaxsurface.LargeChange = 2;
-            this.thmaxsurface.Location = new System.Drawing.Point(58, 42);
-            this.thmaxsurface.Margin = new System.Windows.Forms.Padding(0);
-            this.thmaxsurface.Maximum = 254;
-            this.thmaxsurface.Name = "thmaxsurface";
-            this.thmaxsurface.Size = new System.Drawing.Size(166, 25);
-            this.thmaxsurface.TabIndex = 14;
-            this.thmaxsurface.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.thmaxsurface.Value = 127;
-            this.thmaxsurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.thmaxsurface_MouseUp);
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(4, 45);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(65, 12);
-            this.label34.TabIndex = 11;
-            this.label34.Text = "黑色区域：";
-            // 
-            // tthmaxsurface
-            // 
-            this.tthmaxsurface.Location = new System.Drawing.Point(228, 44);
-            this.tthmaxsurface.Name = "tthmaxsurface";
-            this.tthmaxsurface.ReadOnly = true;
-            this.tthmaxsurface.Size = new System.Drawing.Size(33, 21);
-            this.tthmaxsurface.TabIndex = 15;
-            this.tthmaxsurface.Text = "127";
             // 
             // cksurfaceareamax
             // 
@@ -2347,14 +2264,12 @@
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bargraythresh)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barheight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barwidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bararea)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barshrink)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thmaxsurface)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -2530,10 +2445,7 @@
         private System.Windows.Forms.Button btnlvcopy;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.CheckBox cksurface;
-        private System.Windows.Forms.TextBox tthmaxsurface;
-        private System.Windows.Forms.TrackBar thmaxsurface;
         private System.Windows.Forms.TextBox tthminsurface;
-        private System.Windows.Forms.Label label34;
         private System.Windows.Forms.TextBox tbarea;
         private System.Windows.Forms.TrackBar bararea;
         private System.Windows.Forms.Label label33;
@@ -2559,9 +2471,6 @@
         private MPbPanel phwin;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tblogmenu;
-        private System.Windows.Forms.TextBox tbheight;
-        private System.Windows.Forms.TrackBar barheight;
-        private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.TrackBar barwidth;
         private System.Windows.Forms.TextBox tbwidth;
