@@ -104,6 +104,9 @@
     <LangVersion>8.0</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MVSDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -156,6 +159,12 @@
     </Compile>
     <Compile Include="frmio.Designer.cs">
       <DependentUpon>frmio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmlimittime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmlimittime.Designer.cs">
+      <DependentUpon>frmlimittime.cs</DependentUpon>
     </Compile>
     <Compile Include="frmlogin.cs">
       <SubType>Form</SubType>
@@ -218,6 +227,9 @@
     <EmbeddedResource Include="frmio.resx">
       <DependentUpon>frmio.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmlimittime.resx">
+      <DependentUpon>frmlimittime.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmlogin.resx">
       <DependentUpon>frmlogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,6 +265,7 @@
       <DependentUpon>verifyInstall.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="app.manifest" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

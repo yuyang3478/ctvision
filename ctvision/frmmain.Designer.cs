@@ -2243,6 +2243,7 @@
             this.Controls.Add(this.mtools);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "frmmain";
             this.Text = "载带视觉检测系统";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -2250,6 +2251,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmmain_FormClosed);
             this.Load += new System.EventHandler(this.frmmain_Load);
             this.Shown += new System.EventHandler(this.frmmain_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmmain_KeyDown);
             this.Resize += new System.EventHandler(this.frmmain_Resize);
             this.mtools.ResumeLayout(false);
             this.mtools.PerformLayout();

@@ -54,8 +54,8 @@ namespace ctmeasure
             if (skey.FindPort(0, ref keypath) != 0)
             {
                 MessageBox.Show("请插入正版软件电子锁！","提示");
-                //return false;
-                return true;
+                return false;
+                //return true;
             }
             else return true;
         }

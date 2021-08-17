@@ -109,6 +109,9 @@ namespace leanvision
             //al.Add(templateFile);
             al.Add(picpath);
             al.Add(filepath);
+            al.Add(Program.fmain.frmlit.dt.ToString("d"));
+            //al.Add(DateTime.Now.ToString("d"));
+            //Console.WriteLine(Program.fmain.frmlit.dt.ToString("d"));
             bf.Serialize(fs, al);
             fs.Flush();
             fs.Close();
@@ -142,7 +145,7 @@ namespace leanvision
             fontsize = (int)al[17];
             picpath = (string)al[18];
             filepath = (string)al[19];
-
+            Program.fmain.frmlit.dt = DateTime.Parse((string)al[20]);// new DateTime((long)al[20]);
 
             //viewscale = (double)al[18];
             //viewx = (double)al[19];

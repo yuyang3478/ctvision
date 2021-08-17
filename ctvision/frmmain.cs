@@ -103,6 +103,8 @@ namespace ctmeasure
         public static string templateFile = "";
         public Mat template = new Mat();
         private bool bugmode = true;
+        public frmlimittime frmlit = new frmlimittime();
+
 
         [DllImport("gdi32.dll")]
         static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
@@ -898,7 +900,7 @@ namespace ctmeasure
                 himgbak = dcamera.getBackImg();
                 himgbak.CopyTo(template);
                 initview();
-                btnnewproduct_Click(null, null);
+                //btnnewproduct_Click(null, null);
                 
             }
         }
@@ -1476,6 +1478,12 @@ namespace ctmeasure
                 (((float)phwin.Width / (float)dcamera.himg.Width))) || imgx != 0 || imgy != 0)
             {
                 zoomall();
+            }
+            DateTime dt = DateTime.Now;
+            int cpa = DateTime.Compare(dt,frmlit.dt);
+            if (cpa > 0) {
+                //MessageBox.Show("应用软件到期，请重新授权！");
+                return;
             }
             MvApi.CameraSoftTrigger(m_hCamera);
             ////抓取图像，改变dcamera.himg
@@ -2126,19 +2134,21 @@ namespace ctmeasure
                 {
                     tb.Enabled = true; 
                 }
-                MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
+
                 //template.CopyTo(dcamera.himg);
                 //template.CopyTo(himgbak);
                 //pictureBox1.Invalidate();
                 //frmmain_Shown(null,null);
                 //MvApi.CameraSoftTrigger(m_hCamera);
                 //tbrunonce_Click(null, null);
+                MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
                 //提示当前帧是否保存为模板
                 if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    
                     isSaveToTemplate = true;
-                    MvApi.CameraSoftTrigger(m_hCamera);
-                    Thread.Sleep(1000);
+                    //MvApi.CameraSoftTrigger(m_hCamera);
+                    //Thread.Sleep(1000);
                     initview();
                     //btnnewproduct_Click(null, null);
                 }
@@ -2386,10 +2396,10 @@ namespace ctmeasure
                 aTimer.Interval = 500;
 
                 //设置是执行一次（false）还是一直执行(true)，默认为true
-                aTimer.AutoReset = true;
+                aTimer.AutoReset = false;
 
                 //开始计时
-                aTimer.Enabled = true;
+                aTimer.Enabled = false;
             }
         }
 
@@ -2401,10 +2411,10 @@ namespace ctmeasure
                     aTimer.Enabled = false;
                 }
             }
-            if (btnstart.Enabled == false) {
-                btnstart.Enabled = true;
-                btnend_Click(null,null);
-            }
+            //if (btnstart.Enabled == false) {
+            //    btnstart.Enabled = true;
+            //    btnend_Click(null,null);
+            //}
             //恢复播放，移动，放大镜功能
             tb_move.Checked = false;
             Cursor = Cursors.Default;
@@ -3391,6 +3401,25 @@ namespace ctmeasure
         private void label35_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void frmmain_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyData.HasFlag(Keys.Control)  && e.KeyData.HasFlag(Keys.Space) && e.KeyData.HasFlag(Keys.F4))
+            {
+                //frmlit = new frmlimittime();
+                frmlit.StartPosition = FormStartPosition.CenterScreen;
+                frmlit.ShowDialog();
+                //MessageBox.Show("按下了Control + Alt + 0");
+            }
+            //if (e.KeyCode == Keys.F11)
+            //{
+            //    if (WindowState == FormWindowState.Maximized)
+            //        WindowState = FormWindowState.Minimized;
+            //    else
+            //        WindowState = FormWindowState.Maximized;
+            //}
         }
 
         private void btnbugmode_Click(object sender, EventArgs e)
