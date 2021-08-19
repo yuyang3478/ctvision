@@ -23,7 +23,7 @@ namespace ctmeasure
             string hash = GetSha1Hash(n_p);
             //string rhash = "8191DFA2A060AA510742DBF0F3E09BD303EBCEB0";
              
-            if ((!name.Equals("amx"))||(!password.Equals("songuiop"))) {
+            if ((!name.Equals("serversalessong"))||(!password.Equals("Szamxkjsfp780208"))) {
                 MessageBox.Show("用户名或密码错误！\n 不能在未授权主机中运行。\n");
                 //StreamWriter sw = new StreamWriter("c:\\info.txt");
                 //sw.WriteLine(hash);

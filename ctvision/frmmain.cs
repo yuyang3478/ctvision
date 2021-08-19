@@ -1485,6 +1485,7 @@ namespace ctmeasure
                 //MessageBox.Show("应用软件到期，请重新授权！");
                 return;
             }
+            
             MvApi.CameraSoftTrigger(m_hCamera);
             ////抓取图像，改变dcamera.himg
             //tSdkFrameHead tFrameHead;
@@ -2143,7 +2144,7 @@ namespace ctmeasure
                 //tbrunonce_Click(null, null);
                 MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
                 //提示当前帧是否保存为模板
-                if (MessageBox.Show("是否将当前图像作为新模板?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("新建预览页为模板?\n （点击连续击运行按钮，感应器触发拍照后点击停止运行。）", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     
                     isSaveToTemplate = true;
@@ -2357,7 +2358,7 @@ namespace ctmeasure
             tb_magic.Checked = false;
             tbdrawrect.Checked = false;
             foreach (ToolStripItem tb in mtools.Items) {
-                if(tb.Name!="toolStripButton8"&&tb.Name!= "tbcheckimage") tb.Enabled = false;
+                if(tb.Name!="toolStripButton8"&&tb.Name!= "tbcheckimage"&&tb.Name!= "btnbugmode") tb.Enabled = false;
             }
             //foreach (Control ctr in tabControl1.Controls)
             //{
@@ -2393,7 +2394,7 @@ namespace ctmeasure
                 aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
                 //设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
-                aTimer.Interval = 500;
+                aTimer.Interval = 1200;
 
                 //设置是执行一次（false）还是一直执行(true)，默认为true
                 aTimer.AutoReset = false;
@@ -2405,12 +2406,7 @@ namespace ctmeasure
 
         private void toolStripButton9_Click(object sender, EventArgs e)
         {
-            if (bugmode) { 
-                if (aTimer != null) { 
-                    //停止计时
-                    aTimer.Enabled = false;
-                }
-            }
+            
             //if (btnstart.Enabled == false) {
             //    btnstart.Enabled = true;
             //    btnend_Click(null,null);
@@ -3005,6 +3001,8 @@ namespace ctmeasure
             foreach (roishape croi in rois.srois.rois)
             {
                 //赋值
+                //if (ckshowsurface.InvokeRequired) { ckshowsurface.Invoke(new MethodInvoker(delegate () { if (!ckshowsurface.Checked) ckshowsurface.Checked = true; })); }
+                //else { if (!ckshowsurface.Checked) ckshowsurface.Checked = true; }
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
@@ -3381,9 +3379,13 @@ namespace ctmeasure
         private void thminsurface_ValueChanged(object sender, MouseEventArgs e)
         {
             //if (!thminsurface.Focused) return;
-            if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            if (ckshowsurface.InvokeRequired) { ckshowsurface.Invoke(new MethodInvoker(delegate () { if (!ckshowsurface.Checked) ckshowsurface.Checked = true; })); }
+            else { if (!ckshowsurface.Checked) ckshowsurface.Checked = true; }
+            //if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tthminsurface.Text = thminsurface.Value.ToString();
+            if (tthminsurface.InvokeRequired) { tthminsurface.Invoke(new MethodInvoker(delegate () { tthminsurface.Text = thminsurface.Value.ToString(); })); }
+            else { tthminsurface.Text = thminsurface.Value.ToString(); }
+            //tthminsurface.Text = thminsurface.Value.ToString();
             drawWhiteRegion();
             drawBlackRegion();
             //drawsurface();
@@ -3406,12 +3408,18 @@ namespace ctmeasure
         private void frmmain_KeyDown(object sender, KeyEventArgs e)
         {
 
-            if (e.KeyData.HasFlag(Keys.Control)  && e.KeyData.HasFlag(Keys.Space) && e.KeyData.HasFlag(Keys.F4))
+            if (e.KeyData.HasFlag(Keys.Control)  && e.KeyData.HasFlag(Keys.Alt) && e.KeyData.HasFlag(Keys.F5))
             {
                 //frmlit = new frmlimittime();
                 frmlit.StartPosition = FormStartPosition.CenterScreen;
                 frmlit.ShowDialog();
                 //MessageBox.Show("按下了Control + Alt + 0");
+            }
+            if (e.KeyData.HasFlag(Keys.Alt) && e.KeyData.HasFlag(Keys.Space)) {
+                foreach (ToolStripItem tb in Program.fmain.mtools.Items)
+                {
+                    if (tb.Name != "tbrun" && tb.Name != "tbrunstrop" && tb.Name != "tbcheckimage" && tb.Name != "tblogmenu") tb.Enabled = false;
+                }
             }
             //if (e.KeyCode == Keys.F11)
             //{
@@ -3424,15 +3432,23 @@ namespace ctmeasure
 
         private void btnbugmode_Click(object sender, EventArgs e)
         {
-            bugmode = !bugmode;
+            
+            if (aTimer == null) return;
             if (bugmode)
             {
                 btnbugmode.Checked = true;
+                aTimer.AutoReset = true;
+                aTimer.Enabled = true;
             }
             else
             {
                 btnbugmode.Checked = false;
+                aTimer.AutoReset = false;
+                aTimer.Enabled = false;
             }
+            bugmode = !bugmode;
+
+
         }
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
@@ -3555,6 +3571,13 @@ namespace ctmeasure
                 dcamera.himg.CopyTo(template);
                 himgbak = dcamera.getBackImg();
 
+                //thminsurface_ValueChanged(null, null);
+                foreach (roishape croi in rois.rois)
+                {
+                    if (!croi.surfacecheck) continue;
+                    croi.getWhiteMask(dcamera.himg, himgbak);
+                    croi.getBlackMask(dcamera.himg, himgbak);
+                }
                 //pictureBox1.Invalidate();
                 isRunOrRunOnceChecked = false;
                 return;

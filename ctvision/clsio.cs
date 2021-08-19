@@ -175,6 +175,7 @@ namespace leanvision
             if (rstr == trigger.ToUpper()) {
                 if (Program.fmain.fio != null) Program.fmain.fio.triggeron();
                 if (triggerdelay > 0) Thread.Sleep(triggerdelay);
+                //return;
                 //触发执行
                 Program.fmain.run();
                 if (Program.fmain.fio != null) Program.fmain.fio.triggeroff();

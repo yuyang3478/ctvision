@@ -35,15 +35,17 @@ namespace ctmeasure
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 string ds = Apphelper.GetHardDiskSN();
-                string n_p = ds + "amxsonguiop";
+                string n_p = ds + "serversalessongSzamxkjsfp780208";
                 string hash = Apphelper.GetSha1Hash(n_p);
+                fmain = new frmmain();
                 if ((!Apphelper.IsRegistryKeyExist())||(! Apphelper.getValue().Equals(hash))) {
+                    fmain.frmlit.dt = new DateTime(2008, 8, 21);
                     vi = new verifyInstall();
                     vi.StartPosition = FormStartPosition.CenterParent;
                     vi.ShowDialog();
                 }
                  
-                fmain = new frmmain();
+                
                 skey = new softkeyyt();
                 if (!getkey()) { Application.Exit(); return; };
                 Application.Run(fmain);

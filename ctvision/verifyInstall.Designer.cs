@@ -39,17 +39,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(85, 54);
+            this.label1.Location = new System.Drawing.Point(84, 28);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "用户名";
+            this.label1.Visible = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(85, 93);
+            this.label2.Location = new System.Drawing.Point(84, 67);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
@@ -58,15 +59,17 @@
             // 
             // name
             // 
-            this.name.Location = new System.Drawing.Point(136, 54);
+            this.name.Location = new System.Drawing.Point(135, 28);
             this.name.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.name.Name = "name";
             this.name.Size = new System.Drawing.Size(134, 21);
             this.name.TabIndex = 2;
+            this.name.Text = "serversalessong";
+            this.name.Visible = false;
             // 
             // password
             // 
-            this.password.Location = new System.Drawing.Point(136, 93);
+            this.password.Location = new System.Drawing.Point(135, 67);
             this.password.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(134, 21);
@@ -75,7 +78,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(136, 146);
+            this.button1.Location = new System.Drawing.Point(135, 120);
             this.button1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(49, 23);
@@ -86,7 +89,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(222, 146);
+            this.button2.Location = new System.Drawing.Point(221, 120);
             this.button2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(46, 23);

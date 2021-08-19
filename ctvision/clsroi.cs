@@ -580,7 +580,15 @@ namespace leanvision
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchly;
             Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
-            if (contours.Length == 0) return;
+            if (contours.Length == 0)
+            {
+                area = 0; ar = row; ac = col;
+                r1 = r2 = (int)row;
+                c1 = c2 = (int)col;
+                gr = row; gc = col;
+                cradius = 0; cr = row; cc = col;
+                return;
+            }
             double maxContourArea = 0;
             int maxConIdx = 0;
             brx = int.MaxValue;
@@ -593,23 +601,15 @@ namespace leanvision
                 thickns = 3;
             }
 
-            for (int i = 0; i < contours.Length; i++)
-            {
-                //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
-                //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
 
-                var contour = contours[i];
-                if (!areamaxcheck && combinecheck)
+            if (!areamaxcheck && combinecheck)
+            {
+                for (int i = 0; i < contours.Length; i++)
                 {
-                    //Cv2.DrawContours(
-                    //            srcCopy,
-                    //            contours,
-                    //            i,
-                    //            color: new Scalar(0, 0, 255),
-                    //            thickness: thickns,//CV_FILLED
-                    //            lineType: LineTypes.Link8,
-                    //            hierarchy: hierarchly,
-                    //            maxLevel: int.MaxValue);
+                    //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+                    //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
+
+                    var contour = contours[i];    
                     Rect br = Cv2.BoundingRect(contours[i]);
                     if ((br.X + br.Width) > brx1)
                     {
@@ -629,53 +629,91 @@ namespace leanvision
                         bry = br.Y;
                     }
 
-                }
-                double area1 = Cv2.ContourArea(contour);
-                if (area1 > maxContourArea)
-                {
-                    maxContourArea = area1;
-                    maxConIdx = i;
+                     
+                    double area1 = Cv2.ContourArea(contour);
+                    if (area1 > maxContourArea)
+                    {
+                        maxContourArea = area1;
+                        maxConIdx = i;
+                    }
                 }
             }
-            
-            boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
             if (areamaxcheck && !combinecheck)
             {
-                //Cv2.ImWrite("C:\\Users\\Administrator\\Pictures\\result.bmp", srcCopy);
-                //return;
-                Cv2.DrawContours(
-                            srcCopy,
-                            contours,
-                            maxConIdx,
-                            color: new Scalar(0, 0, 255),
-                            thickness: thickns,//CV_FILLED
-                            lineType: LineTypes.Link8,
-                            hierarchy: hierarchly,
-                            maxLevel: 0);
-                
-                boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
-            }
-            else
-            {
-                Cv2.DrawContours(
-                            srcCopy,
-                            contours,
-                            -1,
-                            color: new Scalar(0, 0, 255),
-                            thickness: thickns,//CV_FILLED
-                            lineType: LineTypes.Link8,
-                            hierarchy: hierarchly,
-                            maxLevel: int.MaxValue);
-            }
+                maxConIdx = 0;
+                for (int i = 0; i < contours.Length; i++)
+                { 
 
+                    var contour = contours[i];
+                    
+                    double area2 = Cv2.ContourArea(contour);
+                    if (area2 > maxContourArea)
+                    {
+                        maxContourArea = area2;
+                        maxConIdx = i;
+                    }
+                }
+                Rect br = Cv2.BoundingRect(contours[maxConIdx]);
+                if ((br.X + br.Width) > brx1)
+                {
+                    brx1 = (br.X + br.Width);
+                }
+                if ((br.Y + br.Height) > bry1)
+                {
+                    bry1 = br.Y + br.Height;
+                }
+
+                if (br.X < brx)
+                {
+                    brx = br.X;
+                }
+                if (br.Y < bry)
+                {
+                    bry = br.Y;
+                }
+                 
+            }
+            
+            
+            boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
+            if (!Program.fmain.tbrun.Checked) { 
+                if (areamaxcheck && !combinecheck)
+                {
+                    //Cv2.ImWrite("C:\\Users\\Administrator\\Pictures\\result.bmp", srcCopy);
+                    //return;
+                    Cv2.DrawContours(
+                                srcCopy,
+                                contours,
+                                maxConIdx,
+                                color: new Scalar(0, 0, 255),
+                                thickness: thickns,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: 0);
+                
+                    boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
+                }
+                else
+                {
+                    Cv2.DrawContours(
+                                srcCopy,
+                                contours,
+                                -1,
+                                color: new Scalar(0, 0, 255),
+                                thickness: thickns,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: hierarchly,
+                                maxLevel: int.MaxValue);
+                }
+            }
             //Cv2.Rectangle(srcCopy,
             //        new OpenCvSharp.Point(boundingRect.X, boundingRect.Y),
             //        new OpenCvSharp.Point(boundingRect.X + boundingRect.Width, boundingRect.Y + boundingRect.Height),
             //        new Scalar(255, 0, 0),
             //        20);
 
-            
-            
+
+
             mmt = Cv2.Moments(contours[maxConIdx]);
             double cx = mmt.M10 / mmt.M00, cy = mmt.M01 / mmt.M00;
             if (!areamaxcheck && combinecheck)
@@ -1572,14 +1610,14 @@ namespace leanvision
             int tc = (int)(tc2);
             if (isrun)
             {
-                if (!text1.Equals(""))
-                {
-                    //十字线
-                    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tc1 - linel), Convert.ToSingle(tr1), Convert.ToSingle(tc1 + linel), Convert.ToSingle(tr1));
-                    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tc1), Convert.ToSingle(tr1 - linel), Convert.ToSingle(tc1), Convert.ToSingle(tr1 + linel));
-                    // OK NG
-                    e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tc1), Convert.ToSingle(tr1), drawFormat);
-                }
+                //if (!text1.Equals(""))
+                //{
+                //    //十字线
+                //    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tc1 - linel), Convert.ToSingle(tr1), Convert.ToSingle(tc1 + linel), Convert.ToSingle(tr1));
+                //    e.Graphics.DrawLine(new Pen(drawBrush), Convert.ToSingle(tc1), Convert.ToSingle(tr1 - linel), Convert.ToSingle(tc1), Convert.ToSingle(tr1 + linel));
+                //    // OK NG
+                //    e.Graphics.DrawString(text1, drawFont, drawBrush, Convert.ToSingle(tc1), Convert.ToSingle(tr1), drawFormat);
+                //}
                 string[] ostr = text2.Split('\r');
                 //int margin1 = 80 + Math.Abs(tfontsize - 80) / 4;
 
