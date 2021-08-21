@@ -719,9 +719,9 @@
             this.label39.AutoSize = true;
             this.label39.Location = new System.Drawing.Point(4, 22);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(53, 12);
+            this.label39.Size = new System.Drawing.Size(65, 12);
             this.label39.TabIndex = 47;
-            this.label39.Text = "亮度差: ";
+            this.label39.Text = "标准变差: ";
             // 
             // bargraythresh
             // 
@@ -776,11 +776,11 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(14, 47);
+            this.label33.Location = new System.Drawing.Point(4, 47);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(41, 12);
+            this.label33.Size = new System.Drawing.Size(65, 12);
             this.label33.TabIndex = 35;
-            this.label33.Text = "面积: ";
+            this.label33.Text = "缺陷大小: ";
             // 
             // bararea
             // 
@@ -853,7 +853,7 @@
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(65, 12);
             this.label40.TabIndex = 16;
-            this.label40.Text = "收缩像素：";
+            this.label40.Text = "弹性收缩：";
             // 
             // thminsurface
             // 
@@ -876,7 +876,7 @@
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(65, 12);
             this.label35.TabIndex = 10;
-            this.label35.Text = "亮暗区域：";
+            this.label35.Text = "目标定位：";
             this.label35.Click += new System.EventHandler(this.label35_Click);
             // 
             // tthminsurface
@@ -1956,6 +1956,7 @@
             this.ckregion.TabIndex = 20;
             this.ckregion.Text = "显示轮廓";
             this.ckregion.UseVisualStyleBackColor = true;
+            this.ckregion.Visible = false;
             this.ckregion.Click += new System.EventHandler(this.ckregion_Click);
             // 
             // ckdisplayng

@@ -1014,6 +1014,7 @@ namespace leanvision
             int minarea = int.MaxValue;
             int minareaIdx = 0;
             int maxarea = int.MinValue;
+            defectArea = 0;
             int maxareaIdx = int.MinValue;
             int idx = 0;
             for (int i = 0; i < contours.Length; i++)
@@ -1786,7 +1787,7 @@ namespace leanvision
                 nrs.thmaxsurface = rs.thmaxsurface;
                 nrs.surfacecheck = rs.surfacecheck;
                 nrs.surfacemaxcheck = rs.surfacemaxcheck;
-            nums++;
+                nums++;
                 nrs.num = nums;
                 roilist.Add(nrs);
             }

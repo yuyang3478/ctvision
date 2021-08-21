@@ -1694,6 +1694,27 @@ namespace ctmeasure
                         }
                         i++;
                     }
+                    if (areack&& ckdisplayall.Checked)
+                    {
+                        testresult = "OK";
+                        mcon = rs.num.ToString("d3");
+                        if (this.rtresult.InvokeRequired)
+                        {
+                            rtresult.Invoke(new MethodInvoker(delegate ()
+                            {
+                                rtresult.SelectionColor = Color.Green;
+                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea + "pix", " 0 ", " 0 ", Convert.ToInt32(rs.defectArea).ToString() + "pix", testresult));
+
+                            }));
+                        }
+                        else
+                        {
+                            rtresult.SelectionColor = Color.Red;
+                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea + "pix", " 0 ", " 0 ", Convert.ToInt32(rs.defectArea).ToString() + "pix", testresult));
+
+                        }
+                        i++;
+                    }
                 }
             }
 
@@ -1955,6 +1976,17 @@ namespace ctmeasure
             if (dcamera.himg!=null && himgbak!=null)
                 showroidata();
             //zoomall();
+
+            //foreach (roishape croi in rois.rois)
+            //{
+            //    rois.srois.add(croi);
+            //}
+            foreach (roishape croi in rois.rois)
+            {
+                if (!croi.surfacecheck) continue;
+                croi.getWhiteMask(dcamera.himg, himgbak);
+                croi.getBlackMask(dcamera.himg, himgbak);
+            }
             pictureBox1.Invalidate();
         }
 
@@ -2144,13 +2176,17 @@ namespace ctmeasure
                 //tbrunonce_Click(null, null);
                 MvApi.CameraSetTriggerMode(m_hCamera, (int)emSdkSnapMode.SOFT_TRIGGER);
                 //提示当前帧是否保存为模板
-                if (MessageBox.Show("新建预览页为模板?\n （点击连续击运行按钮，感应器触发拍照后点击停止运行。）", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("新建预览页为模板?\n （点击“单次运行”按钮，感应器触发拍照后点击停止运行。）", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     
                     isSaveToTemplate = true;
                     //MvApi.CameraSoftTrigger(m_hCamera);
                     //Thread.Sleep(1000);
                     initview();
+                    foreach (ToolStripItem tb in mtools.Items)
+                    {
+                        if (tb.Name != "tbrunonce") tb.Enabled = false;
+                    }
                     //btnnewproduct_Click(null, null);
                 }
                 else
@@ -2275,9 +2311,12 @@ namespace ctmeasure
             fio.ShowDialog();
         }
         private void tbrunonce_Click(object sender, EventArgs e)
-        { 
-            
-             
+        {
+            foreach (ToolStripItem tb in mtools.Items)
+            {
+                tb.Enabled = true;
+            }
+
             if (tbcameraplay.Checked) {
                 tplay.Enabled = false;
                 tbcameraplay.Checked = false;
@@ -2393,14 +2432,14 @@ namespace ctmeasure
                 //注册计时器的事件
                 aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
-                //设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
-                aTimer.Interval = 1200;
+                ////设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
+                //aTimer.Interval = 1000;
 
                 //设置是执行一次（false）还是一直执行(true)，默认为true
-                aTimer.AutoReset = false;
+                aTimer.AutoReset = true;
 
                 //开始计时
-                aTimer.Enabled = false;
+                aTimer.Enabled = true;
             }
         }
 
@@ -2414,10 +2453,13 @@ namespace ctmeasure
             //恢复播放，移动，放大镜功能
             tb_move.Checked = false;
             Cursor = Cursors.Default;
-            tb_magic.Checked = false;
-            foreach(ToolStripItem tb in mtools.Items){
+            //tb_magic.Checked = false;
+            foreach (ToolStripItem tb in mtools.Items)
+            {
                 tb.Enabled = true;
             }
+
+
             tbrun.Checked = false;
             btnpixelunit.Enabled = true;
         }
@@ -3049,7 +3091,32 @@ namespace ctmeasure
             foreach (roishape croi in rois.srois.rois)
             {
                 croi.surfacecheck = cksurface.Checked;
+
+                if (barshrink.Value == 0) { 
+                    croi.shrinkPixel = barshrink.Value = 8;
+                    tbshrink.Text = "8";
+                }
+                if (thminsurface.Value == 0) { 
+                    croi.thminsurface = thminsurface.Value = 72;
+                    tthminsurface.Text = "72";
+                }
+                if (bargraythresh.Value==0) { 
+                    croi.grayThresh = bargraythresh.Value = 30;
+                    tbgraythresh.Text = "30";
+                }
+                if (bararea.Value == 0) { 
+                    croi.minDefectArea = bararea.Value = 50;
+                    tbarea.Text = "50";
+                }
+                //croi.getWhiteMask(dcamera.himg, himgbak);
+                //croi.getBlackMask(dcamera.himg, himgbak);
             }
+            //foreach (roishape croi in rois.rois)
+            //{
+            //    if (!croi.surfacecheck) continue;
+            //    croi.getWhiteMask(dcamera.himg, himgbak);
+            //    croi.getBlackMask(dcamera.himg, himgbak);
+            //}
             //drawsurface();
             //if (!cksurface.Checked) showroidata();
         }
@@ -3368,7 +3435,7 @@ namespace ctmeasure
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 //croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
+                //croi.minDefectWidth = barwidth.Value;
 
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
@@ -3434,6 +3501,7 @@ namespace ctmeasure
         {
             
             if (aTimer == null) return;
+            bugmode = !bugmode;
             if (bugmode)
             {
                 btnbugmode.Checked = true;
@@ -3446,7 +3514,7 @@ namespace ctmeasure
                 aTimer.AutoReset = false;
                 aTimer.Enabled = false;
             }
-            bugmode = !bugmode;
+            
 
 
         }
@@ -3580,6 +3648,8 @@ namespace ctmeasure
                 }
                 //pictureBox1.Invalidate();
                 isRunOrRunOnceChecked = false;
+                MessageBox.Show(new frmdelayclose(1000), "建立模板成功。");
+                //toolStripButton9_Click(null, null);
                 return;
             }
             if (tbrun.Checked&& isTriggered) {// 程序为run状态

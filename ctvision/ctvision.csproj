@@ -154,6 +154,12 @@
     <Compile Include="frmcamera.Designer.cs">
       <DependentUpon>frmcamera.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmdelayclose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmdelayclose.Designer.cs">
+      <DependentUpon>frmdelayclose.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmcamera.resx">
       <DependentUpon>frmcamera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmdelayclose.resx">
+      <DependentUpon>frmdelayclose.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmio.resx">
       <DependentUpon>frmio.cs</DependentUpon>

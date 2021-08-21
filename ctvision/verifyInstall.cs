@@ -26,9 +26,18 @@ namespace ctmeasure
                 this.Close();
             }
             else {
-                Application.Exit();
+                this.Dispose();
+                this.Close();
+                Environment.Exit(1);
             }
             
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+            this.Close();
+            Environment.Exit(1);
         }
     }
 }
