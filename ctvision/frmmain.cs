@@ -1133,7 +1133,8 @@ namespace ctmeasure
                 thmin.Enabled = true;
                 thmax.Enabled = true;
             }
-            if (ckshowsurface.Checked) showsurface();
+            if (ckshowsurface.Checked) 
+                showsurface();
             else showregion();
         }
         private void clearroidata() {
@@ -3092,24 +3093,24 @@ namespace ctmeasure
             {
                 croi.surfacecheck = cksurface.Checked;
 
-                if (barshrink.Value == 0) { 
+                if (croi.shrinkPixel == 0) { 
                     croi.shrinkPixel = barshrink.Value = 8;
                     tbshrink.Text = "8";
                 }
-                if (thminsurface.Value == 0) { 
+                if (croi.thminsurface == 0) { 
                     croi.thminsurface = thminsurface.Value = 72;
                     tthminsurface.Text = "72";
                 }
-                if (bargraythresh.Value==0) { 
+                if (croi.grayThresh == 0) { 
                     croi.grayThresh = bargraythresh.Value = 30;
                     tbgraythresh.Text = "30";
                 }
-                if (bararea.Value == 0) { 
+                if (croi.minDefectArea == 0) { 
                     croi.minDefectArea = bararea.Value = 50;
                     tbarea.Text = "50";
                 }
-                //croi.getWhiteMask(dcamera.himg, himgbak);
-                //croi.getBlackMask(dcamera.himg, himgbak);
+                croi.getWhiteMask(dcamera.himg, himgbak);
+                croi.getBlackMask(dcamera.himg, himgbak);
             }
             //foreach (roishape croi in rois.rois)
             //{
@@ -3128,7 +3129,9 @@ namespace ctmeasure
             foreach (roishape croi in rois.rois)
             {
                 if (!croi.surfacecheck) continue;
+                if (!tbrun.Checked) { 
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
+                }
             }
             pictureBox1.Invalidate();
         }
@@ -3361,6 +3364,7 @@ namespace ctmeasure
             vcommon.qtypass = 0;
             vcommon.qtyng = 0;
             vcommon.qtyrate = 0;
+            fio.ckng.Checked = true;
             //button4_Click(null, null);
         }
 

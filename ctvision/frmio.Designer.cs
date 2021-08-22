@@ -386,7 +386,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.CheckBox ckok;
-        private System.Windows.Forms.CheckBox ckng;
+        public System.Windows.Forms.CheckBox ckng;
         private System.Windows.Forms.Button triggershape;
     }
 }
