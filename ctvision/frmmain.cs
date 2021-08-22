@@ -102,7 +102,7 @@ namespace ctmeasure
         public bool isLoginSuccess = false;
         public static string templateFile = "";
         public Mat template = new Mat();
-        private bool bugmode = true;
+        private bool bugmode = false;
         public frmlimittime frmlit = new frmlimittime();
 
 
@@ -116,6 +116,13 @@ namespace ctmeasure
 
         private void frmmain_Load(object sender, EventArgs e)
         {
+            //实例化Timer类，设置间隔时间为10000毫秒； 
+            aTimer = new System.Timers.Timer(1000);
+
+            //注册计时器的事件
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+
+
             this.Text = this.Text + " V" + Application.ProductVersion;
             //HSystem.SetSystem("help_dir", "");
             //HSystem.SetSystem("do_low_error", "false");
@@ -135,7 +142,7 @@ namespace ctmeasure
 
             //camera
             dcamera = new clscamera();
-            
+            fio = new frmio();
 
             //待重写
             //roi
@@ -1695,27 +1702,27 @@ namespace ctmeasure
                         }
                         i++;
                     }
-                    if (areack&& ckdisplayall.Checked)
-                    {
-                        testresult = "OK";
-                        mcon = rs.num.ToString("d3");
-                        if (this.rtresult.InvokeRequired)
-                        {
-                            rtresult.Invoke(new MethodInvoker(delegate ()
-                            {
-                                rtresult.SelectionColor = Color.Green;
-                                rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea + "pix", " 0 ", " 0 ", Convert.ToInt32(rs.defectArea).ToString() + "pix", testresult));
+                    //if (areack&& ckdisplayall.Checked)
+                    //{
+                    //    testresult = "OK";
+                    //    mcon = rs.num.ToString("d3");
+                    //    if (this.rtresult.InvokeRequired)
+                    //    {
+                    //        rtresult.Invoke(new MethodInvoker(delegate ()
+                    //        {
+                    //            rtresult.SelectionColor = Color.Green;
+                    //            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea + "pix", " 0 ", " 0 ", Convert.ToInt32(rs.defectArea).ToString() + "pix", testresult));
 
-                            }));
-                        }
-                        else
-                        {
-                            rtresult.SelectionColor = Color.Red;
-                            rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea + "pix", " 0 ", " 0 ", Convert.ToInt32(rs.defectArea).ToString() + "pix", testresult));
+                    //        }));
+                    //    }
+                    //    else
+                    //    {
+                    //        rtresult.SelectionColor = Color.Red;
+                    //        rtresult.AppendText(string.Format("{0}\t{1}\t{2}\t{3} {4}\t{5}   {6}\t{7}\r\n", i, "表面检测", mcon, rs.minDefectArea + "pix", " 0 ", " 0 ", Convert.ToInt32(rs.defectArea).ToString() + "pix", testresult));
 
-                        }
-                        i++;
-                    }
+                    //    }
+                    //    i++;
+                    //}
                 }
             }
 
@@ -1739,56 +1746,51 @@ namespace ctmeasure
             vcommon.showstatistic();
             
 
-            //显示测量数据统计结果
-            if (this.rtdatastatistic.InvokeRequired)
-            {
-                rtdatastatistic.Invoke(new MethodInvoker(delegate ()
-                {
-                    rtdatastatistic.Clear();
-                    rtdatastatistic.AppendText("序号\t检测项\t检测内容\t检测数\tNG数\tNG偏大\tNG偏小\r\n");
-                    rtdatastatistic.AppendText("====\t======\t============\t======\t======\t======\t======\r\n");
-                }));
-            }
-            else
-            {
-                rtdatastatistic.Clear();
-                rtdatastatistic.AppendText("序号\t检测项\t检测内容\t检测数\tNG数\tNG偏大\tNG偏小\r\n");
-                rtdatastatistic.AppendText("====\t======\t============\t======\t======\t======\t======\r\n");
-            }
-            //rtdatastatistic.Clear();
-            //rtdatastatistic.AppendText("序号\t检测项\t检测内容\t检测数\tNG数\tNG偏大\tNG偏小\r\n");
-            //rtdatastatistic.AppendText("====\t======\t============\t======\t======\t======\t======\r\n");
-            i = 1;
-            foreach (clsmeasure cm in mrois.ilist){
-                if (ckdatang.Checked && (cm.mngssmall + cm.mngslarge) == 0) continue;
-                if (cm.roi1 == null) mcon = "";
-                else mcon = cm.roi1.num.ToString("d3");
-                if (cm.roi2 == null) mcon += "> ";
-                else mcon += ">" + cm.roi2.num.ToString("d3");
-                mcon += cm.mtypename();
-                if (this.rtdatastatistic.InvokeRequired)
-                {
-                    rtdatastatistic.Invoke(new MethodInvoker(delegate ()
-                    {
-                        rtdatastatistic.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t", i, cm.mname, mcon, cm.mnums, cm.mngssmall + cm.mngslarge));
-                        rtdatastatistic.SelectionColor = Color.Red;
-                        rtdatastatistic.AppendText(string.Format("{0}\t{1}\r\n", cm.mngslarge, cm.mngssmall));
-                        rtdatastatistic.SelectionColor = Color.Black;
-                    }));
-                }
-                else
-                {
-                    rtdatastatistic.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t", i, cm.mname, mcon, cm.mnums, cm.mngssmall + cm.mngslarge));
-                    rtdatastatistic.SelectionColor = Color.Red;
-                    rtdatastatistic.AppendText(string.Format("{0}\t{1}\r\n", cm.mngslarge, cm.mngssmall));
-                    rtdatastatistic.SelectionColor = Color.Black;
-                }
-                //rtdatastatistic.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t", i, cm.mname, mcon, cm.mnums, cm.mngssmall+cm.mngslarge));
-                //rtdatastatistic.SelectionColor = Color.Red;
-                //rtdatastatistic.AppendText(string.Format("{0}\t{1}\r\n", cm.mngslarge, cm.mngssmall));
-                //rtdatastatistic.SelectionColor = Color.Black;
-                i++;
-            }
+            ////显示测量数据统计结果
+            //if (this.rtdatastatistic.InvokeRequired)
+            //{
+            //    rtdatastatistic.Invoke(new MethodInvoker(delegate ()
+            //    {
+            //        rtdatastatistic.Clear();
+            //        rtdatastatistic.AppendText("序号\t检测项\t检测内容\t检测数\tNG数\tNG偏大\tNG偏小\r\n");
+            //        rtdatastatistic.AppendText("====\t======\t============\t======\t======\t======\t======\r\n");
+            //    }));
+            //}
+            //else
+            //{
+            //    rtdatastatistic.Clear();
+            //    rtdatastatistic.AppendText("序号\t检测项\t检测内容\t检测数\tNG数\tNG偏大\tNG偏小\r\n");
+            //    rtdatastatistic.AppendText("====\t======\t============\t======\t======\t======\t======\r\n");
+            //}
+            
+            //i = 1;
+            //foreach (clsmeasure cm in mrois.ilist){
+            //    if (ckdatang.Checked && (cm.mngssmall + cm.mngslarge) == 0) continue;
+            //    if (cm.roi1 == null) mcon = "";
+            //    else mcon = cm.roi1.num.ToString("d3");
+            //    if (cm.roi2 == null) mcon += "> ";
+            //    else mcon += ">" + cm.roi2.num.ToString("d3");
+            //    mcon += cm.mtypename();
+            //    if (this.rtdatastatistic.InvokeRequired)
+            //    {
+            //        rtdatastatistic.Invoke(new MethodInvoker(delegate ()
+            //        {
+            //            rtdatastatistic.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t", i, cm.mname, mcon, cm.mnums, cm.mngssmall + cm.mngslarge));
+            //            rtdatastatistic.SelectionColor = Color.Red;
+            //            rtdatastatistic.AppendText(string.Format("{0}\t{1}\r\n", cm.mngslarge, cm.mngssmall));
+            //            rtdatastatistic.SelectionColor = Color.Black;
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        rtdatastatistic.AppendText(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t", i, cm.mname, mcon, cm.mnums, cm.mngssmall + cm.mngslarge));
+            //        rtdatastatistic.SelectionColor = Color.Red;
+            //        rtdatastatistic.AppendText(string.Format("{0}\t{1}\r\n", cm.mngslarge, cm.mngssmall));
+            //        rtdatastatistic.SelectionColor = Color.Black;
+            //    }
+                 
+            //    i++;
+            //}
             
             
             //测量区显示测量结果
@@ -1880,8 +1882,9 @@ namespace ctmeasure
                 data = null;
                 tpart.Text = Path.GetFileName(fn);
                 vcommon.productname = fn;
-                
-                Cv2.ImWrite(templateFile,template);
+                himgbak.CopyTo(template);
+                //Cv2.ImWrite(templateFile,template);
+                Cv2.ImWrite(templateFile, template);
             }
         }
 
@@ -2120,6 +2123,8 @@ namespace ctmeasure
             vcommon.qty = 0;
             vcommon.qtyng = 0;
             vcommon.qtypass = 0;
+            rois.tr2 = vcommon.postext2r = 80;
+            rois.tc2 = vcommon.postext2c = 80;
             vcommon.showstatistic();
             truntime.Text = "";
             rtresult.Text = "";
@@ -2307,7 +2312,7 @@ namespace ctmeasure
 
         private void tbio_Click(object sender, EventArgs e)
         {
-            fio = new frmio();
+            
             fio.Owner = this;
             fio.ShowDialog();
         }
@@ -2427,20 +2432,20 @@ namespace ctmeasure
             }
             if (bugmode) { 
                 //调试代码
-                //实例化Timer类，设置间隔时间为10000毫秒； 
-                aTimer = new System.Timers.Timer(1000);
-
-                //注册计时器的事件
-                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-
                 ////设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
                 //aTimer.Interval = 1000;
 
                 //设置是执行一次（false）还是一直执行(true)，默认为true
                 aTimer.AutoReset = true;
-
                 //开始计时
                 aTimer.Enabled = true;
+            }
+            else
+            {
+                //设置是执行一次（false）还是一直执行(true)，默认为true
+                aTimer.AutoReset = false;
+                //开始计时
+                aTimer.Enabled = false;
             }
         }
 
@@ -2714,7 +2719,7 @@ namespace ctmeasure
             rois.text2 = "Data...";
             //rois.showtext(pictureBox1);
             //清空统计数据
-            rtdatastatistic.Clear();
+            //rtdatastatistic.Clear();
             foreach (clsmeasure cm in mrois.ilist)
             {
                 cm.mnums = 0;
@@ -3319,14 +3324,14 @@ namespace ctmeasure
         {
             ckdataall.Checked = true;
             ckdatang.Checked = false;
-            showdatastatistic();
+            //showdatastatistic();
         }
 
         private void ckdatang_Click(object sender, EventArgs e)
         {
             ckdatang.Checked = true;
             ckdataall.Checked = false;
-            showdatastatistic();
+            //showdatastatistic();
         }
 
         private void showdatastatistic(){
@@ -3364,6 +3369,7 @@ namespace ctmeasure
             vcommon.qtypass = 0;
             vcommon.qtyng = 0;
             vcommon.qtyrate = 0;
+            Program.fmain.dio.ckng = true;
             fio.ckng.Checked = true;
             //button4_Click(null, null);
         }
@@ -3504,21 +3510,17 @@ namespace ctmeasure
         private void btnbugmode_Click(object sender, EventArgs e)
         {
             
-            if (aTimer == null) return;
+            //if (aTimer == null) return;
             bugmode = !bugmode;
             if (bugmode)
             {
-                btnbugmode.Checked = true;
-                aTimer.AutoReset = true;
-                aTimer.Enabled = true;
+                btnbugmode.Checked = true; 
             }
             else
             {
-                btnbugmode.Checked = false;
-                aTimer.AutoReset = false;
-                aTimer.Enabled = false;
+                btnbugmode.Checked = false; 
             }
-            
+
 
 
         }
@@ -3565,6 +3567,8 @@ namespace ctmeasure
                 sw_csv.Close();
             if (fs_csv != null)
                 fs_csv.Close();
+            Program.fmain.dio.ckng = false;
+            fio.ckng.Checked = false;
             isCsvTitleUpdated = true;
         }
 

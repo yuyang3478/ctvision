@@ -785,10 +785,12 @@ namespace leanvision
                 //循环进行绘制
                 Point2f center;  //定义圆中心坐标
                 float radius;  //定义圆半径
-                //Cv2.MinEnclosingCircle(contours[maxConIdx], out center, out radius);
-                //cr = roi.Y + center.Y;
-                //cc = roi.X + center.X;
-                //cradius = Convert.ToDouble(radius);
+                //if (Program.fmain.cbmtype.SelectedIndex == 4) {
+                //    Cv2.MinEnclosingCircle(contours[maxConIdx], out center, out radius);
+                //    cr = roi.Y + center.Y;
+                //    cc = roi.X + center.X;
+                //    cradius = Convert.ToDouble(radius);
+                //}
                 cr = gr;
                 cc = gc;
                 cradius = (cr + gr) / 2;
@@ -1134,7 +1136,8 @@ namespace leanvision
 
         /// mouse 事件
         private double mousex, mousey, mousex1,mousey1;
-        public double tr1 = 20, tc1=20, tr2=100, tc2=100;//两个显示文本的位置
+        public double tr1 = 20, tc1=20, 
+            tr2=80, tc2=80;//两个显示文本的位置
 
         /// 初始化
         public roimanager()
@@ -1146,7 +1149,7 @@ namespace leanvision
             brow = 0; bcol = 0;
             nums =0;
             isshowtext = true;
-            tr1 = 70; tc1 = 100; tr2 = 250; tc2 = 100;
+            tr1 = 70; tc1 = 100; tr2 = 80; tc2 = 80;
             text1 = "";
             text2 = "data...";
         }

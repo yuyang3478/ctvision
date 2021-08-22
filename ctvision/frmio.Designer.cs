@@ -308,8 +308,6 @@
             // ckng
             // 
             this.ckng.AutoSize = true;
-            this.ckng.Checked = true;
-            this.ckng.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckng.Location = new System.Drawing.Point(341, 259);
             this.ckng.Name = "ckng";
             this.ckng.Size = new System.Drawing.Size(15, 14);

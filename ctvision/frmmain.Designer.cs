@@ -182,7 +182,6 @@
             this.btnend = new System.Windows.Forms.Button();
             this.btnstart = new System.Windows.Forms.Button();
             this.btnpixelunit = new System.Windows.Forms.Button();
-            this.ckregion = new System.Windows.Forms.CheckBox();
             this.ckdisplayng = new System.Windows.Forms.CheckBox();
             this.ckdisplayall = new System.Windows.Forms.CheckBox();
             this.label36 = new System.Windows.Forms.Label();
@@ -643,7 +642,6 @@
             this.tabControl1.Controls.Add(this.tabmeasure);
             this.tabControl1.Controls.Add(this.tabresult);
             this.tabControl1.Controls.Add(this.tabdata);
-            this.tabControl1.Controls.Add(this.tbdatastatistic);
             this.tabControl1.Location = new System.Drawing.Point(3, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -897,6 +895,7 @@
             this.cksurfaceareamax.TabIndex = 39;
             this.cksurfaceareamax.Text = "最大区域";
             this.cksurfaceareamax.UseVisualStyleBackColor = true;
+            this.cksurfaceareamax.Visible = false;
             this.cksurfaceareamax.Click += new System.EventHandler(this.cksurfaceareamax_Click);
             // 
             // ckshowsurface
@@ -1378,12 +1377,13 @@
             // 
             this.groupBox5.Controls.Add(this.cbbase);
             this.groupBox5.Controls.Add(this.label31);
-            this.groupBox5.Location = new System.Drawing.Point(62, 323);
+            this.groupBox5.Location = new System.Drawing.Point(62, 309);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(307, 64);
             this.groupBox5.TabIndex = 25;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "  跟踪基准  ";
+            this.groupBox5.Visible = false;
             // 
             // cbbase
             // 
@@ -1457,9 +1457,9 @@
             this.groupBox3.Controls.Add(this.cbmtype);
             this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Location = new System.Drawing.Point(62, 397);
+            this.groupBox3.Location = new System.Drawing.Point(45, 379);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(307, 337);
+            this.groupBox3.Size = new System.Drawing.Size(338, 349);
             this.groupBox3.TabIndex = 22;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "  检测设置  ";
@@ -1611,9 +1611,6 @@
             this.cbmtype.Items.AddRange(new object[] {
             "x距离",
             "y距离",
-            "两点距离",
-            "面积",
-            "直径",
             "长度",
             "宽度"});
             this.cbmtype.Location = new System.Drawing.Point(85, 92);
@@ -1890,7 +1887,6 @@
             // 
             this.tabdata.Controls.Add(this.groupBox7);
             this.tabdata.Controls.Add(this.btnpixelunit);
-            this.tabdata.Controls.Add(this.ckregion);
             this.tabdata.Controls.Add(this.ckdisplayng);
             this.tabdata.Controls.Add(this.ckdisplayall);
             this.tabdata.Controls.Add(this.label36);
@@ -1947,23 +1943,9 @@
             this.btnpixelunit.UseVisualStyleBackColor = true;
             this.btnpixelunit.Click += new System.EventHandler(this.btnpixelunit_Click);
             // 
-            // ckregion
-            // 
-            this.ckregion.AutoSize = true;
-            this.ckregion.Location = new System.Drawing.Point(236, 91);
-            this.ckregion.Name = "ckregion";
-            this.ckregion.Size = new System.Drawing.Size(72, 16);
-            this.ckregion.TabIndex = 20;
-            this.ckregion.Text = "显示轮廓";
-            this.ckregion.UseVisualStyleBackColor = true;
-            this.ckregion.Visible = false;
-            this.ckregion.Click += new System.EventHandler(this.ckregion_Click);
-            // 
             // ckdisplayng
             // 
             this.ckdisplayng.AutoSize = true;
-            this.ckdisplayng.Checked = true;
-            this.ckdisplayng.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckdisplayng.Location = new System.Drawing.Point(169, 91);
             this.ckdisplayng.Name = "ckdisplayng";
             this.ckdisplayng.Size = new System.Drawing.Size(60, 16);
@@ -1975,6 +1957,8 @@
             // ckdisplayall
             // 
             this.ckdisplayall.AutoSize = true;
+            this.ckdisplayall.Checked = true;
+            this.ckdisplayall.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckdisplayall.Location = new System.Drawing.Point(91, 91);
             this.ckdisplayall.Name = "ckdisplayall";
             this.ckdisplayall.Size = new System.Drawing.Size(72, 16);
@@ -2396,7 +2380,7 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.ComboBox cbmroi1;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.ComboBox cbmtype;
+        public System.Windows.Forms.ComboBox cbmtype;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button btnlvdelete;
@@ -2461,7 +2445,6 @@
         private System.Windows.Forms.CheckBox ckdisplayng;
         private System.Windows.Forms.CheckBox ckdisplayall;
         private System.Windows.Forms.RadioButton ckcombine;
-        private System.Windows.Forms.CheckBox ckregion;
         private System.Windows.Forms.TabPage tbdatastatistic;
         private System.Windows.Forms.RichTextBox rtdatastatistic;
         private System.Windows.Forms.CheckBox ckdatang;

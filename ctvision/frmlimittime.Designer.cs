@@ -37,7 +37,7 @@ namespace ctmeasure
             // btnaply
             // 
             this.btnaply.BackColor = System.Drawing.Color.White;
-            this.btnaply.Location = new System.Drawing.Point(194, 202);
+            this.btnaply.Location = new System.Drawing.Point(151, 105);
             this.btnaply.Name = "btnaply";
             this.btnaply.Size = new System.Drawing.Size(101, 33);
             this.btnaply.TabIndex = 2;
@@ -47,7 +47,7 @@ namespace ctmeasure
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(144, 146);
+            this.dateTimePicker1.Location = new System.Drawing.Point(101, 49);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 21);
             this.dateTimePicker1.TabIndex = 3;
@@ -57,7 +57,7 @@ namespace ctmeasure
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(59, 146);
+            this.label1.Location = new System.Drawing.Point(16, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 14);
             this.label1.TabIndex = 4;
@@ -65,10 +65,11 @@ namespace ctmeasure
             // 
             // frmlimittime
             // 
+            this.AcceptButton = this.btnaply;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(496, 349);
+            this.ClientSize = new System.Drawing.Size(369, 201);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.btnaply);

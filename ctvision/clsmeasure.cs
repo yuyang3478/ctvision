@@ -41,11 +41,13 @@ namespace leanvision
         public string mtypename(){
             if (mtype == 0) return "x距离";
             if (mtype == 1) return "y距离";
-            if (mtype == 2) return "两点距离";
-            if (mtype == 3) return "面积";
-            if (mtype == 4) return "直径";
-            if (mtype == 5) return "长度";
-            if (mtype == 6) return "宽度";
+            if (mtype == 2) return "长度";
+            if (mtype == 3) return "宽度";
+            //if (mtype == 2) return "两点距离";
+            //if (mtype == 3) return "面积";
+            //if (mtype == 4) return "直径";
+            //if (mtype == 5) return "长度";
+            //if (mtype == 6) return "宽度";
             return "";
         }
 
@@ -61,11 +63,14 @@ namespace leanvision
             }
             if (mtype == 0) runmeasure0();
             if (mtype == 1) runmeasure1();
-            if (mtype == 2) runmeasure2();
-            if (mtype == 3) runmeasure3();
-            if (mtype == 4) runmeasure4();
-            if (mtype == 5) runmeasure5();
-            if (mtype == 6) runmeasure6();
+            if (mtype == 2) runmeasure5();
+            if (mtype == 3) runmeasure6();
+
+            //if (mtype == 2) runmeasure2();
+            //if (mtype == 3) runmeasure3();
+            //if (mtype == 4) runmeasure4();
+            //if (mtype == 5) runmeasure5();
+            //if (mtype == 6) runmeasure6();
         }
         //roi.roipoint 定位点 0-面积中心, 1-几何中心,2-上边,3-下边,4-左边,5-右边
         //mtype 测量类型 0-x距离,1-y距离,2-两点距离,3-面积,4-直径,5-长度,6-宽度

@@ -110,6 +110,7 @@ namespace leanvision
             al.Add(picpath);
             al.Add(filepath);
             al.Add(Program.fmain.frmlit.dt.ToString("d"));
+             
             //al.Add(DateTime.Now.ToString("d"));
             //Console.WriteLine(Program.fmain.frmlit.dt.ToString("d"));
             bf.Serialize(fs, al);

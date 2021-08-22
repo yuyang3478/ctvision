@@ -41,9 +41,9 @@ namespace ctmeasure
             // 
             // btnlogin
             // 
-            this.btnlogin.Location = new System.Drawing.Point(142, 146);
+            this.btnlogin.Location = new System.Drawing.Point(164, 142);
             this.btnlogin.Name = "btnlogin";
-            this.btnlogin.Size = new System.Drawing.Size(75, 23);
+            this.btnlogin.Size = new System.Drawing.Size(62, 23);
             this.btnlogin.TabIndex = 0;
             this.btnlogin.Text = "登陆";
             this.btnlogin.UseVisualStyleBackColor = true;
@@ -52,7 +52,7 @@ namespace ctmeasure
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(42, 51);
+            this.label1.Location = new System.Drawing.Point(70, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 2;
@@ -61,7 +61,7 @@ namespace ctmeasure
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(42, 88);
+            this.label2.Location = new System.Drawing.Point(70, 87);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 3;
@@ -69,14 +69,14 @@ namespace ctmeasure
             // 
             // tbname
             // 
-            this.tbname.Location = new System.Drawing.Point(100, 51);
+            this.tbname.Location = new System.Drawing.Point(128, 50);
             this.tbname.Name = "tbname";
             this.tbname.Size = new System.Drawing.Size(165, 21);
             this.tbname.TabIndex = 4;
             // 
             // tbpwd
             // 
-            this.tbpwd.Location = new System.Drawing.Point(100, 88);
+            this.tbpwd.Location = new System.Drawing.Point(128, 87);
             this.tbpwd.Name = "tbpwd";
             this.tbpwd.PasswordChar = '*';
             this.tbpwd.Size = new System.Drawing.Size(165, 21);
@@ -84,9 +84,9 @@ namespace ctmeasure
             // 
             // btnupdate
             // 
-            this.btnupdate.Location = new System.Drawing.Point(239, 146);
+            this.btnupdate.Location = new System.Drawing.Point(232, 142);
             this.btnupdate.Name = "btnupdate";
-            this.btnupdate.Size = new System.Drawing.Size(75, 23);
+            this.btnupdate.Size = new System.Drawing.Size(61, 23);
             this.btnupdate.TabIndex = 6;
             this.btnupdate.Text = "修改";
             this.btnupdate.UseVisualStyleBackColor = true;
@@ -94,6 +94,7 @@ namespace ctmeasure
             // 
             // frmlogin
             // 
+            this.AcceptButton = this.btnlogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(377, 243);
