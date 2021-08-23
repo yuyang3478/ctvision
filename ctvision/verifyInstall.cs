@@ -39,5 +39,10 @@ namespace ctmeasure
             this.Close();
             Environment.Exit(1);
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Apphelper.deleteValue();
+        }
     }
 }

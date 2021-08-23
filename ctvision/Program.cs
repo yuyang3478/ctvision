@@ -34,17 +34,33 @@ namespace ctmeasure
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                string ds = Apphelper.GetHardDiskSN();
-                string n_p = ds + "serversalessongSzamxkjsfp780208";
-                string hash = Apphelper.GetSha1Hash(n_p);
                 fmain = new frmmain();
-                if ((!Apphelper.IsRegistryKeyExist())||(! Apphelper.getValue().Equals(hash))) {
+
+                string ds = Apphelper.GetHardDiskSN();
+                if (Apphelper.IsRegistryKeyExist() && Apphelper.IsRegistryValueNameExist("name") && Apphelper.IsRegistryValueNameExist("passwd") && Apphelper.IsRegistryValueNameExist("hash"))
+                {
+                    string name = Apphelper.getNameValue();
+                    string passwd = Apphelper.getPassValue();
+                    string hashSaved = Apphelper.getHashValue();
+                    string n_p = ds + name + passwd;// "serversalessongSzamxkjsfp780208";
+                    string hash = Apphelper.GetSha1Hash(n_p);
+                    if (!hashSaved.Equals(hash))
+                    {
+                        fmain.frmlit.dt = new DateTime(2008, 8, 21);
+                        vi = new verifyInstall();
+                        vi.StartPosition = FormStartPosition.CenterParent;
+                        vi.ShowDialog();
+                    }
+                }
+                else {
                     fmain.frmlit.dt = new DateTime(2008, 8, 21);
                     vi = new verifyInstall();
                     vi.StartPosition = FormStartPosition.CenterParent;
                     vi.ShowDialog();
                 }
-                 
+                
+                
+                
                 
                 skey = new softkeyyt();
                 if (!getkey()) { Application.Exit(); return; };

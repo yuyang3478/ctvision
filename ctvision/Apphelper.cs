@@ -19,6 +19,9 @@ namespace ctmeasure
         public static bool verifyInstall(string name, string password) {
             //验证登录
             string ds = GetHardDiskSN();
+            if (ds == null || ds.Equals("")) {
+                MessageBox.Show("读取硬件信息失败。\n");
+            }
             string n_p = ds + name.Trim() + password.Trim();
             string hash = GetSha1Hash(n_p);
             //string rhash = "8191DFA2A060AA510742DBF0F3E09BD303EBCEB0";
@@ -36,7 +39,8 @@ namespace ctmeasure
             }else// if (!IsRegistryKeyExist())
             {//保存数据到注册表
                 CreateRegistFile();
-                WriteValue(hash);
+                WriteValue(name.Trim(),password.Trim(), hash);
+                return true;
             }
             //string getval = getValue();
 
@@ -46,7 +50,7 @@ namespace ctmeasure
             //    sw.WriteLine(getval);
             //    sw.WriteLine("----");
             //}
-            return true;
+            
         }
 
         /// <summary>
@@ -86,18 +90,20 @@ namespace ctmeasure
             return false;
         }
 
-        private static bool WriteValue(string value)
+        private static bool WriteValue(string name,string passwd,string hash)
         {
             //主要用到了SetValue()，表示在test下创建名称为Name，值为RegistryTest的键值。第三个参数表示键值类型，省略时，默认为字符串
             RegistryKey hklm = Registry.LocalMachine;
             RegistryKey hkSoftWare = hklm.OpenSubKey(@"SOFTWARE\logInfo", true);
-            hkSoftWare.SetValue("hash", value, RegistryValueKind.String);
+            hkSoftWare.SetValue("name", name, RegistryValueKind.String);
+            hkSoftWare.SetValue("passwd", passwd, RegistryValueKind.String);
+            hkSoftWare.SetValue("hash", hash, RegistryValueKind.String);
             hklm.Close();
             hkSoftWare.Close();
             return true;
         }
 
-        public static string getValue()
+        public static string getHashValue()
         {
             //主要用到了GetValue(),获得名称为"Name"的键值
             RegistryKey hklm = Registry.LocalMachine;
@@ -108,11 +114,36 @@ namespace ctmeasure
             return sValue;
         }
 
-        private static bool deleteValue() {
+        public static string getNameValue()
+        {
+            //主要用到了GetValue(),获得名称为"Name"的键值
+            RegistryKey hklm = Registry.LocalMachine;
+            RegistryKey hkSoftWare = hklm.OpenSubKey(@"SOFTWARE\logInfo", true);
+            
+            string sValue = hkSoftWare.GetValue("name").ToString();
+            hklm.Close();
+            hkSoftWare.Close();
+            return sValue;
+        }
+
+        public static string getPassValue()
+        {
+            //主要用到了GetValue(),获得名称为"Name"的键值
+            RegistryKey hklm = Registry.LocalMachine;
+            RegistryKey hkSoftWare = hklm.OpenSubKey(@"SOFTWARE\logInfo", true);
+            string sValue = hkSoftWare.GetValue("passwd").ToString();
+            hklm.Close();
+            hkSoftWare.Close();
+            return sValue;
+        }
+
+        public static bool deleteValue() {
             //主要用到了DeleteValue(),表示删除名称为"Name"的键值，第二个参数表示是否抛出异常
             RegistryKey hklm = Registry.LocalMachine;
             RegistryKey hkSoftWare = hklm.OpenSubKey(@"SOFTWARE\logInfo", true);
-            hkSoftWare.DeleteValue("hash", true);
+            if (IsRegistryValueNameExist("hash"))  hkSoftWare.DeleteValue("hash", true);
+            if (IsRegistryValueNameExist("name"))  hkSoftWare.DeleteValue("name", true);
+            if (IsRegistryValueNameExist("passwd"))  hkSoftWare.DeleteValue("passwd", true);
             hklm.Close();
             hkSoftWare.Close();
             return true;
