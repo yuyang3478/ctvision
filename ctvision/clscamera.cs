@@ -67,8 +67,9 @@ namespace leanvision
             ctype = "";
             iw = 0;
             ih = 0;
-            return;
+            
             loaddata();
+            return;
         }
 
         public bool cameraopen() {
@@ -378,7 +379,7 @@ namespace leanvision
         ///camera保存
         public void savedata()
         {
-            string fn = Environment.CurrentDirectory + "\\camera1.bin";
+            string fn = Environment.CurrentDirectory + "\\camera.bin";
             FileStream fs = new FileStream(fn, FileMode.Create, FileAccess.Write);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, this);
