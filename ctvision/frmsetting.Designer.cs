@@ -61,8 +61,16 @@ namespace ctmeasure
             this.tbpic = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tfontsize = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.typixel = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txpixel = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -375,7 +383,7 @@ namespace ctmeasure
             // 
             // btnok
             // 
-            this.btnok.Location = new System.Drawing.Point(88, 279);
+            this.btnok.Location = new System.Drawing.Point(102, 378);
             this.btnok.Name = "btnok";
             this.btnok.Size = new System.Drawing.Size(86, 35);
             this.btnok.TabIndex = 1;
@@ -385,7 +393,7 @@ namespace ctmeasure
             // 
             // btncancel
             // 
-            this.btncancel.Location = new System.Drawing.Point(216, 279);
+            this.btncancel.Location = new System.Drawing.Point(230, 378);
             this.btncancel.Name = "btncancel";
             this.btncancel.Size = new System.Drawing.Size(86, 35);
             this.btncancel.TabIndex = 2;
@@ -396,7 +404,7 @@ namespace ctmeasure
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(51, 209);
+            this.label7.Location = new System.Drawing.Point(65, 308);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(65, 12);
             this.label7.TabIndex = 11;
@@ -405,7 +413,7 @@ namespace ctmeasure
             // rbdata
             // 
             this.rbdata.AutoSize = true;
-            this.rbdata.Location = new System.Drawing.Point(122, 209);
+            this.rbdata.Location = new System.Drawing.Point(136, 308);
             this.rbdata.Name = "rbdata";
             this.rbdata.Size = new System.Drawing.Size(71, 16);
             this.rbdata.TabIndex = 12;
@@ -416,7 +424,7 @@ namespace ctmeasure
             // rbstatistic
             // 
             this.rbstatistic.AutoSize = true;
-            this.rbstatistic.Location = new System.Drawing.Point(199, 209);
+            this.rbstatistic.Location = new System.Drawing.Point(213, 308);
             this.rbstatistic.Name = "rbstatistic";
             this.rbstatistic.Size = new System.Drawing.Size(71, 16);
             this.rbstatistic.TabIndex = 13;
@@ -427,7 +435,7 @@ namespace ctmeasure
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(27, 248);
+            this.label8.Location = new System.Drawing.Point(41, 347);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(89, 12);
             this.label8.TabIndex = 14;
@@ -435,7 +443,7 @@ namespace ctmeasure
             // 
             // tmove
             // 
-            this.tmove.Location = new System.Drawing.Point(122, 245);
+            this.tmove.Location = new System.Drawing.Point(136, 344);
             this.tmove.Name = "tmove";
             this.tmove.Size = new System.Drawing.Size(145, 21);
             this.tmove.TabIndex = 15;
@@ -453,10 +461,10 @@ namespace ctmeasure
             this.groupBox2.Controls.Add(this.tbpic);
             this.groupBox2.Location = new System.Drawing.Point(64, 32);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(238, 100);
+            this.groupBox2.Size = new System.Drawing.Size(265, 100);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "保存路径";
+            this.groupBox2.Text = "追踪路径";
             // 
             // label11
             // 
@@ -479,7 +487,7 @@ namespace ctmeasure
             // 
             // btnfile
             // 
-            this.btnfile.Location = new System.Drawing.Point(182, 62);
+            this.btnfile.Location = new System.Drawing.Point(214, 62);
             this.btnfile.Name = "btnfile";
             this.btnfile.Size = new System.Drawing.Size(45, 23);
             this.btnfile.TabIndex = 3;
@@ -491,12 +499,12 @@ namespace ctmeasure
             // 
             this.tbfile.Location = new System.Drawing.Point(58, 59);
             this.tbfile.Name = "tbfile";
-            this.tbfile.Size = new System.Drawing.Size(117, 21);
+            this.tbfile.Size = new System.Drawing.Size(145, 21);
             this.tbfile.TabIndex = 2;
             // 
             // btnpic
             // 
-            this.btnpic.Location = new System.Drawing.Point(182, 22);
+            this.btnpic.Location = new System.Drawing.Point(214, 22);
             this.btnpic.Name = "btnpic";
             this.btnpic.Size = new System.Drawing.Size(45, 23);
             this.btnpic.TabIndex = 1;
@@ -508,13 +516,13 @@ namespace ctmeasure
             // 
             this.tbpic.Location = new System.Drawing.Point(58, 24);
             this.tbpic.Name = "tbpic";
-            this.tbpic.Size = new System.Drawing.Size(117, 21);
+            this.tbpic.Size = new System.Drawing.Size(145, 21);
             this.tbpic.TabIndex = 0;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(51, 168);
+            this.label12.Location = new System.Drawing.Point(65, 267);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(65, 12);
             this.label12.TabIndex = 17;
@@ -522,18 +530,90 @@ namespace ctmeasure
             // 
             // tfontsize
             // 
-            this.tfontsize.Location = new System.Drawing.Point(122, 165);
+            this.tfontsize.Location = new System.Drawing.Point(136, 264);
             this.tfontsize.Name = "tfontsize";
             this.tfontsize.Size = new System.Drawing.Size(148, 21);
             this.tfontsize.TabIndex = 18;
             this.tfontsize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tfontsize_KeyPress);
             this.tfontsize.Leave += new System.EventHandler(this.tfontsize_Leave);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label14);
+            this.groupBox3.Controls.Add(this.typixel);
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.txpixel);
+            this.groupBox3.Controls.Add(this.label16);
+            this.groupBox3.Location = new System.Drawing.Point(64, 150);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(265, 98);
+            this.groupBox3.TabIndex = 28;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "相机标定  ";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(171, 59);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 12);
+            this.label13.TabIndex = 23;
+            this.label13.Text = "um/pixel  ";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(171, 29);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 22;
+            this.label14.Text = "um/pixel  ";
+            // 
+            // typixel
+            // 
+            this.typixel.Location = new System.Drawing.Point(82, 55);
+            this.typixel.Name = "typixel";
+            this.typixel.Size = new System.Drawing.Size(83, 21);
+            this.typixel.TabIndex = 21;
+            this.typixel.Text = "10.00";
+            this.typixel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txpixel_KeyPress);
+            this.typixel.Leave += new System.EventHandler(this.txpixel_Leave);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(15, 58);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(71, 12);
+            this.label15.TabIndex = 19;
+            this.label15.Text = "垂直方向:  ";
+            // 
+            // txpixel
+            // 
+            this.txpixel.Location = new System.Drawing.Point(82, 24);
+            this.txpixel.Name = "txpixel";
+            this.txpixel.Size = new System.Drawing.Size(83, 21);
+            this.txpixel.TabIndex = 18;
+            this.txpixel.Text = "10.00";
+            this.txpixel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txpixel_KeyPress);
+            this.txpixel.Leave += new System.EventHandler(this.txpixel_Leave);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(15, 29);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(71, 12);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "水平方向:  ";
+            // 
             // frmsetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(360, 402);
+            this.ClientSize = new System.Drawing.Size(440, 485);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.tfontsize);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.groupBox2);
@@ -544,17 +624,19 @@ namespace ctmeasure
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btncancel);
             this.Controls.Add(this.btnok);
-            this.Shown += new System.EventHandler(this.frmsetting_Shown);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmsetting";
             this.ShowInTaskbar = false;
             this.Text = "系统设置";
             this.Load += new System.EventHandler(this.frmsetting_Load);
+            this.Shown += new System.EventHandler(this.frmsetting_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -599,5 +681,12 @@ namespace ctmeasure
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tfontsize;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox typixel;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txpixel;
+        private System.Windows.Forms.Label label16;
     }
 }

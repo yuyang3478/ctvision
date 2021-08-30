@@ -3099,12 +3099,12 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
 
                 if (croi.shrinkPixel == 0) { 
-                    croi.shrinkPixel = barshrink.Value = 8;
-                    tbshrink.Text = "8";
+                    croi.shrinkPixel = barshrink.Value = 16;
+                    tbshrink.Text = "16";
                 }
                 if (croi.thminsurface == 0) { 
-                    croi.thminsurface = thminsurface.Value = 72;
-                    tthminsurface.Text = "72";
+                    croi.thminsurface = thminsurface.Value = 126;
+                    tthminsurface.Text = "126";
                 }
                 if (croi.grayThresh == 0) { 
                     croi.grayThresh = bargraythresh.Value = 30;
@@ -3497,6 +3497,14 @@ namespace ctmeasure
                 {
                     if (tb.Name != "tbrun" && tb.Name != "tbrunstrop" && tb.Name != "tbcheckimage" && tb.Name != "tblogmenu") tb.Enabled = false;
                 }
+            }
+
+            if (e.KeyData.HasFlag(Keys.Control)  && e.KeyData.HasFlag(Keys.F10))
+            {
+                //frmlit = new frmlimittime();
+                Program.vi.StartPosition = FormStartPosition.CenterScreen;
+                Program.vi.ShowDialog();
+                //MessageBox.Show("按下了Control + Alt + 0");
             }
             //if (e.KeyCode == Keys.F11)
             //{

@@ -90,7 +90,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(204, 120);
+            this.button2.Location = new System.Drawing.Point(189, 120);
             this.button2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(46, 23);
@@ -101,11 +101,11 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 111);
+            this.button3.Location = new System.Drawing.Point(255, 120);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(64, 23);
             this.button3.TabIndex = 6;
-            this.button3.Text = "清除注册表";
+            this.button3.Text = "注销激活";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 

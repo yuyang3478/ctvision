@@ -18,7 +18,7 @@ namespace ctmeasure
 
         public static bool verifyInstall(string name, string password) {
             //验证登录
-            string ds = GetHardDiskSN();
+            string ds = GetCPUSerialNumber();
             if (ds == null || ds.Equals("")) {
                 MessageBox.Show("读取硬件信息失败。\n");
             }
@@ -190,6 +190,26 @@ namespace ctmeasure
                 break;
             }
             return strHardDiskID;
+        }
+
+        //获取CPU序列号
+        public static string GetCPUSerialNumber()
+        {
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Processor");
+                string sCPUSerialNumber = "";
+                foreach (ManagementObject mo in searcher.Get())
+                {
+                    sCPUSerialNumber = mo["ProcessorId"].ToString().Trim();
+                    break;
+                }
+                return sCPUSerialNumber;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         public static string GetSha1Hash(string input)

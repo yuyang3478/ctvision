@@ -35,8 +35,8 @@ namespace ctmeasure
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 fmain = new frmmain();
-
-                string ds = Apphelper.GetHardDiskSN();
+                vi = new verifyInstall();
+                string ds = Apphelper.GetCPUSerialNumber();
                 if (Apphelper.IsRegistryKeyExist() && Apphelper.IsRegistryValueNameExist("name") && Apphelper.IsRegistryValueNameExist("passwd") && Apphelper.IsRegistryValueNameExist("hash"))
                 {
                     string name = Apphelper.getNameValue();
@@ -47,7 +47,7 @@ namespace ctmeasure
                     if (!hashSaved.Equals(hash))
                     {
                         fmain.frmlit.dt = new DateTime(2008, 8, 21);
-                        vi = new verifyInstall();
+                        
                         vi.StartPosition = FormStartPosition.CenterParent;
                         vi.ShowDialog();
                     }

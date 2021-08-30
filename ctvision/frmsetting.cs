@@ -65,6 +65,8 @@ namespace ctmeasure
             rbdata.Checked = vcommon.hshowresult;
             rbstatistic.Checked = vcommon.hshowstatistic;
             tmove.Text = vcommon.posmove.ToString();
+            txpixel.Text = Program.fmain.dcamera.xpixel.ToString();
+            typixel.Text = Program.fmain.dcamera.ypixel.ToString();
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -89,6 +91,10 @@ namespace ctmeasure
             vcommon.filepath = tbfile.Text.ToString().Trim();
 
             vcommon.savedata();
+            Program.fmain.dcamera.xpixel = double.Parse(txpixel.Text);
+            Program.fmain.dcamera.ypixel = double.Parse(typixel.Text);
+            Program.fmain.dcamera.savedata();
+
             this.Close();
         }
 
@@ -103,6 +109,17 @@ namespace ctmeasure
         //    }
         //    return Pens.Blue;
         //}
+
+        private void txpixel_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != 8 && e.KeyChar != '.' && (e.KeyChar < '0' || e.KeyChar > '9')) e.Handled = true;
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf(".") > -1) e.Handled = true;
+        }
+
+        private void txpixel_Leave(object sender, EventArgs e)
+        {
+            if ((sender as TextBox).Text.Trim() == "") (sender as TextBox).Text = "10.00";
+        }
 
         private void tmove_Leave(object sender, EventArgs e)
         {

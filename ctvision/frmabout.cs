@@ -23,11 +23,16 @@ namespace ctmeasure
         private void frmabout_Load(object sender, EventArgs e)
         {
             lbversion.Text = lbversion.Text + Application.ProductVersion;
-            lbhight.Visible = false;
+            //lbhight.Visible = false;
             if (!Program.getversion()) lbhight.Visible = true;
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbversion_Click(object sender, EventArgs e)
         {
 
         }
