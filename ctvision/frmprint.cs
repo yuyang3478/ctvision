@@ -140,8 +140,12 @@ namespace ctmeasure
                 if (fpath == "") fpath = Application.StartupPath + "\\photos";
                 if (!Directory.Exists(fpath)) Directory.CreateDirectory(fpath);  
             }
-            else {
-                fpath = vcommon.picpath;
+            else if (viewfolder==""){
+                fpath = vcommon.picpath; 
+            }
+            else
+            {
+                fpath = viewfolder;
             }
 
             System.Diagnostics.Process.Start("explorer.exe", fpath);

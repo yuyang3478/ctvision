@@ -142,6 +142,7 @@
     <Compile Include="clslog.cs" />
     <Compile Include="clsmeasure.cs" />
     <Compile Include="clsroi.cs" />
+    <Compile Include="clstemplate.cs" />
     <Compile Include="frmabout.cs">
       <SubType>Form</SubType>
     </Compile>

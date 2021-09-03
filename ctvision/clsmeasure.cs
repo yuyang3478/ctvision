@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-//using HalconDotNet;
 using System.Collections;
 using ctmeasure;
 

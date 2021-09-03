@@ -74,12 +74,18 @@
             this.label39 = new System.Windows.Forms.Label();
             this.bargraythresh = new System.Windows.Forms.TrackBar();
             this.label38 = new System.Windows.Forms.Label();
-            this.barwidth = new System.Windows.Forms.TrackBar();
-            this.tbwidth = new System.Windows.Forms.TextBox();
+            this.bargraythresh1 = new System.Windows.Forms.TrackBar();
+            this.tbgraythresh1 = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.bararea = new System.Windows.Forms.TrackBar();
             this.tbarea = new System.Windows.Forms.TextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.tbblack = new System.Windows.Forms.TextBox();
+            this.tbspread = new System.Windows.Forms.TextBox();
+            this.barblack = new System.Windows.Forms.TrackBar();
+            this.barspread = new System.Windows.Forms.TrackBar();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.tbshrink = new System.Windows.Forms.TextBox();
             this.barshrink = new System.Windows.Forms.TrackBar();
             this.label40 = new System.Windows.Forms.Label();
@@ -157,6 +163,8 @@
             this.btnlvclear = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.tabresult = new System.Windows.Forms.TabPage();
+            this.btndeltemp = new System.Windows.Forms.Button();
+            this.dgtemplate = new System.Windows.Forms.DataGridView();
             this.btnnewproduct = new System.Windows.Forms.Button();
             this.btnsaveproduct = new System.Windows.Forms.Button();
             this.btnloadproduct = new System.Windows.Forms.Button();
@@ -175,9 +183,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tqty = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabdata = new System.Windows.Forms.TabPage();
             this.lbng = new System.Windows.Forms.Label();
             this.lbpass = new System.Windows.Forms.Label();
-            this.tabdata = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btnend = new System.Windows.Forms.Button();
             this.btnstart = new System.Windows.Forms.Button();
@@ -218,9 +226,11 @@
             this.groupBox6.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bargraythresh)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barwidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bargraythresh1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bararea)).BeginInit();
             this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.barblack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barspread)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barshrink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).BeginInit();
             this.groupBox4.SuspendLayout();
@@ -233,6 +243,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgview)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tabresult.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgtemplate)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabdata.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -645,7 +656,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(445, 676);
+            this.tabControl1.Size = new System.Drawing.Size(445, 646);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -664,7 +675,7 @@
             this.tabroi.Location = new System.Drawing.Point(4, 22);
             this.tabroi.Name = "tabroi";
             this.tabroi.Padding = new System.Windows.Forms.Padding(3);
-            this.tabroi.Size = new System.Drawing.Size(437, 650);
+            this.tabroi.Size = new System.Drawing.Size(437, 620);
             this.tabroi.TabIndex = 3;
             this.tabroi.Text = "图像识别";
             this.tabroi.UseVisualStyleBackColor = true;
@@ -690,23 +701,23 @@
             this.groupBox9.Controls.Add(this.label39);
             this.groupBox9.Controls.Add(this.bargraythresh);
             this.groupBox9.Controls.Add(this.label38);
-            this.groupBox9.Controls.Add(this.barwidth);
-            this.groupBox9.Controls.Add(this.tbwidth);
+            this.groupBox9.Controls.Add(this.bargraythresh1);
+            this.groupBox9.Controls.Add(this.tbgraythresh1);
             this.groupBox9.Controls.Add(this.label33);
             this.groupBox9.Controls.Add(this.bararea);
             this.groupBox9.Controls.Add(this.tbarea);
-            this.groupBox9.Location = new System.Drawing.Point(17, 172);
+            this.groupBox9.Location = new System.Drawing.Point(16, 197);
             this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.groupBox9.Size = new System.Drawing.Size(268, 76);
+            this.groupBox9.Size = new System.Drawing.Size(274, 108);
             this.groupBox9.TabIndex = 44;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "缺陷过滤";
             // 
             // tbgraythresh
             // 
-            this.tbgraythresh.Location = new System.Drawing.Point(229, 19);
+            this.tbgraythresh.Location = new System.Drawing.Point(229, 23);
             this.tbgraythresh.Name = "tbgraythresh";
             this.tbgraythresh.ReadOnly = true;
             this.tbgraythresh.Size = new System.Drawing.Size(33, 21);
@@ -715,22 +726,22 @@
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(4, 22);
+            this.label39.Location = new System.Drawing.Point(6, 26);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(65, 12);
+            this.label39.Size = new System.Drawing.Size(89, 12);
             this.label39.TabIndex = 47;
-            this.label39.Text = "标准变差: ";
+            this.label39.Text = "标准变差(白): ";
             // 
             // bargraythresh
             // 
             this.bargraythresh.AutoSize = false;
             this.bargraythresh.BackColor = System.Drawing.SystemColors.Window;
             this.bargraythresh.LargeChange = 2;
-            this.bargraythresh.Location = new System.Drawing.Point(56, 16);
+            this.bargraythresh.Location = new System.Drawing.Point(96, 20);
             this.bargraythresh.Margin = new System.Windows.Forms.Padding(0);
             this.bargraythresh.Maximum = 254;
             this.bargraythresh.Name = "bargraythresh";
-            this.bargraythresh.Size = new System.Drawing.Size(166, 28);
+            this.bargraythresh.Size = new System.Drawing.Size(132, 28);
             this.bargraythresh.TabIndex = 46;
             this.bargraythresh.TickStyle = System.Windows.Forms.TickStyle.None;
             this.bargraythresh.Value = 50;
@@ -739,42 +750,40 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(14, 99);
+            this.label38.Location = new System.Drawing.Point(6, 52);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(41, 12);
+            this.label38.Size = new System.Drawing.Size(89, 12);
             this.label38.TabIndex = 43;
-            this.label38.Text = "宽度: ";
-            this.label38.Visible = false;
+            this.label38.Text = "标准变差(黑): ";
             // 
-            // barwidth
+            // bargraythresh1
             // 
-            this.barwidth.AutoSize = false;
-            this.barwidth.BackColor = System.Drawing.SystemColors.Window;
-            this.barwidth.LargeChange = 2;
-            this.barwidth.Location = new System.Drawing.Point(56, 96);
-            this.barwidth.Margin = new System.Windows.Forms.Padding(0);
-            this.barwidth.Maximum = 100;
-            this.barwidth.Name = "barwidth";
-            this.barwidth.Size = new System.Drawing.Size(166, 26);
-            this.barwidth.TabIndex = 44;
-            this.barwidth.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barwidth.Value = 10;
-            this.barwidth.Visible = false;
-            this.barwidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barwidth_ValueChanged);
+            this.bargraythresh1.AutoSize = false;
+            this.bargraythresh1.BackColor = System.Drawing.SystemColors.Window;
+            this.bargraythresh1.LargeChange = 2;
+            this.bargraythresh1.Location = new System.Drawing.Point(96, 47);
+            this.bargraythresh1.Margin = new System.Windows.Forms.Padding(0);
+            this.bargraythresh1.Maximum = 100;
+            this.bargraythresh1.Name = "bargraythresh1";
+            this.bargraythresh1.Size = new System.Drawing.Size(132, 28);
+            this.bargraythresh1.TabIndex = 44;
+            this.bargraythresh1.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.bargraythresh1.Value = 10;
+            this.bargraythresh1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barwidth_ValueChanged);
             // 
-            // tbwidth
+            // tbgraythresh1
             // 
-            this.tbwidth.Location = new System.Drawing.Point(229, 96);
-            this.tbwidth.Name = "tbwidth";
-            this.tbwidth.ReadOnly = true;
-            this.tbwidth.Size = new System.Drawing.Size(33, 21);
-            this.tbwidth.TabIndex = 45;
-            this.tbwidth.Visible = false;
+            this.tbgraythresh1.Location = new System.Drawing.Point(229, 49);
+            this.tbgraythresh1.Name = "tbgraythresh1";
+            this.tbgraythresh1.ReadOnly = true;
+            this.tbgraythresh1.Size = new System.Drawing.Size(33, 21);
+            this.tbgraythresh1.TabIndex = 45;
+            this.tbgraythresh1.Text = "0";
             // 
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(4, 47);
+            this.label33.Location = new System.Drawing.Point(6, 77);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(65, 12);
             this.label33.TabIndex = 35;
@@ -785,11 +794,11 @@
             this.bararea.AutoSize = false;
             this.bararea.BackColor = System.Drawing.SystemColors.Window;
             this.bararea.LargeChange = 2;
-            this.bararea.Location = new System.Drawing.Point(56, 44);
+            this.bararea.Location = new System.Drawing.Point(96, 74);
             this.bararea.Margin = new System.Windows.Forms.Padding(0);
             this.bararea.Maximum = 1000;
             this.bararea.Name = "bararea";
-            this.bararea.Size = new System.Drawing.Size(166, 28);
+            this.bararea.Size = new System.Drawing.Size(132, 28);
             this.bararea.TabIndex = 36;
             this.bararea.TickStyle = System.Windows.Forms.TickStyle.None;
             this.bararea.Value = 200;
@@ -797,7 +806,7 @@
             // 
             // tbarea
             // 
-            this.tbarea.Location = new System.Drawing.Point(229, 44);
+            this.tbarea.Location = new System.Drawing.Point(229, 74);
             this.tbarea.Name = "tbarea";
             this.tbarea.ReadOnly = true;
             this.tbarea.Size = new System.Drawing.Size(33, 21);
@@ -805,20 +814,84 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.tbblack);
+            this.groupBox8.Controls.Add(this.tbspread);
+            this.groupBox8.Controls.Add(this.barblack);
+            this.groupBox8.Controls.Add(this.barspread);
+            this.groupBox8.Controls.Add(this.label37);
+            this.groupBox8.Controls.Add(this.label34);
             this.groupBox8.Controls.Add(this.tbshrink);
             this.groupBox8.Controls.Add(this.barshrink);
             this.groupBox8.Controls.Add(this.label40);
             this.groupBox8.Controls.Add(this.thminsurface);
             this.groupBox8.Controls.Add(this.label35);
             this.groupBox8.Controls.Add(this.tthminsurface);
-            this.groupBox8.Location = new System.Drawing.Point(16, 48);
+            this.groupBox8.Location = new System.Drawing.Point(16, 41);
             this.groupBox8.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.groupBox8.Size = new System.Drawing.Size(268, 87);
+            this.groupBox8.Size = new System.Drawing.Size(268, 147);
             this.groupBox8.TabIndex = 43;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "区域选择";
+            // 
+            // tbblack
+            // 
+            this.tbblack.BackColor = System.Drawing.SystemColors.Control;
+            this.tbblack.Location = new System.Drawing.Point(228, 117);
+            this.tbblack.Name = "tbblack";
+            this.tbblack.Size = new System.Drawing.Size(33, 21);
+            this.tbblack.TabIndex = 24;
+            // 
+            // tbspread
+            // 
+            this.tbspread.BackColor = System.Drawing.SystemColors.Control;
+            this.tbspread.Location = new System.Drawing.Point(228, 91);
+            this.tbspread.Name = "tbspread";
+            this.tbspread.Size = new System.Drawing.Size(33, 21);
+            this.tbspread.TabIndex = 23;
+            // 
+            // barblack
+            // 
+            this.barblack.AutoSize = false;
+            this.barblack.BackColor = System.Drawing.SystemColors.Window;
+            this.barblack.Location = new System.Drawing.Point(62, 119);
+            this.barblack.Maximum = 127;
+            this.barblack.Name = "barblack";
+            this.barblack.Size = new System.Drawing.Size(162, 23);
+            this.barblack.TabIndex = 22;
+            this.barblack.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.barblack.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barblack_MouseUp);
+            // 
+            // barspread
+            // 
+            this.barspread.AutoSize = false;
+            this.barspread.BackColor = System.Drawing.SystemColors.Window;
+            this.barspread.Location = new System.Drawing.Point(62, 90);
+            this.barspread.Maximum = 50;
+            this.barspread.Name = "barspread";
+            this.barspread.Size = new System.Drawing.Size(162, 23);
+            this.barspread.TabIndex = 21;
+            this.barspread.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.barspread.ValueChanged += new System.EventHandler(this.barspread_ValueChanged);
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(5, 117);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(65, 12);
+            this.label37.TabIndex = 20;
+            this.label37.Text = "黑色定位：";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(6, 90);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(65, 12);
+            this.label34.TabIndex = 19;
+            this.label34.Text = "弹性扩张：";
             // 
             // tbshrink
             // 
@@ -834,11 +907,11 @@
             this.barshrink.AutoSize = false;
             this.barshrink.BackColor = System.Drawing.SystemColors.Window;
             this.barshrink.LargeChange = 2;
-            this.barshrink.Location = new System.Drawing.Point(59, 22);
+            this.barshrink.Location = new System.Drawing.Point(62, 22);
             this.barshrink.Margin = new System.Windows.Forms.Padding(0);
             this.barshrink.Maximum = 50;
             this.barshrink.Name = "barshrink";
-            this.barshrink.Size = new System.Drawing.Size(166, 25);
+            this.barshrink.Size = new System.Drawing.Size(163, 25);
             this.barshrink.SmallChange = 3;
             this.barshrink.TabIndex = 17;
             this.barshrink.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -858,11 +931,11 @@
             this.thminsurface.AutoSize = false;
             this.thminsurface.BackColor = System.Drawing.SystemColors.Window;
             this.thminsurface.LargeChange = 2;
-            this.thminsurface.Location = new System.Drawing.Point(58, 50);
+            this.thminsurface.Location = new System.Drawing.Point(62, 50);
             this.thminsurface.Margin = new System.Windows.Forms.Padding(0);
             this.thminsurface.Maximum = 127;
             this.thminsurface.Name = "thminsurface";
-            this.thminsurface.Size = new System.Drawing.Size(166, 23);
+            this.thminsurface.Size = new System.Drawing.Size(162, 23);
             this.thminsurface.TabIndex = 12;
             this.thminsurface.TickStyle = System.Windows.Forms.TickStyle.None;
             this.thminsurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.thminsurface_ValueChanged);
@@ -874,7 +947,7 @@
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(65, 12);
             this.label35.TabIndex = 10;
-            this.label35.Text = "目标定位：";
+            this.label35.Text = "白色定位：";
             this.label35.Click += new System.EventHandler(this.label35_Click);
             // 
             // tthminsurface
@@ -889,13 +962,12 @@
             // cksurfaceareamax
             // 
             this.cksurfaceareamax.AutoSize = true;
-            this.cksurfaceareamax.Location = new System.Drawing.Point(210, 22);
+            this.cksurfaceareamax.Location = new System.Drawing.Point(210, 19);
             this.cksurfaceareamax.Name = "cksurfaceareamax";
             this.cksurfaceareamax.Size = new System.Drawing.Size(72, 16);
             this.cksurfaceareamax.TabIndex = 39;
-            this.cksurfaceareamax.Text = "最大区域";
+            this.cksurfaceareamax.Text = "联合选择";
             this.cksurfaceareamax.UseVisualStyleBackColor = true;
-            this.cksurfaceareamax.Visible = false;
             this.cksurfaceareamax.Click += new System.EventHandler(this.cksurfaceareamax_Click);
             // 
             // ckshowsurface
@@ -903,7 +975,7 @@
             this.ckshowsurface.AutoSize = true;
             this.ckshowsurface.Checked = true;
             this.ckshowsurface.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckshowsurface.Location = new System.Drawing.Point(122, 22);
+            this.ckshowsurface.Location = new System.Drawing.Point(122, 19);
             this.ckshowsurface.Name = "ckshowsurface";
             this.ckshowsurface.Size = new System.Drawing.Size(72, 16);
             this.ckshowsurface.TabIndex = 38;
@@ -916,7 +988,7 @@
             this.cksurface.AutoSize = true;
             this.cksurface.Checked = true;
             this.cksurface.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cksurface.Location = new System.Drawing.Point(17, 22);
+            this.cksurface.Location = new System.Drawing.Point(17, 19);
             this.cksurface.Name = "cksurface";
             this.cksurface.Size = new System.Drawing.Size(72, 16);
             this.cksurface.TabIndex = 34;
@@ -1358,7 +1430,7 @@
             this.tabmeasure.Location = new System.Drawing.Point(4, 22);
             this.tabmeasure.Name = "tabmeasure";
             this.tabmeasure.Padding = new System.Windows.Forms.Padding(3);
-            this.tabmeasure.Size = new System.Drawing.Size(437, 650);
+            this.tabmeasure.Size = new System.Drawing.Size(437, 620);
             this.tabmeasure.TabIndex = 1;
             this.tabmeasure.Text = "检测内容";
             this.tabmeasure.UseVisualStyleBackColor = true;
@@ -1668,25 +1740,58 @@
             // 
             // tabresult
             // 
+            this.tabresult.Controls.Add(this.btndeltemp);
+            this.tabresult.Controls.Add(this.dgtemplate);
             this.tabresult.Controls.Add(this.btnnewproduct);
             this.tabresult.Controls.Add(this.btnsaveproduct);
             this.tabresult.Controls.Add(this.btnloadproduct);
             this.tabresult.Controls.Add(this.tpart);
             this.tabresult.Controls.Add(this.label14);
             this.tabresult.Controls.Add(this.groupBox1);
-            this.tabresult.Controls.Add(this.lbng);
-            this.tabresult.Controls.Add(this.lbpass);
             this.tabresult.Location = new System.Drawing.Point(4, 22);
             this.tabresult.Name = "tabresult";
             this.tabresult.Padding = new System.Windows.Forms.Padding(3);
-            this.tabresult.Size = new System.Drawing.Size(437, 650);
+            this.tabresult.Size = new System.Drawing.Size(437, 620);
             this.tabresult.TabIndex = 2;
-            this.tabresult.Text = "检测结果";
+            this.tabresult.Text = "模板管理";
             this.tabresult.UseVisualStyleBackColor = true;
+            // 
+            // btndeltemp
+            // 
+            this.btndeltemp.Location = new System.Drawing.Point(351, 114);
+            this.btndeltemp.Name = "btndeltemp";
+            this.btndeltemp.Size = new System.Drawing.Size(64, 22);
+            this.btndeltemp.TabIndex = 21;
+            this.btndeltemp.Text = "删   除";
+            this.btndeltemp.UseVisualStyleBackColor = true;
+            this.btndeltemp.Click += new System.EventHandler(this.btndeltemp_Click);
+            // 
+            // dgtemplate
+            // 
+            this.dgtemplate.AllowUserToAddRows = false;
+            this.dgtemplate.AllowUserToDeleteRows = false;
+            this.dgtemplate.AllowUserToResizeRows = false;
+            this.dgtemplate.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgtemplate.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dgtemplate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgtemplate.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgtemplate.Location = new System.Drawing.Point(35, 142);
+            this.dgtemplate.MultiSelect = false;
+            this.dgtemplate.Name = "dgtemplate";
+            this.dgtemplate.ReadOnly = true;
+            this.dgtemplate.RowHeadersVisible = false;
+            this.dgtemplate.RowHeadersWidth = 82;
+            this.dgtemplate.RowTemplate.Height = 23;
+            this.dgtemplate.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgtemplate.Size = new System.Drawing.Size(380, 650);
+            this.dgtemplate.TabIndex = 16;
+            this.dgtemplate.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgview_RowEnter);
+            this.dgtemplate.Click += new System.EventHandler(this.dgview_Click);
+            this.dgtemplate.DoubleClick += new System.EventHandler(this.dgview_DoubleClick);
             // 
             // btnnewproduct
             // 
-            this.btnnewproduct.Location = new System.Drawing.Point(30, 65);
+            this.btnnewproduct.Location = new System.Drawing.Point(78, 70);
             this.btnnewproduct.Name = "btnnewproduct";
             this.btnnewproduct.Size = new System.Drawing.Size(86, 34);
             this.btnnewproduct.TabIndex = 15;
@@ -1696,7 +1801,7 @@
             // 
             // btnsaveproduct
             // 
-            this.btnsaveproduct.Location = new System.Drawing.Point(124, 65);
+            this.btnsaveproduct.Location = new System.Drawing.Point(172, 70);
             this.btnsaveproduct.Name = "btnsaveproduct";
             this.btnsaveproduct.Size = new System.Drawing.Size(86, 34);
             this.btnsaveproduct.TabIndex = 12;
@@ -1706,7 +1811,7 @@
             // 
             // btnloadproduct
             // 
-            this.btnloadproduct.Location = new System.Drawing.Point(218, 65);
+            this.btnloadproduct.Location = new System.Drawing.Point(266, 70);
             this.btnloadproduct.Name = "btnloadproduct";
             this.btnloadproduct.Size = new System.Drawing.Size(86, 34);
             this.btnloadproduct.TabIndex = 11;
@@ -1716,16 +1821,15 @@
             // 
             // tpart
             // 
-            this.tpart.Location = new System.Drawing.Point(110, 23);
+            this.tpart.Location = new System.Drawing.Point(153, 28);
             this.tpart.Name = "tpart";
-            this.tpart.ReadOnly = true;
             this.tpart.Size = new System.Drawing.Size(193, 21);
             this.tpart.TabIndex = 4;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(36, 26);
+            this.label14.Location = new System.Drawing.Point(79, 31);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(71, 12);
             this.label14.TabIndex = 3;
@@ -1745,12 +1849,13 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.tqty);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(6, 259);
+            this.groupBox1.Location = new System.Drawing.Point(367, 43);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(317, 204);
+            this.groupBox1.Size = new System.Drawing.Size(26, 32);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "  统计  ";
+            this.groupBox1.Visible = false;
             // 
             // button4
             // 
@@ -1859,32 +1964,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "检测数:  ";
             // 
-            // lbng
-            // 
-            this.lbng.BackColor = System.Drawing.Color.Red;
-            this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbng.Location = new System.Drawing.Point(18, 121);
-            this.lbng.Name = "lbng";
-            this.lbng.Size = new System.Drawing.Size(295, 117);
-            this.lbng.TabIndex = 1;
-            this.lbng.Text = "NG";
-            this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbpass
-            // 
-            this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
-            this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbpass.Location = new System.Drawing.Point(18, 121);
-            this.lbpass.Name = "lbpass";
-            this.lbpass.Size = new System.Drawing.Size(295, 117);
-            this.lbpass.TabIndex = 0;
-            this.lbpass.Text = "PASS";
-            this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // tabdata
             // 
+            this.tabdata.Controls.Add(this.lbng);
+            this.tabdata.Controls.Add(this.lbpass);
             this.tabdata.Controls.Add(this.groupBox7);
             this.tabdata.Controls.Add(this.btnpixelunit);
             this.tabdata.Controls.Add(this.ckdisplayng);
@@ -1894,10 +1977,34 @@
             this.tabdata.Location = new System.Drawing.Point(4, 22);
             this.tabdata.Name = "tabdata";
             this.tabdata.Padding = new System.Windows.Forms.Padding(3);
-            this.tabdata.Size = new System.Drawing.Size(437, 650);
+            this.tabdata.Size = new System.Drawing.Size(437, 620);
             this.tabdata.TabIndex = 4;
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
+            // 
+            // lbng
+            // 
+            this.lbng.BackColor = System.Drawing.Color.Red;
+            this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbng.Location = new System.Drawing.Point(79, 113);
+            this.lbng.Name = "lbng";
+            this.lbng.Size = new System.Drawing.Size(295, 117);
+            this.lbng.TabIndex = 23;
+            this.lbng.Text = "NG";
+            this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbpass
+            // 
+            this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
+            this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbpass.Location = new System.Drawing.Point(79, 113);
+            this.lbpass.Name = "lbpass";
+            this.lbpass.Size = new System.Drawing.Size(295, 117);
+            this.lbpass.TabIndex = 22;
+            this.lbpass.Text = "PASS";
+            this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox7
             // 
@@ -1935,7 +2042,7 @@
             // btnpixelunit
             // 
             this.btnpixelunit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnpixelunit.Location = new System.Drawing.Point(327, 90);
+            this.btnpixelunit.Location = new System.Drawing.Point(327, 267);
             this.btnpixelunit.Name = "btnpixelunit";
             this.btnpixelunit.Size = new System.Drawing.Size(47, 20);
             this.btnpixelunit.TabIndex = 17;
@@ -1946,7 +2053,7 @@
             // ckdisplayng
             // 
             this.ckdisplayng.AutoSize = true;
-            this.ckdisplayng.Location = new System.Drawing.Point(169, 91);
+            this.ckdisplayng.Location = new System.Drawing.Point(169, 268);
             this.ckdisplayng.Name = "ckdisplayng";
             this.ckdisplayng.Size = new System.Drawing.Size(60, 16);
             this.ckdisplayng.TabIndex = 19;
@@ -1959,7 +2066,7 @@
             this.ckdisplayall.AutoSize = true;
             this.ckdisplayall.Checked = true;
             this.ckdisplayall.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckdisplayall.Location = new System.Drawing.Point(91, 91);
+            this.ckdisplayall.Location = new System.Drawing.Point(91, 268);
             this.ckdisplayall.Name = "ckdisplayall";
             this.ckdisplayall.Size = new System.Drawing.Size(72, 16);
             this.ckdisplayall.TabIndex = 18;
@@ -1970,7 +2077,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(6, 92);
+            this.label36.Location = new System.Drawing.Point(6, 269);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(95, 12);
             this.label36.TabIndex = 16;
@@ -1982,11 +2089,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtresult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rtresult.Location = new System.Drawing.Point(3, 116);
+            this.rtresult.Location = new System.Drawing.Point(3, 293);
             this.rtresult.Name = "rtresult";
             this.rtresult.ReadOnly = true;
             this.rtresult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtresult.Size = new System.Drawing.Size(427, 620);
+            this.rtresult.Size = new System.Drawing.Size(427, 443);
             this.rtresult.TabIndex = 15;
             this.rtresult.Text = "";
             this.rtresult.WordWrap = false;
@@ -2064,7 +2171,7 @@
             this.phwin.Location = new System.Drawing.Point(0, 0);
             this.phwin.Margin = new System.Windows.Forms.Padding(0);
             this.phwin.Name = "phwin";
-            this.phwin.Size = new System.Drawing.Size(742, 1175);
+            this.phwin.Size = new System.Drawing.Size(742, 1145);
             this.phwin.TabIndex = 1;
             this.phwin.TabStop = true;
             // 
@@ -2076,7 +2183,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(720, 1418);
+            this.pictureBox1.Size = new System.Drawing.Size(720, 1398);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hwin_KeyUp);
@@ -2251,10 +2358,12 @@
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bargraythresh)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barwidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bargraythresh1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bararea)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.barblack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barspread)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barshrink)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thminsurface)).EndInit();
             this.groupBox4.ResumeLayout(false);
@@ -2272,6 +2381,7 @@
             this.groupBox3.PerformLayout();
             this.tabresult.ResumeLayout(false);
             this.tabresult.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgtemplate)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabdata.ResumeLayout(false);
@@ -2323,8 +2433,6 @@
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox tqty;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lbng;
-        private System.Windows.Forms.Label lbpass;
         private System.Windows.Forms.TabPage tabroi;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnloadproduct;
@@ -2458,8 +2566,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tblogmenu;
         private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.TrackBar barwidth;
-        private System.Windows.Forms.TextBox tbwidth;
+        private System.Windows.Forms.TrackBar bargraythresh1;
+        private System.Windows.Forms.TextBox tbgraythresh1;
         private System.Windows.Forms.TrackBar thminsurface;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.GroupBox groupBox9;
@@ -2472,6 +2580,16 @@
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         public System.Windows.Forms.ToolStripButton btnbugmode;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TrackBar barspread;
+        private System.Windows.Forms.TrackBar barblack;
+        private System.Windows.Forms.TextBox tbblack;
+        private System.Windows.Forms.TextBox tbspread;
+        private System.Windows.Forms.Label lbng;
+        private System.Windows.Forms.Label lbpass;
+        private System.Windows.Forms.DataGridView dgtemplate;
+        private System.Windows.Forms.Button btndeltemp;
     }
 }
 

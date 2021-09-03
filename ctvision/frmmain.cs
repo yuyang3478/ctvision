@@ -64,6 +64,10 @@ namespace ctmeasure
         
         //measure program
         private clsmeasurelist mrois;
+        private ArrayList templatelist;
+        private static string temppath = "template/";
+        
+
         public string mver;
         private string testresult = "OK";
 
@@ -112,6 +116,11 @@ namespace ctmeasure
         public frmmain()
         {
             InitializeComponent();
+            
+            if (System.IO.Directory.Exists(temppath) == false)
+            {
+                System.IO.Directory.CreateDirectory(temppath);
+            }
         }
 
         private void frmmain_Load(object sender, EventArgs e)
@@ -152,7 +161,9 @@ namespace ctmeasure
 
             //measures
             mrois = new clsmeasurelist();
+            templatelist = new ArrayList();
             initdgview();
+            initdgtemplateview();
 
             //print
             fprint = new frmprint();
@@ -1123,9 +1134,10 @@ namespace ctmeasure
             cksurface.Checked = rois.croi.surfacecheck;
             cksurfaceareamax.Checked = rois.croi.surfacemaxcheck;
             thminsurface.Value = rois.croi.thminsurface;
-            //thmaxsurface.Value = rois.croi.thmaxsurface;
+            barblack.Value = rois.croi.thmaxsurface;
             barshrink.Value = rois.croi.shrinkPixel;
             bargraythresh.Value = rois.croi.grayThresh;
+            bargraythresh1.Value = rois.croi.grayThresh1;
             bararea.Value = rois.croi.minDefectArea;
             tthminsurface.Text = thminsurface.Value.ToString();
             //tthmaxsurface.Text = thmaxsurface.Value.ToString();
@@ -1222,6 +1234,23 @@ namespace ctmeasure
             dgview.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgview.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgview.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+        }
+        private void initdgtemplateview(){
+            dgtemplate.ColumnCount = 1;
+            dgtemplate.Columns[0].HeaderText = "模板";
+            dgtemplate.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            String[] files = Directory.GetFiles(temppath, "*.lvd", SearchOption.TopDirectoryOnly);
+            foreach(string f in files) { 
+                string ff = f.Substring(9, f.Length - 9);
+                templatelist.Add(ff);
+                int i = dgtemplate.Rows.Add();
+                //dgtemplate.Rows[i].Selected = true;
+                dgtemplate[0, i].Value = ff;
+            }
+            //files[0].Substring(9,files[0].Length-9);
+            //Console.WriteLine(files[0].Substring(9, files[0].Length - 9));
+            
         }
         private void initmeasure() {
             tmname.Text = "";
@@ -1796,7 +1825,7 @@ namespace ctmeasure
             //测量区显示测量结果
             rois.text1 = testresult;
             if (vcommon.hshowresult) rois.text2 = rstr;
-            else rois.text2 = string.Format("检测数： {0}\r\nPASS数： {1}\r\nNG数： {2}\r\n用时(ms)： {3}", tqty.Text, tqtypass.Text, tqtyng.Text, truntime.Text);
+            else rois.text2 = string.Format("检测数：{0}\t      PASS数：{1}\t      NG数：{2}\t      用时(ms)：{3}", tqty.Text, tqtypass.Text, tqtyng.Text, truntime.Text);
 
             
             ////显示原点
@@ -1853,60 +1882,115 @@ namespace ctmeasure
             }
             //保存数据
             if (!Program.getversion()) return;
-            string fn = mrois.productname??"";
-            dlgsave.FileName = Path.GetFileName(fn);
-            dlgsave.InitialDirectory = fn==""?"":Path.GetFullPath(fn);
-            dlgsave.Filter = "Measure File|*.lvd";
-            dlgsave.DefaultExt = ".lvd";
-            if (dlgsave.ShowDialog() == DialogResult.OK)
-            {
-                fn = dlgsave.FileName;
-                mrois.productname = fn;
-                ArrayList data = new ArrayList();
-                data.Add(rois.broi);
-                data.Add(rois.brow);
-                data.Add(rois.bcol);
-                data.Add(rois.rois);
-                data.Add(mrois.ilist);
-                templateFile = fn.Replace(".lvd", ".bmp");
-                data.Add(templateFile);
-                data.Add(zscale);
-                data.Add(imgx);
-                data.Add(imgy);
-                FileStream fs = new FileStream(fn, FileMode.Create, FileAccess.Write);
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fs, data);
-                fs.Flush();
-                fs.Close();
-                data.Clear();
-                data = null;
-                tpart.Text = Path.GetFileName(fn);
-                vcommon.productname = fn;
-                himgbak.CopyTo(template);
-                //Cv2.ImWrite(templateFile,template);
-                Cv2.ImWrite(templateFile, template);
+            string yname = tpart.Text.Trim();
+            if (yname == "") {
+                MessageBox.Show(new frmdelayclose(1000), "模板名称为空，请输入模板名称再保存。");
             }
-        }
+            
+            string fn = temppath + yname;
+            mrois.productname = fn;
+            ArrayList data = new ArrayList();
+            data.Add(rois.broi);
+            data.Add(rois.brow);
+            data.Add(rois.bcol);
+            data.Add(rois.rois);
+            data.Add(mrois.ilist);
+            templateFile = fn.Replace(".lvd", ".bmp");
+            data.Add(templateFile);
+            data.Add(zscale);
+            data.Add(imgx);
+            data.Add(imgy);
+            FileStream fs = new FileStream(fn, FileMode.Create, FileAccess.Write);
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, data);
+            fs.Flush();
+            fs.Close();
+            data.Clear();
+            data = null;
+            //tpart.Text = Path.GetFileName(fn);
+            vcommon.productname = fn;
+            himgbak.CopyTo(template);
+            //Cv2.ImWrite(templateFile,template);
+            Cv2.ImWrite(templateFile, template);
+            if (templatelist.Contains(yname))
+            {
+                MessageBox.Show(new frmdelayclose(1000), "模板更新成功。");
+                return;
+            }
+            templatelist.Add(yname);
+            int i = dgtemplate.Rows.Add();
+            dgtemplate.Rows[i].Selected = true;
+            dgtemplate[0, i].Value = yname;
+            //updatedgtemplateview();
+            //dgupdatemeasure(nm);
+            isCsvTitleUpdated = true;
+            MessageBox.Show(new frmdelayclose(1000), "模板保存成功。");
 
+            //string fn = mrois.productname??"";
+            //dlgsave.FileName = Path.GetFileName(fn);
+            //dlgsave.InitialDirectory = fn==""?"":Path.GetFullPath(fn);
+            //dlgsave.Filter = "Measure File|*.lvd";
+            //dlgsave.DefaultExt = ".lvd";
+            //if (dlgsave.ShowDialog() == DialogResult.OK)
+            //{
+            //    fn = dlgsave.FileName;
+            //    mrois.productname = fn;
+            //    ArrayList data = new ArrayList();
+            //    data.Add(rois.broi);
+            //    data.Add(rois.brow);
+            //    data.Add(rois.bcol);
+            //    data.Add(rois.rois);
+            //    data.Add(mrois.ilist);
+            //    templateFile = fn.Replace(".lvd", ".bmp");
+            //    data.Add(templateFile);
+            //    data.Add(zscale);
+            //    data.Add(imgx);
+            //    data.Add(imgy);
+            //    FileStream fs = new FileStream(fn, FileMode.Create, FileAccess.Write);
+            //    BinaryFormatter bf = new BinaryFormatter();
+            //    bf.Serialize(fs, data);
+            //    fs.Flush();
+            //    fs.Close();
+            //    data.Clear();
+            //    data = null;
+            //    tpart.Text = Path.GetFileName(fn);
+            //    vcommon.productname = fn;
+            //    himgbak.CopyTo(template);
+            //    //Cv2.ImWrite(templateFile,template);
+            //    Cv2.ImWrite(templateFile, template);
+
+            //    templatelist.Add(fn);
+            //    int i = dgtemplate.Rows.Add();
+            //    dgtemplate.Rows[i].Selected = true;
+            //    dgtemplate[0, i].Value = fn;
+            //    //updatedgtemplateview();
+            //    //dgupdatemeasure(nm);
+            //    isCsvTitleUpdated = true;
+            //}
+        }
+         
         private void btnloadproduct_Click(object sender, EventArgs e)
         {
             //加载数据
             if (!Program.getversion()) return;
-            tpart.Text = "";
-            string fn = mrois.productname??"";
-            dlgopen.FileName = Path.GetFileName(fn);
-            dlgopen.InitialDirectory = fn==""?"":Path.GetFullPath(fn);
-            dlgopen.Filter = "Measure File|*.lvd";
-            if (dlgopen.ShowDialog() == DialogResult.OK)
+
+            if (dgtemplate.SelectedRows.Count <= 0) return;
+            
+
+            string lvd = temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value.ToString();// + "/.lvd";
+            string tbmp = temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value.ToString();
+            string bmp = tbmp.Substring(0, tbmp.Length - 4) + ".bmp";
+            //string fn = lvd;
+            if (File.Exists(lvd))
             {
-                fn = dlgopen.FileName;
                 ArrayList data;
-                FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read);
+                    
+                FileStream fs = new FileStream(lvd, FileMode.Open, FileAccess.Read);
                 BinaryFormatter bf = new BinaryFormatter();
                 data = (ArrayList)bf.Deserialize(fs);
                 fs.Close();
                 rois.clear();
-                
+
                 rois.broi = (int)data[0];
                 rois.brow = (double)data[1];
                 rois.bcol = (double)data[2];
@@ -1918,16 +2002,62 @@ namespace ctmeasure
                 imgx = (int)data[7];
                 imgy = (int)data[8];
                 data.Clear();
-                data = null;
+                //File.Delete(lvd);
             }
             else
             {
+                MessageBox.Show(new frmdelayclose(1000), "模板文件损坏。");
                 return;
             }
+            //if (File.Exists(bmp))
+            //{
+            //    File.Delete(bmp);
+            //}
+
+            //templatelist.RemoveAt(dgtemplate.SelectedRows[0].Index);
+            //dgtemplate.Rows.RemoveAt(dgtemplate.SelectedRows[0].Index);
+            dgtemplate.ClearSelection();
+            //File.Delete(temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value + "/.bmp");
+            initmeasure();
+            
+
+
+            //tpart.Text = "";
+            //string fn = mrois.productname??"";
+            //dlgopen.FileName = Path.GetFileName(fn);
+            //dlgopen.InitialDirectory = fn==""?"":Path.GetFullPath(fn);
+            //dlgopen.Filter = "Measure File|*.lvd";
+            //if (dlgopen.ShowDialog() == DialogResult.OK)
+            //{
+            //    fn = dlgopen.FileName;
+            //    ArrayList data;
+            //    FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read);
+            //    BinaryFormatter bf = new BinaryFormatter();
+            //    data = (ArrayList)bf.Deserialize(fs);
+            //    fs.Close();
+            //    rois.clear();
+                
+            //    rois.broi = (int)data[0];
+            //    rois.brow = (double)data[1];
+            //    rois.bcol = (double)data[2];
+            //    rois.rois = (ArrayList)data[3];
+            //    mrois.clear();
+            //    mrois.ilist = (ArrayList)data[4];
+            //    templateFile = (string)data[5];
+            //    zscale = (double)data[6];
+            //    imgx = (int)data[7];
+            //    imgy = (int)data[8];
+            //    data.Clear();
+            //    data = null;
+            //}
+            //else
+            //{
+            //    return;
+            //}
             //文件名
-            tpart.Text = Path.GetFileName(fn);
-            vcommon.productname = fn;
-            templateFile = fn.Replace(".lvd", ".bmp");
+            tpart.Text = Path.GetFileName(lvd);
+            vcommon.productname = lvd;
+            templateFile = lvd.Replace(".lvd", ".bmp");
             dcamera.himg = Cv2.ImRead(templateFile);
             dcamera.himg.CopyTo(himgbak);
             dcamera.himg.CopyTo(template);
@@ -1988,8 +2118,8 @@ namespace ctmeasure
             foreach (roishape croi in rois.rois)
             {
                 if (!croi.surfacecheck) continue;
-                croi.getWhiteMask(dcamera.himg, himgbak);
-                croi.getBlackMask(dcamera.himg, himgbak);
+                croi.getWhiteMask(dcamera.himg, himgbak,false,false);
+                croi.getBlackMask(dcamera.himg, himgbak,true,true);
             }
             pictureBox1.Invalidate();
         }
@@ -2419,7 +2549,7 @@ namespace ctmeasure
             tabControl1.SelectedIndex = 3;
             foreach (roishape rs in rois.rois)
             {
-                if (rs.surfacecheck&&rs.shrinkPixel>0&&rs.thminsurface>0&&rs.grayThresh>0&&rs.minDefectArea>0)
+                if (rs.surfacecheck&&rs.shrinkPixel>0&&rs.thminsurface>0&&rs.grayThresh>0&&rs.grayThresh1 >0&& rs.minDefectArea>0)
                 {
                     /*tthminsurface.Text = thminsurface.Value.ToString();*/
                     if (rs.whiteMask == null) { 
@@ -2532,9 +2662,9 @@ namespace ctmeasure
                 if (rs.surfacecheck)
                 {
                     if (rs.thminsurface > 0)
-                        rs.getWhiteMask(dcamera.himg, himgbak);
+                        rs.getWhiteMask(dcamera.himg, himgbak,false,true);
                     if (rs.thmaxsurface > 0)
-                        rs.getBlackMask(dcamera.himg, himgbak);
+                        rs.getBlackMask(dcamera.himg, himgbak,false, true);
                 }
             }
             pictureBox1.Invalidate();
@@ -3005,6 +3135,7 @@ namespace ctmeasure
             else
             {
                 fpath = vcommon.filepath;
+                
             }
             System.Diagnostics.Process.Start("explorer.exe", fpath);
         }
@@ -3054,15 +3185,16 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
+                croi.thmaxsurface = barblack.Value;
                 //croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 
-                croi.getWhiteMask(dcamera.himg, himgbak);
+                croi.getWhiteMask(dcamera.himg, himgbak,false,true);
                 //croi.getBlackMask(dcamera.himg, himgbak);
             }
             
-            //pictureBox1.Invalidate(); 
+            pictureBox1.Invalidate(); 
         }
          
 
@@ -3076,11 +3208,11 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                //croi.thmaxsurface = thmaxsurface.Value;
+                croi.thmaxsurface = barblack.Value; 
                 //croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 
-                croi.getBlackMask(dcamera.himg, himgbak);
+                croi.getBlackMask(dcamera.himg, himgbak,false,true);
             }
             pictureBox1.Invalidate();
         }
@@ -3106,17 +3238,37 @@ namespace ctmeasure
                     croi.thminsurface = thminsurface.Value = 126;
                     tthminsurface.Text = "126";
                 }
+
+                if (croi.spreadPixel == 0)
+                {
+                    croi.spreadPixel = barspread.Value = 16;
+                    tbblack.Text = "16";
+                }
+                if (croi.thmaxsurface == 0)
+                {
+                    croi.thmaxsurface = barblack.Value = 100;
+                    tbblack.Text = "100";
+                }
+
                 if (croi.grayThresh == 0) { 
                     croi.grayThresh = bargraythresh.Value = 30;
                     tbgraythresh.Text = "30";
                 }
+
+                if (croi.grayThresh1 == 0) {
+                    croi.grayThresh1 = bargraythresh1.Value = 30;
+                    tbgraythresh1.Text = "30";
+                }
+
                 if (croi.minDefectArea == 0) { 
                     croi.minDefectArea = bararea.Value = 50;
                     tbarea.Text = "50";
                 }
-                croi.getWhiteMask(dcamera.himg, himgbak);
-                croi.getBlackMask(dcamera.himg, himgbak);
+                croi.getWhiteMask(dcamera.himg, himgbak,false,false);
+                croi.getBlackMask(dcamera.himg, himgbak,true,true);
+                
             }
+            pictureBox1.Invalidate();
             //foreach (roishape croi in rois.rois)
             //{
             //    if (!croi.surfacecheck) continue;
@@ -3153,10 +3305,11 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                //croi.thmaxsurface = thmaxsurface.Value; 
+                croi.thmaxsurface = barblack.Value; 
                 croi.grayThresh = bargraythresh.Value;
+                croi.grayThresh1 = bargraythresh1.Value;
                 croi.minDefectArea = bararea.Value;
-                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectWidth = bargraythresh1.Value;
                 //croi.minDefectHeight = barheight.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.measuresuface(dcamera.himg,himgbak, true,true);
@@ -3172,9 +3325,42 @@ namespace ctmeasure
         }
 
         private void cksurfaceareamax_Click(object sender, EventArgs e)
-        {
-            if (!cksurface.Checked) return;
-            drawsurface();
+        { 
+            if (cksurfaceareamax.Checked)
+            {
+                foreach (roishape croi in rois.srois.rois)
+                {
+                    //赋值
+                    croi.surfacecheck = cksurface.Checked;
+                    croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                    croi.thminsurface = thminsurface.Value;
+                    croi.thmaxsurface = barblack.Value;
+                    //croi.grayThresh = bargraythresh.Value;
+                    //croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                    croi.getWhiteMask(dcamera.himg, himgbak, false, false);
+                    croi.getBlackMask(dcamera.himg, himgbak, true, true); 
+                }
+                pictureBox1.Invalidate();
+            }
+            else
+            {
+                foreach (roishape croi in rois.srois.rois)
+                {
+                    //赋值
+                    croi.surfacecheck = cksurface.Checked;
+                    croi.surfacemaxcheck = cksurfaceareamax.Checked;
+                    croi.thminsurface = thminsurface.Value;
+                    croi.thmaxsurface = barblack.Value;
+                    //croi.grayThresh = bargraythresh.Value;
+                    //croi.stdsurface = bararea.Value * 1.0 / 100.0;
+                    croi.getWhiteMask(dcamera.himg, himgbak, false, false);
+                    //croi.getBlackMask(dcamera.himg, himgbak, true, true);
+                }
+                pictureBox1.Invalidate();
+            }
+            
+            //if (!cksurface.Checked) return;
+            //drawsurface();
         }
 
         private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -3410,12 +3596,13 @@ namespace ctmeasure
                 //croi.surfacecheck = cksurface.Checked;
                 //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                //croi.thmaxsurface = thmaxsurface.Value;
+                croi.thmaxsurface = barblack.Value;
                 croi.grayThresh = bargraythresh.Value;
+                croi.grayThresh1 = bargraythresh1.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 //croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
+                croi.minDefectWidth = bargraythresh1.Value;
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
             //MvApi.CameraSoftTrigger(m_hCamera);
@@ -3440,8 +3627,9 @@ namespace ctmeasure
                 //croi.surfacecheck = cksurface.Checked;
                 //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                //croi.thmaxsurface = thmaxsurface.Value;
+                croi.thmaxsurface = barblack.Value;
                 croi.grayThresh = bargraythresh.Value;
+                croi.grayThresh1 = bargraythresh1.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 //croi.minDefectHeight = barheight.Value;
@@ -3452,7 +3640,7 @@ namespace ctmeasure
             //MvApi.CameraSoftTrigger(m_hCamera);
             //pictureBox1.Refresh();
         }
-
+        
         private void thminsurface_ValueChanged(object sender, MouseEventArgs e)
         {
             //if (!thminsurface.Focused) return;
@@ -3464,7 +3652,8 @@ namespace ctmeasure
             else { tthminsurface.Text = thminsurface.Value.ToString(); }
             //tthminsurface.Text = thminsurface.Value.ToString();
             drawWhiteRegion();
-            drawBlackRegion();
+            cksurfaceareamax.Checked = false;
+            //drawBlackRegion();
             //drawsurface();
         }
          
@@ -3515,6 +3704,54 @@ namespace ctmeasure
             //}
         }
 
+        private void barspread_ValueChanged(object sender, EventArgs e)
+        {
+            tbspread.Text = barspread.Value.ToString();
+            foreach (roishape cr in rois.srois.rois)
+            {
+                cr.spreadPixel = barspread.Value;
+            }
+        }
+         
+
+        private void barblack_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (ckshowsurface.InvokeRequired) { ckshowsurface.Invoke(new MethodInvoker(delegate () { if (!ckshowsurface.Checked) ckshowsurface.Checked = true; })); }
+            else { if (!ckshowsurface.Checked) ckshowsurface.Checked = true; }
+            //if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
+            //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
+            if (tbblack.InvokeRequired) { tbblack.Invoke(new MethodInvoker(delegate () { tbblack.Text = barblack.Value.ToString(); })); }
+            else { tbblack.Text = barblack.Value.ToString(); }
+            //tthminsurface.Text = thminsurface.Value.ToString();
+            drawBlackRegion();
+            cksurfaceareamax.Checked = false;
+        }
+
+        private void btndeltemp_Click(object sender, EventArgs e)
+        {
+            if (dgtemplate.SelectedRows.Count > 0)
+            {
+
+                string lvd = temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value.ToString();// + "/.lvd";
+                string tbmp = temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value.ToString();
+                string bmp = tbmp.Substring(0,tbmp.Length - 4)+".bmp";
+                if (File.Exists(lvd))
+                {
+                    File.Delete(lvd);
+                }
+                if (File.Exists(bmp))
+                {
+                    File.Delete(bmp);
+                }
+
+                templatelist.RemoveAt(dgtemplate.SelectedRows[0].Index);
+                dgtemplate.Rows.RemoveAt(dgtemplate.SelectedRows[0].Index);
+                dgtemplate.ClearSelection();
+                //File.Delete(temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value + "/.bmp");
+                initmeasure();
+            }
+        }
+
         private void btnbugmode_Click(object sender, EventArgs e)
         {
             
@@ -3535,32 +3772,31 @@ namespace ctmeasure
 
         private void barwidth_ValueChanged(object sender, MouseEventArgs e)
         {
-            if (!barwidth.Focused) return;
+            if (!bargraythresh1.Focused) return;
             if (!ckshowsurface.Checked) ckshowsurface.Checked = true;
             //if (thmaxsurface.Value < thminsurface.Value) thmaxsurface.Value = thminsurface.Value;
-            tbwidth.Text = barwidth.Value.ToString();
-            if (thminsurface.Value == 0)
+            tbgraythresh1.Text = bargraythresh1.Value.ToString();
+            if (thminsurface.Value == 0||barblack.Value==0)
             {
                 MessageBox.Show("请先选择亮/暗区域");
                 return;
             }
-            foreach (roishape croi in rois.srois.rois)
+            foreach (roishape croi in rois.rois)
             {
                 if (!croi.surfacecheck) continue;
                 //赋值
                 //croi.surfacecheck = cksurface.Checked;
                 //croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
-                //croi.thmaxsurface = thmaxsurface.Value;
+                croi.thmaxsurface = barblack.Value;
                 croi.grayThresh = bargraythresh.Value;
+                croi.grayThresh1 = bargraythresh1.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
                 croi.minDefectArea = bararea.Value;
                 //croi.minDefectHeight = barheight.Value;
-                croi.minDefectWidth = barwidth.Value;
-
+                croi.minDefectWidth = bargraythresh1.Value;
                 //croi.getWhiteMask(dcamera.himg, himgbak);
             }
-            pictureBox1.Invalidate();
         }
 
          
@@ -3659,8 +3895,8 @@ namespace ctmeasure
                 foreach (roishape croi in rois.rois)
                 {
                     if (!croi.surfacecheck) continue;
-                    croi.getWhiteMask(dcamera.himg, himgbak);
-                    croi.getBlackMask(dcamera.himg, himgbak);
+                    croi.getWhiteMask(dcamera.himg, himgbak,false,false);
+                    croi.getBlackMask(dcamera.himg, himgbak,true,true);
                 }
                 //pictureBox1.Invalidate();
                 isRunOrRunOnceChecked = false;
