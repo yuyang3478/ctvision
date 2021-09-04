@@ -924,7 +924,7 @@ namespace leanvision
         };
 
 
-        public bool drawCountours(Mat himgbak,  Mat srcCopy , Rect roi,Mat mask,int grayThresh) {
+        public Mat drawCountours(Mat himgbak,  Mat srcCopy , Rect roi,Mat mask,int grayThresh) {
 
             //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
             Mat subgray = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
@@ -973,80 +973,13 @@ namespace leanvision
 
             //Cv2.WaitKey(10);
             //获得轮廓
-            OpenCvSharp.Point[][] contours;
-            HierarchyIndex[] hierarchly;
-            Cv2.FindContours(subgray, out contours, out hierarchly, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
-            if (contours.Length == 0) return true;
 
-            int minarea = int.MaxValue;
-            int minareaIdx = 0;
-            int maxarea = int.MinValue;
-            defectArea = 0;
-            int maxareaIdx = int.MinValue;
-            int idx = 0;
-            for (int i = 0; i < contours.Length; i++)
-            {
-                //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
-                //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
-
-                var contour = contours[i];
-                int area1 = Convert.ToInt32(Cv2.ContourArea(contour));
-
-                if (area1 < minDefectArea) continue;
-                //Rect br = Cv2.BoundingRect(contours[i]);
-                RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
-                if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
-                if (area1 < minarea)
-                {
-                    minarea = area1;
-                    minareaIdx = i;
-                }
-                if (area1 > maxarea)
-                {
-                    maxarea = area1;
-                    maxareaIdx = i;
-                }
-                idx += 1;
-                //Scalar color = new Scalar(new Random().Next(0,255), new Random().Next(0, 255), new Random().Next(0, 255));
-
-            }
-            if (idx > 0)
-            {
-                Cv2.DrawContours(
-                    srcCopy,
-                    contours,
-                    minareaIdx,
-                    color: new Scalar(0, 0, 255),
-                    thickness: 3,
-                    lineType: LineTypes.Link8,
-                    hierarchy: hierarchly,
-                    maxLevel: int.MaxValue);
-                Cv2.DrawContours(
-                    srcCopy,
-                    contours,
-                    maxareaIdx,
-                    color: new Scalar(0, 0, 255),
-                    thickness: 3,
-                    lineType: LineTypes.Link8,
-                    hierarchy: hierarchly,
-                    maxLevel: int.MaxValue);
-                defectArea = maxarea;
-
-                Rect br = Cv2.BoundingRect(contours[maxareaIdx]);
-                int cex = br.X + (br.Width) / 2;
-                int cey = br.Y + (br.Height) / 2;
-                Cv2.Circle(srcCopy, cex, cey, 100, new Scalar(0, 0, 255), 3);
-                return true;
-            }
-            return false;
+            return subgray;
+            
             //double start = Environment.TickCount;
         }
 
         public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
-
-           
-
-
 
             //没有mask 直接计算整个bbox的匹配度
             if (surfacecheck == false) return true;
@@ -1091,30 +1024,106 @@ namespace leanvision
                 Console.WriteLine("BOTH BLACK MASK AND WHITEMASK ARE NULL");
                 return true;
             }
+            int maxarea = 0;
+             
+            Mat subgray = drawCountours(himgbak, srcCopy, roi, whiteMask, grayThresh );
+            Mat subgray1 = drawCountours(himgbak, srcCopy, roi, blackMask, grayThresh1 );
 
-            bool wd = drawCountours(himgbak, srcCopy, roi, whiteMask, grayThresh);
-            bool bd = drawCountours(himgbak, srcCopy, roi, blackMask, grayThresh1);
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchly;
+            Cv2.FindContours(subgray, out contours, out hierarchly, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+
+            OpenCvSharp.Point[][] contours1;
+            HierarchyIndex[] hierarchly1;
+            Cv2.FindContours(subgray, out contours1, out hierarchly1, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
 
 
+            int minareaIdx = 0;
+            //int maxarea = int.MinValue;
+            defectArea = 0;
+            int maxareaIdx = int.MinValue;
+            int maxareaIdx1 = int.MinValue;
+            for (int i = 0; i < contours.Length; i++)
+            {
+                var contour = contours[i];
+                int area1 = Convert.ToInt32(Cv2.ContourArea(contour));
+
+                if (area1 < minDefectArea) continue;
+                //Rect br = Cv2.BoundingRect(contours[i]);
+                RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
+                //if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
+
+                if (area1 > maxarea)
+                {
+                    maxarea = area1;
+                    maxareaIdx = i;
+                } 
+            }
+            bool wb = true;
+
+            for (int i = 0; i < contours1.Length; i++)
+            {
+                var contour = contours1[i];
+                int area1 = Convert.ToInt32(Cv2.ContourArea(contour));
+
+                if (area1 < minDefectArea) continue;
+                //Rect br = Cv2.BoundingRect(contours[i]);
+                RotatedRect minBbox = Cv2.MinAreaRect(contours1[i]);
+                //if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
+
+                if (area1 > maxarea)
+                {
+                    maxarea = area1;
+                    maxareaIdx1 = i;
+                    wb = false;
+                }
+            }
+
+            if (contours.Length>0)
+            {
+                Cv2.DrawContours(
+                    srcCopy,
+                    contours,
+                    maxareaIdx,
+                    color: new Scalar(0, 0, 255),
+                    thickness: 3,
+                    lineType: LineTypes.Link8,
+                    hierarchy: hierarchly,
+                    maxLevel: int.MaxValue);
+                //defectArea = maxarea;
+                if (wb) { 
+                    Rect br = Cv2.BoundingRect(contours[maxareaIdx]);
+                    int cex = br.X + (br.Width) / 2;
+                    int cey = br.Y + (br.Height) / 2;
+                    Cv2.Circle(srcCopy, cex, cey, 200, new Scalar(0, 0, 255), 3);
+                }
+            }
+            if(contours1.Length>0)
+            {
+                Cv2.DrawContours(
+                    srcCopy,
+                    contours1,
+                    maxareaIdx1,
+                    color: new Scalar(0, 0, 255),
+                    thickness: 3,
+                    lineType: LineTypes.Link8,
+                    hierarchy: hierarchly1,
+                    maxLevel: int.MaxValue);
+
+                if (!wb) { 
+                    Rect br = Cv2.BoundingRect(contours1[maxareaIdx1]);
+                    int cex = br.X + (br.Width) / 2;
+                    int cey = br.Y + (br.Height) / 2;
+                    Cv2.Circle(srcCopy, cex, cey, 200, new Scalar(0, 0, 255), 3);
+                }
+            }
+            defectArea = maxarea;
             srcCopy.CopyTo(himg[roi]);
-            //double end = Environment.TickCount;
-            //Console.WriteLine("--->:{0},{1}", contours.Length, end - start);
-            //if (Program.fmain.pictureBox1.InvokeRequired)
-            //{
-            //    Program.fmain.pictureBox1.Invoke(new MethodInvoker(
-            //       delegate ()
-            //       {
-            //           Program.fmain.pictureBox1.Refresh();
-            //       }));
-            //}
-            //else
-            //{
-            //    Program.fmain.pictureBox1.Refresh();
-            //}
-
-            
-            return wd||bd;
-            
+            if (contours.Length == 0 && contours1.Length == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void drawHist(Mat src) {

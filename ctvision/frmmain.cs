@@ -1711,7 +1711,7 @@ namespace ctmeasure
                     // true 没有缺陷
                     // false 有缺陷
                     Console.WriteLine("表面检测耗时： {0}",etime1 - stime1);
-                    if (!areack) {
+                    if (areack) {
                         testresult = "NG";
                         mcon = rs.num.ToString("d3");
                         if (this.rtresult.InvokeRequired)
@@ -1884,7 +1884,11 @@ namespace ctmeasure
             if (!Program.getversion()) return;
             string yname = tpart.Text.Trim();
             if (yname == "") {
-                MessageBox.Show(new frmdelayclose(1000), "模板名称为空，请输入模板名称再保存。");
+                MessageBox.Show(new frmdelayclose(3000), "模板名称为空，请输入模板名称再保存。");
+                return;
+            }
+            if (!yname.EndsWith(".lvd")) {
+                yname = yname + ".lvd";
             }
             
             string fn = temppath + yname;
@@ -3231,8 +3235,8 @@ namespace ctmeasure
                 croi.surfacecheck = cksurface.Checked;
 
                 if (croi.shrinkPixel == 0) { 
-                    croi.shrinkPixel = barshrink.Value = 16;
-                    tbshrink.Text = "16";
+                    croi.shrinkPixel = barshrink.Value = 18;
+                    tbshrink.Text = "18";
                 }
                 if (croi.thminsurface == 0) { 
                     croi.thminsurface = thminsurface.Value = 126;
@@ -3241,8 +3245,8 @@ namespace ctmeasure
 
                 if (croi.spreadPixel == 0)
                 {
-                    croi.spreadPixel = barspread.Value = 16;
-                    tbblack.Text = "16";
+                    croi.spreadPixel = barspread.Value = 0;
+                    tbblack.Text = "0";
                 }
                 if (croi.thmaxsurface == 0)
                 {
@@ -3251,18 +3255,18 @@ namespace ctmeasure
                 }
 
                 if (croi.grayThresh == 0) { 
-                    croi.grayThresh = bargraythresh.Value = 30;
-                    tbgraythresh.Text = "30";
+                    croi.grayThresh = bargraythresh.Value = 100;
+                    tbgraythresh.Text = "100";
                 }
 
                 if (croi.grayThresh1 == 0) {
-                    croi.grayThresh1 = bargraythresh1.Value = 30;
-                    tbgraythresh1.Text = "30";
+                    croi.grayThresh1 = bargraythresh1.Value = 100;
+                    tbgraythresh1.Text = "100";
                 }
 
                 if (croi.minDefectArea == 0) { 
                     croi.minDefectArea = bararea.Value = 50;
-                    tbarea.Text = "50";
+                    tbarea.Text = "200";
                 }
                 croi.getWhiteMask(dcamera.himg, himgbak,false,false);
                 croi.getBlackMask(dcamera.himg, himgbak,true,true);

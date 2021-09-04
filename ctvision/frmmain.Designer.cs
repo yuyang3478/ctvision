@@ -763,12 +763,12 @@
             this.bargraythresh1.LargeChange = 2;
             this.bargraythresh1.Location = new System.Drawing.Point(96, 47);
             this.bargraythresh1.Margin = new System.Windows.Forms.Padding(0);
-            this.bargraythresh1.Maximum = 100;
+            this.bargraythresh1.Maximum = 254;
             this.bargraythresh1.Name = "bargraythresh1";
             this.bargraythresh1.Size = new System.Drawing.Size(132, 28);
             this.bargraythresh1.TabIndex = 44;
             this.bargraythresh1.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.bargraythresh1.Value = 10;
+            this.bargraythresh1.Value = 50;
             this.bargraythresh1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.barwidth_ValueChanged);
             // 
             // tbgraythresh1
@@ -891,7 +891,7 @@
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(65, 12);
             this.label34.TabIndex = 19;
-            this.label34.Text = "弹性扩张：";
+            this.label34.Text = "弹性收缩：";
             // 
             // tbshrink
             // 
@@ -1449,9 +1449,9 @@
             // 
             this.groupBox5.Controls.Add(this.cbbase);
             this.groupBox5.Controls.Add(this.label31);
-            this.groupBox5.Location = new System.Drawing.Point(62, 309);
+            this.groupBox5.Location = new System.Drawing.Point(368, 309);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(307, 64);
+            this.groupBox5.Size = new System.Drawing.Size(27, 19);
             this.groupBox5.TabIndex = 25;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "  跟踪基准  ";
@@ -1482,7 +1482,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 28);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(414, 275);
+            this.panel1.Size = new System.Drawing.Size(426, 275);
             this.panel1.TabIndex = 24;
             // 
             // dgview
@@ -1503,7 +1503,7 @@
             this.dgview.RowHeadersWidth = 82;
             this.dgview.RowTemplate.Height = 23;
             this.dgview.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgview.Size = new System.Drawing.Size(414, 275);
+            this.dgview.Size = new System.Drawing.Size(426, 275);
             this.dgview.TabIndex = 24;
             this.dgview.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgview_RowEnter);
             this.dgview.Click += new System.EventHandler(this.dgview_Click);
@@ -1529,16 +1529,16 @@
             this.groupBox3.Controls.Add(this.cbmtype);
             this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Location = new System.Drawing.Point(45, 379);
+            this.groupBox3.Location = new System.Drawing.Point(3, 353);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(338, 349);
+            this.groupBox3.Size = new System.Drawing.Size(429, 339);
             this.groupBox3.TabIndex = 22;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "  检测设置  ";
             // 
             // tmoffset
             // 
-            this.tmoffset.Location = new System.Drawing.Point(85, 254);
+            this.tmoffset.Location = new System.Drawing.Point(161, 256);
             this.tmoffset.Name = "tmoffset";
             this.tmoffset.Size = new System.Drawing.Size(155, 21);
             this.tmoffset.TabIndex = 40;
@@ -1547,7 +1547,7 @@
             // 
             // label32
             // 
-            this.label32.Location = new System.Drawing.Point(18, 252);
+            this.label32.Location = new System.Drawing.Point(94, 254);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(61, 25);
             this.label32.TabIndex = 39;
@@ -1557,7 +1557,7 @@
             // tmname
             // 
             this.tmname.FormattingEnabled = true;
-            this.tmname.Location = new System.Drawing.Point(85, 34);
+            this.tmname.Location = new System.Drawing.Point(161, 36);
             this.tmname.Name = "tmname";
             this.tmname.Size = new System.Drawing.Size(155, 20);
             this.tmname.TabIndex = 38;
@@ -1568,7 +1568,7 @@
             // 
             // btneditmeasure
             // 
-            this.btneditmeasure.Location = new System.Drawing.Point(85, 289);
+            this.btneditmeasure.Location = new System.Drawing.Point(161, 291);
             this.btneditmeasure.Name = "btneditmeasure";
             this.btneditmeasure.Size = new System.Drawing.Size(64, 27);
             this.btneditmeasure.TabIndex = 37;
@@ -1578,7 +1578,7 @@
             // 
             // btnaddmeasure
             // 
-            this.btnaddmeasure.Location = new System.Drawing.Point(176, 289);
+            this.btnaddmeasure.Location = new System.Drawing.Point(252, 291);
             this.btnaddmeasure.Name = "btnaddmeasure";
             this.btnaddmeasure.Size = new System.Drawing.Size(64, 27);
             this.btnaddmeasure.TabIndex = 36;
@@ -1588,7 +1588,7 @@
             // 
             // tmllimit
             // 
-            this.tmllimit.Location = new System.Drawing.Point(85, 227);
+            this.tmllimit.Location = new System.Drawing.Point(161, 229);
             this.tmllimit.Name = "tmllimit";
             this.tmllimit.Size = new System.Drawing.Size(155, 21);
             this.tmllimit.TabIndex = 35;
@@ -1597,7 +1597,7 @@
             // 
             // label30
             // 
-            this.label30.Location = new System.Drawing.Point(18, 225);
+            this.label30.Location = new System.Drawing.Point(94, 227);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(61, 25);
             this.label30.TabIndex = 34;
@@ -1606,7 +1606,7 @@
             // 
             // tmulimit
             // 
-            this.tmulimit.Location = new System.Drawing.Point(85, 200);
+            this.tmulimit.Location = new System.Drawing.Point(161, 202);
             this.tmulimit.Name = "tmulimit";
             this.tmulimit.Size = new System.Drawing.Size(155, 21);
             this.tmulimit.TabIndex = 33;
@@ -1615,7 +1615,7 @@
             // 
             // label29
             // 
-            this.label29.Location = new System.Drawing.Point(18, 198);
+            this.label29.Location = new System.Drawing.Point(94, 200);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(61, 25);
             this.label29.TabIndex = 32;
@@ -1624,7 +1624,7 @@
             // 
             // tmstd
             // 
-            this.tmstd.Location = new System.Drawing.Point(85, 173);
+            this.tmstd.Location = new System.Drawing.Point(161, 175);
             this.tmstd.Name = "tmstd";
             this.tmstd.Size = new System.Drawing.Size(155, 21);
             this.tmstd.TabIndex = 31;
@@ -1633,7 +1633,7 @@
             // 
             // label28
             // 
-            this.label28.Location = new System.Drawing.Point(18, 173);
+            this.label28.Location = new System.Drawing.Point(94, 175);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(61, 25);
             this.label28.TabIndex = 30;
@@ -1644,14 +1644,14 @@
             // 
             this.cbmroi2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbmroi2.FormattingEnabled = true;
-            this.cbmroi2.Location = new System.Drawing.Point(85, 123);
+            this.cbmroi2.Location = new System.Drawing.Point(161, 125);
             this.cbmroi2.Name = "cbmroi2";
             this.cbmroi2.Size = new System.Drawing.Size(155, 20);
             this.cbmroi2.TabIndex = 29;
             // 
             // label27
             // 
-            this.label27.Location = new System.Drawing.Point(18, 120);
+            this.label27.Location = new System.Drawing.Point(94, 122);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(61, 25);
             this.label27.TabIndex = 28;
@@ -1662,14 +1662,14 @@
             // 
             this.cbmroi1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbmroi1.FormattingEnabled = true;
-            this.cbmroi1.Location = new System.Drawing.Point(85, 62);
+            this.cbmroi1.Location = new System.Drawing.Point(161, 64);
             this.cbmroi1.Name = "cbmroi1";
             this.cbmroi1.Size = new System.Drawing.Size(155, 20);
             this.cbmroi1.TabIndex = 27;
             // 
             // label26
             // 
-            this.label26.Location = new System.Drawing.Point(18, 60);
+            this.label26.Location = new System.Drawing.Point(94, 62);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 25);
             this.label26.TabIndex = 26;
@@ -1685,14 +1685,14 @@
             "y距离",
             "长度",
             "宽度"});
-            this.cbmtype.Location = new System.Drawing.Point(85, 92);
+            this.cbmtype.Location = new System.Drawing.Point(161, 94);
             this.cbmtype.Name = "cbmtype";
             this.cbmtype.Size = new System.Drawing.Size(155, 20);
             this.cbmtype.TabIndex = 25;
             // 
             // label25
             // 
-            this.label25.Location = new System.Drawing.Point(18, 89);
+            this.label25.Location = new System.Drawing.Point(94, 91);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(61, 25);
             this.label25.TabIndex = 24;
@@ -1701,7 +1701,7 @@
             // 
             // label24
             // 
-            this.label24.Location = new System.Drawing.Point(18, 31);
+            this.label24.Location = new System.Drawing.Point(94, 33);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(61, 25);
             this.label24.TabIndex = 22;
@@ -1733,7 +1733,7 @@
             this.label23.Dock = System.Windows.Forms.DockStyle.Top;
             this.label23.Location = new System.Drawing.Point(3, 3);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(414, 25);
+            this.label23.Size = new System.Drawing.Size(426, 25);
             this.label23.TabIndex = 17;
             this.label23.Text = "检测内容";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1987,9 +1987,9 @@
             this.lbng.BackColor = System.Drawing.Color.Red;
             this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbng.Location = new System.Drawing.Point(79, 113);
+            this.lbng.Location = new System.Drawing.Point(6, 84);
             this.lbng.Name = "lbng";
-            this.lbng.Size = new System.Drawing.Size(295, 117);
+            this.lbng.Size = new System.Drawing.Size(427, 117);
             this.lbng.TabIndex = 23;
             this.lbng.Text = "NG";
             this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1999,9 +1999,9 @@
             this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
             this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbpass.Location = new System.Drawing.Point(79, 113);
+            this.lbpass.Location = new System.Drawing.Point(6, 84);
             this.lbpass.Name = "lbpass";
-            this.lbpass.Size = new System.Drawing.Size(295, 117);
+            this.lbpass.Size = new System.Drawing.Size(427, 117);
             this.lbpass.TabIndex = 22;
             this.lbpass.Text = "PASS";
             this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2042,7 +2042,7 @@
             // btnpixelunit
             // 
             this.btnpixelunit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnpixelunit.Location = new System.Drawing.Point(327, 267);
+            this.btnpixelunit.Location = new System.Drawing.Point(331, 222);
             this.btnpixelunit.Name = "btnpixelunit";
             this.btnpixelunit.Size = new System.Drawing.Size(47, 20);
             this.btnpixelunit.TabIndex = 17;
@@ -2053,7 +2053,7 @@
             // ckdisplayng
             // 
             this.ckdisplayng.AutoSize = true;
-            this.ckdisplayng.Location = new System.Drawing.Point(169, 268);
+            this.ckdisplayng.Location = new System.Drawing.Point(173, 223);
             this.ckdisplayng.Name = "ckdisplayng";
             this.ckdisplayng.Size = new System.Drawing.Size(60, 16);
             this.ckdisplayng.TabIndex = 19;
@@ -2066,7 +2066,7 @@
             this.ckdisplayall.AutoSize = true;
             this.ckdisplayall.Checked = true;
             this.ckdisplayall.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckdisplayall.Location = new System.Drawing.Point(91, 268);
+            this.ckdisplayall.Location = new System.Drawing.Point(95, 223);
             this.ckdisplayall.Name = "ckdisplayall";
             this.ckdisplayall.Size = new System.Drawing.Size(72, 16);
             this.ckdisplayall.TabIndex = 18;
@@ -2077,7 +2077,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(6, 269);
+            this.label36.Location = new System.Drawing.Point(10, 224);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(95, 12);
             this.label36.TabIndex = 16;
@@ -2089,11 +2089,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtresult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rtresult.Location = new System.Drawing.Point(3, 293);
+            this.rtresult.Location = new System.Drawing.Point(3, 246);
             this.rtresult.Name = "rtresult";
             this.rtresult.ReadOnly = true;
             this.rtresult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtresult.Size = new System.Drawing.Size(427, 443);
+            this.rtresult.Size = new System.Drawing.Size(427, 490);
             this.rtresult.TabIndex = 15;
             this.rtresult.Text = "";
             this.rtresult.WordWrap = false;
