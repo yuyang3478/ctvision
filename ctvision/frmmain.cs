@@ -3714,6 +3714,7 @@ namespace ctmeasure
             foreach (roishape cr in rois.srois.rois)
             {
                 cr.spreadPixel = barspread.Value;
+                tbspread.Text = barspread.Value.ToString();
             }
         }
          

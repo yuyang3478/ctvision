@@ -1053,7 +1053,7 @@ namespace leanvision
                 RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
                 //if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
 
-                if (area1 > maxarea)
+                if (area1 >= maxarea)
                 {
                     maxarea = area1;
                     maxareaIdx = i;
@@ -1071,7 +1071,7 @@ namespace leanvision
                 RotatedRect minBbox = Cv2.MinAreaRect(contours1[i]);
                 //if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
 
-                if (area1 > maxarea)
+                if (area1 >= maxarea)
                 {
                     maxarea = area1;
                     maxareaIdx1 = i;
@@ -1079,7 +1079,7 @@ namespace leanvision
                 }
             }
 
-            if (contours.Length>0)
+            if (maxareaIdx >= 0)
             {
                 Cv2.DrawContours(
                     srcCopy,
@@ -1098,7 +1098,7 @@ namespace leanvision
                     Cv2.Circle(srcCopy, cex, cey, 200, new Scalar(0, 0, 255), 3);
                 }
             }
-            if(contours1.Length>0)
+            if(maxareaIdx1 >= 0)
             {
                 Cv2.DrawContours(
                     srcCopy,
