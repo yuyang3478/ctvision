@@ -1035,7 +1035,7 @@ namespace leanvision
 
             OpenCvSharp.Point[][] contours1;
             HierarchyIndex[] hierarchly1;
-            Cv2.FindContours(subgray, out contours1, out hierarchly1, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+            Cv2.FindContours(subgray1, out contours1, out hierarchly1, RetrievalModes.List, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
 
 
             int minareaIdx = 0;
@@ -1119,7 +1119,7 @@ namespace leanvision
             }
             defectArea = maxarea;
             srcCopy.CopyTo(himg[roi]);
-            if (contours.Length == 0 && contours1.Length == 0)
+            if (maxareaIdx < 0 && maxareaIdx1 < 0)
             {
                 return false;
             }

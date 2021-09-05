@@ -722,6 +722,7 @@
             this.tbgraythresh.ReadOnly = true;
             this.tbgraythresh.Size = new System.Drawing.Size(33, 21);
             this.tbgraythresh.TabIndex = 48;
+            this.tbgraythresh.Text = "100";
             // 
             // label39
             // 
@@ -778,7 +779,7 @@
             this.tbgraythresh1.ReadOnly = true;
             this.tbgraythresh1.Size = new System.Drawing.Size(33, 21);
             this.tbgraythresh1.TabIndex = 45;
-            this.tbgraythresh1.Text = "0";
+            this.tbgraythresh1.Text = "100";
             // 
             // label33
             // 
@@ -811,6 +812,7 @@
             this.tbarea.ReadOnly = true;
             this.tbarea.Size = new System.Drawing.Size(33, 21);
             this.tbarea.TabIndex = 37;
+            this.tbarea.Text = "200";
             // 
             // groupBox8
             // 
@@ -842,6 +844,7 @@
             this.tbblack.Name = "tbblack";
             this.tbblack.Size = new System.Drawing.Size(33, 21);
             this.tbblack.TabIndex = 24;
+            this.tbblack.Text = "100";
             // 
             // tbspread
             // 
@@ -850,6 +853,7 @@
             this.tbspread.Name = "tbspread";
             this.tbspread.Size = new System.Drawing.Size(33, 21);
             this.tbspread.TabIndex = 23;
+            this.tbspread.Text = "0";
             // 
             // barblack
             // 
@@ -1001,8 +1005,7 @@
             this.cbthway.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbthway.FormattingEnabled = true;
             this.cbthway.Items.AddRange(new object[] {
-            "灰度",
-            "黑色区域"});
+            "灰度"});
             this.cbthway.Location = new System.Drawing.Point(103, 57);
             this.cbthway.Name = "cbthway";
             this.cbthway.Size = new System.Drawing.Size(155, 20);
