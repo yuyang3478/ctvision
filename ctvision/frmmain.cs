@@ -1133,18 +1133,22 @@ namespace ctmeasure
             //表面检测
             cksurface.Checked = rois.croi.surfacecheck;
             cksurfaceareamax.Checked = rois.croi.surfacemaxcheck;
-            thminsurface.Value = rois.croi.thminsurface;
-            barblack.Value = rois.croi.thmaxsurface;
-            barshrink.Value = rois.croi.shrinkPixel;
-            bargraythresh.Value = rois.croi.grayThresh;
-            bargraythresh1.Value = rois.croi.grayThresh1;
-            bararea.Value = rois.croi.minDefectArea;
-            tthminsurface.Text = thminsurface.Value.ToString();
+            thminsurface.Value = rois.croi.thminsurface;//
+            barblack.Value = rois.croi.thmaxsurface;//
+            barshrink.Value = rois.croi.shrinkPixel;//
+            barspread.Value = rois.croi.spreadPixel;//
+            bargraythresh.Value = rois.croi.grayThresh;//
+            bargraythresh1.Value = rois.croi.grayThresh1;//
+            bararea.Value = rois.croi.minDefectArea;//
+            tthminsurface.Text = thminsurface.Value.ToString();//
+            tbblack.Text = barblack.Value.ToString();//
             //tthmaxsurface.Text = thmaxsurface.Value.ToString();
-            tbgraythresh.Text = bargraythresh.Value.ToString();
-            tbshrink.Text = barshrink.Value.ToString();
-            tbgraythresh.Text = bargraythresh.Value.ToString();
-            tbarea.Text = bararea.Value.ToString();
+            tbgraythresh.Text = bargraythresh.Value.ToString();//
+            tbgraythresh1.Text = bargraythresh1.Value.ToString();//
+            tbshrink.Text = barshrink.Value.ToString();//
+            tbspread.Text = barspread.Value.ToString();//
+            
+            tbarea.Text = bararea.Value.ToString();//
             //bararea.Value = Convert.ToInt32(rois.croi.stdsurface*10);
             //tbarea.Text = (bararea.Value*1.0/10.0).ToString();
 
@@ -3190,6 +3194,7 @@ namespace ctmeasure
                 croi.surfacemaxcheck = cksurfaceareamax.Checked;
                 croi.thminsurface = thminsurface.Value;
                 croi.thmaxsurface = barblack.Value;
+
                 //croi.thmaxsurface = thmaxsurface.Value;
                 //croi.grayThresh = bargraythresh.Value;
                 //croi.stdsurface = bararea.Value * 1.0 / 100.0;
@@ -3197,7 +3202,8 @@ namespace ctmeasure
                 croi.getWhiteMask(dcamera.himg, himgbak,false,true);
                 //croi.getBlackMask(dcamera.himg, himgbak);
             }
-            
+            //tthminsurface.Text = thminsurface.Value.ToString();
+            //tbblack.Text = barblack.Value.ToString();
             pictureBox1.Invalidate(); 
         }
          
@@ -3218,6 +3224,8 @@ namespace ctmeasure
                 
                 croi.getBlackMask(dcamera.himg, himgbak,false,true);
             }
+            //tthminsurface.Text = thminsurface.Value.ToString();
+            //tbblack.Text = barblack.Value.ToString();
             pictureBox1.Invalidate();
         }
 
@@ -3593,7 +3601,7 @@ namespace ctmeasure
                 MessageBox.Show("请先选择亮/暗区域");
                 return;
             }
-            foreach (roishape croi in rois.rois)
+            foreach (roishape croi in rois.srois.rois)
             {
                 if (!croi.surfacecheck) continue;
                 //赋值
@@ -3786,7 +3794,7 @@ namespace ctmeasure
                 MessageBox.Show("请先选择亮/暗区域");
                 return;
             }
-            foreach (roishape croi in rois.rois)
+            foreach (roishape croi in rois.srois.rois)
             {
                 if (!croi.surfacecheck) continue;
                 //赋值

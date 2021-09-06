@@ -1050,7 +1050,7 @@ namespace leanvision
 
                 if (area1 < minDefectArea) continue;
                 //Rect br = Cv2.BoundingRect(contours[i]);
-                RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
+                //RotatedRect minBbox = Cv2.MinAreaRect(contours[i]);
                 //if ((minBbox.Size.Height < minDefectHeight) && (minBbox.Size.Width < minDefectWidth)) continue;
 
                 if (area1 >= maxarea)
@@ -1310,7 +1310,7 @@ namespace leanvision
                 //Program.fmain.zscale;
                 //Console.WriteLine("{0} {1} {2} {3}",tc1,tr1,tc2,tr2);
                 if (mx > (tc1 - 40) && mx < (tc1 + 40) && my > (tr1 - 40) && my < (tr1 + 40)) action = "ontext1";
-                else if (mx > (tc2 - 40) && mx < (tc2 + 840) && my > (tr2 - 40) && my < (tr2 + 40)) action = "ontext2";
+                else if (mx > (tc2 - 40) && mx < (tc2 + 40) && my > (tr2 - 40) && my < (tr2 + 40)) action = "ontext2";
                 if (action == "ontext1" || action == "ontext2") return;
             }
             //if (action == "onselect") return;
