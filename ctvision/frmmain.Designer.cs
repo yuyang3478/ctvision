@@ -134,6 +134,17 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabmeasure = new System.Windows.Forms.TabPage();
+            this.label41 = new System.Windows.Forms.Label();
+            this.dgf = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnlvcopy = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.cbbase = new System.Windows.Forms.ComboBox();
@@ -184,8 +195,6 @@
             this.tqty = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabdata = new System.Windows.Forms.TabPage();
-            this.lbng = new System.Windows.Forms.Label();
-            this.lbpass = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btnend = new System.Windows.Forms.Button();
             this.btnstart = new System.Windows.Forms.Button();
@@ -218,6 +227,8 @@
             this.tbalignmidv = new System.Windows.Forms.ToolStripMenuItem();
             this.tbalignheight = new System.Windows.Forms.ToolStripMenuItem();
             this.tbalignwidth = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbng = new System.Windows.Forms.Label();
+            this.lbpass = new System.Windows.Forms.Label();
             this.mtools.SuspendLayout();
             this.mstatus.SuspendLayout();
             this.ptools.SuspendLayout();
@@ -238,6 +249,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.thmax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thmin)).BeginInit();
             this.tabmeasure.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgf)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgview)).BeginInit();
@@ -1423,6 +1435,8 @@
             // tabmeasure
             // 
             this.tabmeasure.AutoScroll = true;
+            this.tabmeasure.Controls.Add(this.label41);
+            this.tabmeasure.Controls.Add(this.dgf);
             this.tabmeasure.Controls.Add(this.btnlvcopy);
             this.tabmeasure.Controls.Add(this.groupBox5);
             this.tabmeasure.Controls.Add(this.panel1);
@@ -1437,6 +1451,121 @@
             this.tabmeasure.TabIndex = 1;
             this.tabmeasure.Text = "检测内容";
             this.tabmeasure.UseVisualStyleBackColor = true;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label41.Location = new System.Drawing.Point(7, 684);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(119, 12);
+            this.label41.TabIndex = 28;
+            this.label41.Text = "载带带宽与F值对照表";
+            // 
+            // dgf
+            // 
+            this.dgf.AllowUserToAddRows = false;
+            this.dgf.AllowUserToDeleteRows = false;
+            this.dgf.AllowUserToResizeColumns = false;
+            this.dgf.AllowUserToResizeRows = false;
+            this.dgf.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgf.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dgf.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgf.ColumnHeadersVisible = false;
+            this.dgf.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5,
+            this.Column6,
+            this.Column7,
+            this.Column8,
+            this.Column9});
+            this.dgf.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgf.Location = new System.Drawing.Point(0, 703);
+            this.dgf.MultiSelect = false;
+            this.dgf.Name = "dgf";
+            this.dgf.ReadOnly = true;
+            this.dgf.RowHeadersVisible = false;
+            this.dgf.RowHeadersWidth = 15;
+            this.dgf.RowTemplate.Height = 23;
+            this.dgf.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgf.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgf.Size = new System.Drawing.Size(429, 48);
+            this.dgf.TabIndex = 27;
+            // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 132.4873F;
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column2
+            // 
+            this.Column2.FillWeight = 95.93908F;
+            this.Column2.HeaderText = "Column2";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column3
+            // 
+            this.Column3.FillWeight = 95.93908F;
+            this.Column3.HeaderText = "Column3";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column4
+            // 
+            this.Column4.FillWeight = 95.93908F;
+            this.Column4.HeaderText = "Column4";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column5
+            // 
+            this.Column5.FillWeight = 95.93908F;
+            this.Column5.HeaderText = "Column5";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column6
+            // 
+            this.Column6.FillWeight = 95.93908F;
+            this.Column6.HeaderText = "Column6";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column7
+            // 
+            this.Column7.FillWeight = 95.93908F;
+            this.Column7.HeaderText = "Column7";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column8
+            // 
+            this.Column8.FillWeight = 95.93908F;
+            this.Column8.HeaderText = "Column8";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column9
+            // 
+            this.Column9.FillWeight = 95.93908F;
+            this.Column9.HeaderText = "Column9";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            this.Column9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // btnlvcopy
             // 
@@ -1532,7 +1661,7 @@
             this.groupBox3.Controls.Add(this.cbmtype);
             this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Location = new System.Drawing.Point(3, 353);
+            this.groupBox3.Location = new System.Drawing.Point(0, 310);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(429, 339);
             this.groupBox3.TabIndex = 22;
@@ -1564,6 +1693,7 @@
             this.tmname.Name = "tmname";
             this.tmname.Size = new System.Drawing.Size(155, 20);
             this.tmname.TabIndex = 38;
+            this.tmname.SelectedIndexChanged += new System.EventHandler(this.tmname_SelectedIndexChanged);
             this.tmname.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tmname_KeyDown);
             this.tmname.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tmname_KeyPress);
             this.tmname.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tmname_KeyUp);
@@ -1985,30 +2115,6 @@
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
             // 
-            // lbng
-            // 
-            this.lbng.BackColor = System.Drawing.Color.Red;
-            this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbng.Location = new System.Drawing.Point(6, 84);
-            this.lbng.Name = "lbng";
-            this.lbng.Size = new System.Drawing.Size(427, 117);
-            this.lbng.TabIndex = 23;
-            this.lbng.Text = "NG";
-            this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbpass
-            // 
-            this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
-            this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbpass.Location = new System.Drawing.Point(6, 84);
-            this.lbpass.Name = "lbpass";
-            this.lbpass.Size = new System.Drawing.Size(427, 117);
-            this.lbpass.TabIndex = 22;
-            this.lbpass.Text = "PASS";
-            this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // groupBox7
             // 
             this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -2327,6 +2433,30 @@
             this.tbalignwidth.Text = "等宽";
             this.tbalignwidth.Click += new System.EventHandler(this.tbalignwidth_Click);
             // 
+            // lbng
+            // 
+            this.lbng.BackColor = System.Drawing.Color.Red;
+            this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbng.Location = new System.Drawing.Point(4, 86);
+            this.lbng.Name = "lbng";
+            this.lbng.Size = new System.Drawing.Size(427, 117);
+            this.lbng.TabIndex = 27;
+            this.lbng.Text = "NG";
+            this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbpass
+            // 
+            this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
+            this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbpass.Location = new System.Drawing.Point(4, 86);
+            this.lbpass.Name = "lbpass";
+            this.lbpass.Size = new System.Drawing.Size(427, 117);
+            this.lbpass.TabIndex = 26;
+            this.lbpass.Text = "PASS";
+            this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmmain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2376,6 +2506,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.thmax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thmin)).EndInit();
             this.tabmeasure.ResumeLayout(false);
+            this.tabmeasure.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgf)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -2589,10 +2721,21 @@
         private System.Windows.Forms.TrackBar barblack;
         private System.Windows.Forms.TextBox tbblack;
         private System.Windows.Forms.TextBox tbspread;
-        private System.Windows.Forms.Label lbng;
-        private System.Windows.Forms.Label lbpass;
         private System.Windows.Forms.DataGridView dgtemplate;
         private System.Windows.Forms.Button btndeltemp;
+        private System.Windows.Forms.DataGridView dgf;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.Label lbng;
+        private System.Windows.Forms.Label lbpass;
     }
 }
 

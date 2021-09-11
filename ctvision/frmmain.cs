@@ -164,6 +164,7 @@ namespace ctmeasure
             templatelist = new ArrayList();
             initdgview();
             initdgtemplateview();
+            initdgf();
 
             //print
             fprint = new frmprint();
@@ -694,7 +695,7 @@ namespace ctmeasure
             //roi平移
             if ((mouseleftpress&& rois.action != ""))
             {
-                rois.mousemove(himgbak, iw,ih,e.X, e.Y);
+                rois.mousemove(dcamera.himg,himgbak, iw,ih,e.X, e.Y);
                 pictureBox1.Invalidate();
                 return;
             }
@@ -1231,7 +1232,7 @@ namespace ctmeasure
             dgview.Columns[2].HeaderText = "标准";
             dgview.Columns[3].HeaderText = "下限";
             dgview.Columns[4].HeaderText = "上限";
-            dgview.Columns[0].Width = 40;
+            dgview.Columns[0].Width = 60;
             dgview.Columns[1].Width = 110;
             dgview.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgview.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -1256,6 +1257,41 @@ namespace ctmeasure
             //Console.WriteLine(files[0].Substring(9, files[0].Length - 9));
             
         }
+
+        private void initdgf() {
+            dgf.ColumnCount = 10;
+            int i = dgf.Rows.Add();
+            
+            dgf[0, i].Value = "带宽";
+            dgf[1, i].Value = "8mm";
+            dgf[2, i].Value = "12mm";
+            dgf[3, i].Value = "16mm";
+            dgf[4, i].Value = "24mm";
+            dgf[5, i].Value = "32mm";
+            dgf[6, i].Value = "44mm";
+            dgf[7, i].Value = "56mm";
+            dgf[8, i].Value = "72mm";
+            dgf[9, i].Value = "88mm";
+            i = dgf.Rows.Add();
+            dgf[0, i].Value = "F值";
+            dgf[1, i].Value = "3.5";
+            dgf[2, i].Value = "5.5";
+            dgf[3, i].Value = "7.5";
+            dgf[4, i].Value = "11.5";
+            dgf[5, i].Value = "14.2";
+            dgf[6, i].Value = "20.2";
+            dgf[7, i].Value = "26.2";
+            dgf[8, i].Value = "34.2";
+            dgf[9, i].Value = "42.2";
+            //for (int i = 0; i < this.dataGridView1.Columns.Count; i++)
+            //{
+            //    this.dgf.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            //}
+            //dgf.SelectionMode
+            //dgf[0, i].Selected = true;
+            dgf.ClearSelection();
+        }
+
         private void initmeasure() {
             tmname.Text = "";
             cbmroi1.SelectedIndex = -1;
@@ -1593,13 +1629,14 @@ namespace ctmeasure
         }
         //手动运行一次
         public void runonce(PictureBox pictureBox1) {
-            
+
             //vcommon.viewscale = zscale = (float)phwin.Width / (float)himgbak.Width;
             //vcommon.viewx = imgx = 0;
             //vcommon.viewy = imgy = 0;
             //pictureBox1.Refresh();
-            
+
             //if (lbpass.Visible == false) Console.WriteLine("");
+            double estime = Environment.TickCount;
             //初始化
             if (this.lbpass.InvokeRequired){lbpass.Invoke(new MethodInvoker(delegate (){ lbpass.Visible = false;}));}
             else{ lbpass.Visible = false;}
@@ -1611,10 +1648,9 @@ namespace ctmeasure
             rois.srois.clear();
             rois.croi = null;
             //计算
-            double estime = Environment.TickCount;
+            
             rois.run(pictureBox1);
-            double cenpoitend = Environment.TickCount;
-            Console.WriteLine("计算中心点耗时----->: {0}", cenpoitend - estime);
+            
             //测量
             mrois.run();
            
@@ -1645,16 +1681,28 @@ namespace ctmeasure
                 //Console.WriteLine("ekdisplayall.Checked ：{0}", etime1 - stime1);
                 //显示区域
                 if (ckdisplayall.Checked) {
-                    rois.showresult(iw, ih, cm.roi1);
-                    if (cm.mtype < 3 || (cm.mtype == 3 && cm.roi2 != null))
+                    if (cm.mresult == "NG")
                     {
-                        rois.showresult(iw, ih, cm.roi2);
+                        rois.showresult(iw, ih, cm.roi1,true);
+                        if (cm.mtype < 3 || (cm.mtype == 3 && cm.roi2 != null))
+                        {
+                            rois.showresult(iw, ih, cm.roi2,true);
+                        }
                     }
+                    else
+                    {
+                        rois.showresult(iw, ih, cm.roi1);
+                        if (cm.mtype < 3 || (cm.mtype == 3 && cm.roi2 != null))
+                        {
+                            rois.showresult(iw, ih, cm.roi2);
+                        }
+                    }
+                    
                 }else if (ckdisplayng.Checked && cm.mresult == "NG") {
-                    rois.showresult(iw, ih, cm.roi1); 
+                    rois.showresult(iw, ih, cm.roi1, true); 
                     if (cm.mtype < 3 || (cm.mtype == 3 && cm.roi2 != null))
                     {
-                        rois.showresult(iw, ih, cm.roi2); 
+                        rois.showresult(iw, ih, cm.roi2,true); 
                     }
                 }
                 //输出结果
@@ -1769,12 +1817,18 @@ namespace ctmeasure
                 vcommon.qtyng++;
             }
             else {
-                if (this.lbpass.InvokeRequired) { lbpass.Invoke(new MethodInvoker(delegate () { lbpass.Visible = true; })); }
-                else { lbpass.Visible = false; }
+                if (this.lbpass.InvokeRequired) { lbpass.Invoke(new MethodInvoker(delegate () { 
+                    lbpass.Visible = true;
+                })); }
+                else {
+                    lbpass.Visible = true;
+                }
                 //lbpass.Visible = true;
                 if(tbrun.Checked) dio.sendok();
                 vcommon.qtypass++;
             }
+            double cenpoitend = Environment.TickCount;
+            Console.WriteLine("计算中心点耗时----->: {0}", cenpoitend - estime);
             vcommon.qty++;
             vcommon.showstatistic();
             
@@ -2887,12 +2941,18 @@ namespace ctmeasure
             //    tmname.Text = tempCombName;
             //}
 
-            if (tmname.FindString(tname) < 0) tmname.Items.Add(tname);
+            if (tmname.FindString(tname) < 0) {
+                int index = tmname.Items.Count;
+                tmname.Items.RemoveAt(index-1);
+                tmname.Items.Add(tname);
+                tmname.Items.Add(" ");
+            }
 
         }
 
         private void tmname_KeyUp(object sender, KeyEventArgs e)
         {
+            Console.WriteLine("");
             return;
             //if (e.KeyData == Keys.Delete) {
             //    string tn = tmname.Text;
@@ -2903,15 +2963,17 @@ namespace ctmeasure
 
         private void tmname_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (e.KeyData == Keys.Delete || (e.KeyData == Keys.Back)) {
+            //if (e.KeyData == Keys.Delete || (e.KeyData == Keys.Back))
+            //{
             //    string tn = tmname.Text;
-            //    if (tn.Equals("W 值") || tn.Equals("S 值") || tn.Equals("E 值") || tn.Equals("F 值") || tn.Equals("P 值") || tn.Equals("P0 值") || tn.Equals("P2 值") || tn.Equals("D0 值") || tn.Equals("A0 值") || tn.Equals("B0 值")) {
+            //    if (tn.Equals("高低模") || tn.Equals("W 值") || tn.Equals("S 值") || tn.Equals("E 值") || tn.Equals("F 值") || tn.Equals("P 值") || tn.Equals("P0 值") || tn.Equals("P2 值") || tn.Equals("A0 值") || tn.Equals("B0 值"))
+            //    {
             //        tmname.Text = tn;
             //        return;
             //    }
             //}
             //tmname.SelectedItem
-             
+
             if (e.KeyData == Keys.Delete) {
                 
                 string tn = tmname.Text;
@@ -3247,19 +3309,19 @@ namespace ctmeasure
                     tbshrink.Text = "18";
                 }
                 if (croi.thminsurface == 0) { 
-                    croi.thminsurface = thminsurface.Value = 126;
-                    tthminsurface.Text = "126";
+                    croi.thminsurface = thminsurface.Value = 120;
+                    tthminsurface.Text = "120";
                 }
 
                 if (croi.spreadPixel == 0)
                 {
-                    croi.spreadPixel = barspread.Value = 0;
-                    tbblack.Text = "0";
+                    croi.spreadPixel = barspread.Value = 8;
+                    tbblack.Text = "8";
                 }
                 if (croi.thmaxsurface == 0)
                 {
-                    croi.thmaxsurface = barblack.Value = 100;
-                    tbblack.Text = "100";
+                    croi.thmaxsurface = barblack.Value = 80;
+                    tbblack.Text = "80";
                 }
 
                 if (croi.grayThresh == 0) { 
@@ -3273,7 +3335,7 @@ namespace ctmeasure
                 }
 
                 if (croi.minDefectArea == 0) { 
-                    croi.minDefectArea = bararea.Value = 50;
+                    croi.minDefectArea = bararea.Value = 200;
                     tbarea.Text = "200";
                 }
                 croi.getWhiteMask(dcamera.himg, himgbak,false,false);
@@ -3703,8 +3765,12 @@ namespace ctmeasure
             if (e.KeyData.HasFlag(Keys.Control)  && e.KeyData.HasFlag(Keys.F10))
             {
                 //frmlit = new frmlimittime();
-                Program.vi.StartPosition = FormStartPosition.CenterScreen;
-                Program.vi.ShowDialog();
+                 
+                verifyInstall vi =  new verifyInstall();
+               
+                
+                vi.StartPosition = FormStartPosition.CenterScreen;
+                vi.ShowDialog();
                 //MessageBox.Show("按下了Control + Alt + 0");
             }
             //if (e.KeyCode == Keys.F11)
@@ -3763,6 +3829,87 @@ namespace ctmeasure
                 //File.Delete(temppath + dgtemplate[0, dgtemplate.SelectedRows[0].Index].Value + "/.bmp");
                 initmeasure();
             }
+        }
+
+        private void tmname_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            string tn = tmname.Text;
+            if (tn == "E 值")
+            {
+                cbmtype.SelectedIndex = -1;
+                tmstd.Text = "1.75";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "P0 值")
+            {
+                cbmtype.SelectedIndex = 0;
+                tmstd.Text = "4.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "P2 值")
+            {
+                cbmtype.SelectedIndex = 0;
+                tmstd.Text = "2.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "高低模") {
+                cbmtype.SelectedIndex = 1;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.05";
+                tmulimit.Text = "0.05";
+            }else if(tn=="S 值")
+            {
+                cbmtype.SelectedIndex = 1;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "P 值")
+            {
+                cbmtype.SelectedIndex = 0;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "F 值")
+            {
+                cbmtype.SelectedIndex = 1;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "W 值")
+            {
+                cbmtype.SelectedIndex = 1;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "A0 值")
+            {
+                cbmtype.SelectedIndex = 2;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            else if (tn == "B0 值")
+            {
+                cbmtype.SelectedIndex = 3;
+                tmstd.Text = "0.0";
+                tmllimit.Text = "0.1";
+                tmulimit.Text = "0.1";
+            }
+            //int id = tmname.Items.IndexOf(tn);
+            //if (id > 9)
+            //{
+            //    tmname.Items.RemoveAt(id);
+            //}
+
+
         }
 
         private void btnbugmode_Click(object sender, EventArgs e)

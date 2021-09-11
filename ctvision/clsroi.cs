@@ -75,6 +75,9 @@ namespace leanvision
 
         [NonSerialized]
         HierarchyIndex[] whiteHierarchly;
+        [NonSerialized]
+        Point[][] regionContours;//测量
+        HierarchyIndex[] regionHierarchly;
 
         [NonSerialized]
         public Mat whiteMask;//要做序列化或者保存
@@ -107,6 +110,7 @@ namespace leanvision
         int brx1 = 0;
         [NonSerialized]
         int bry1 = 0; 
+
 
         public roishape() {
             shape = "rect";
@@ -194,7 +198,7 @@ namespace leanvision
         }
 
         //原点跟踪,dr,dc偏移量
-        public void show(Mat himg, roishape rs)
+        public void show(Mat himg, roishape rs,bool isng=false)
         {
             Rect roi = new Rect(new OpenCvSharp.Point(rs.col - vcommon.viewx, rs.row - vcommon.viewy), new OpenCvSharp.Size((rs.col1 - rs.col), (rs.row1 - rs.row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || roi.Y <= 0 || roi.Width <= 0 || roi.Height <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
@@ -202,7 +206,19 @@ namespace leanvision
                 //MessageBox.Show("ROI 超出边界");
                 return;
             }
-            if (srcCopy != null) { 
+            if (srcCopy != null) {
+                if (isng&& Program.fmain.tbrun.Checked)
+                { 
+                    Cv2.DrawContours(
+                                srcCopy,
+                                regionContours,
+                                -1,
+                                color: new Scalar(0, 0, 255),
+                                thickness: 3,//CV_FILLED
+                                lineType: LineTypes.Link8,
+                                hierarchy: regionHierarchly,
+                                maxLevel: int.MaxValue);
+                }
                 srcCopy.CopyTo(himg[roi]);
             }
             else
@@ -581,10 +597,10 @@ namespace leanvision
             
 
             //获得轮廓
-            OpenCvSharp.Point[][] contours;
-            HierarchyIndex[] hierarchly;
-            Cv2.FindContours(ImageROI, out contours, out hierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
-            if (contours.Length == 0)
+            //OpenCvSharp.Point[][] regionContours;
+            //HierarchyIndex[] regionHierarchly;
+            Cv2.FindContours(ImageROI, out regionContours, out regionHierarchly, RetrievalModes.Tree, ContourApproximationModes.ApproxNone, new OpenCvSharp.Point(0, 0));
+            if (regionContours.Length == 0)
             {
                 area = 0; ar = row; ac = col;
                 r1 = r2 = (int)row;
@@ -608,13 +624,13 @@ namespace leanvision
 
             if (!areamaxcheck && combinecheck)
             {
-                for (int i = 0; i < contours.Length; i++)
+                for (int i = 0; i < regionContours.Length; i++)
                 {
                     //Scalar color = new Scalar(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
                     //Cv2.DrawContours(dst_Image, contours, i, color, 2, LineTypes.Link8, hierarchly);
 
-                    var contour = contours[i];    
-                    Rect br = Cv2.BoundingRect(contours[i]);
+                    var contour = regionContours[i];    
+                    Rect br = Cv2.BoundingRect(regionContours[i]);
                     if ((br.X + br.Width) > brx1)
                     {
                         brx1 = (br.X + br.Width);
@@ -645,10 +661,10 @@ namespace leanvision
             if (areamaxcheck && !combinecheck)
             {
                 maxConIdx = 0;
-                for (int i = 0; i < contours.Length; i++)
+                for (int i = 0; i < regionContours.Length; i++)
                 { 
 
-                    var contour = contours[i];
+                    var contour = regionContours[i];
                     
                     double area2 = Cv2.ContourArea(contour);
                     if (area2 > maxContourArea)
@@ -657,7 +673,7 @@ namespace leanvision
                         maxConIdx = i;
                     }
                 }
-                Rect br = Cv2.BoundingRect(contours[maxConIdx]);
+                Rect br = Cv2.BoundingRect(regionContours[maxConIdx]);
                 if ((br.X + br.Width) > brx1)
                 {
                     brx1 = (br.X + br.Width);
@@ -680,33 +696,34 @@ namespace leanvision
             
             
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
-            if (!Program.fmain.tbrun.Checked) { 
+            if (!Program.fmain.tbrun.Checked)
+            {
                 if (areamaxcheck && !combinecheck)
                 {
                     //Cv2.ImWrite("C:\\Users\\Administrator\\Pictures\\result.bmp", srcCopy);
                     //return;
                     Cv2.DrawContours(
                                 srcCopy,
-                                contours,
+                                regionContours,
                                 maxConIdx,
                                 color: new Scalar(0, 0, 255),
                                 thickness: thickns,//CV_FILLED
                                 lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
+                                hierarchy: regionHierarchly,
                                 maxLevel: 0);
-                
-                    boundingRect = Cv2.BoundingRect(contours[maxConIdx]); //Find bounding rect for each contour
+
+                    boundingRect = Cv2.BoundingRect(regionContours[maxConIdx]); //Find bounding rect for each contour
                 }
                 else
                 {
                     Cv2.DrawContours(
                                 srcCopy,
-                                contours,
+                                regionContours,
                                 -1,
                                 color: new Scalar(0, 0, 255),
                                 thickness: thickns,//CV_FILLED
                                 lineType: LineTypes.Link8,
-                                hierarchy: hierarchly,
+                                hierarchy: regionHierarchly,
                                 maxLevel: int.MaxValue);
                 }
             }
@@ -718,7 +735,7 @@ namespace leanvision
 
 
 
-            mmt = Cv2.Moments(contours[maxConIdx]);
+            mmt = Cv2.Moments(regionContours[maxConIdx]);
             double cx = mmt.M10 / mmt.M00, cy = mmt.M01 / mmt.M00;
             if (!areamaxcheck && combinecheck)
             {
@@ -765,7 +782,7 @@ namespace leanvision
             //Cv2.WaitKey(10000000);
              
             //计算特征
-            if (contours.Length == 0)
+            if (regionContours.Length == 0)
             {
                 area = 0; ar = row; ac = col;
                 r1 = r2 = (int)row;
@@ -1406,7 +1423,7 @@ namespace leanvision
             
         }
 
-        public void mousemove(Mat himgback, int iw,int ih, double mx, double my)
+        public void mousemove(Mat himg, Mat himgback, int iw,int ih, double mx, double my)
         {
             mousex1 = mx; mousey1 = my;
 
@@ -1457,6 +1474,8 @@ namespace leanvision
                 else if (acthandle == 1) {croi.row = my / vcommon.viewscale; croi.col1 = mx / vcommon.viewscale; }
                 else if (acthandle == 2) {croi.row1 = my / vcommon.viewscale; croi.col1 = mx / vcommon.viewscale; }
                 else if (acthandle == 3) {croi.row1 = my / vcommon.viewscale; croi.col = mx / vcommon.viewscale; }
+                croi.getWhiteMask(himg, himgback, false, false);
+                croi.getBlackMask(himg, himgback, true, false);
             }
             else
             {
@@ -1870,9 +1889,9 @@ namespace leanvision
             }
         }
          
-        public void showresult(int iw,int ih,roishape rs) {
+        public void showresult(int iw,int ih,roishape rs,bool isng=false) {
             if (rs == null) return;
-            rs.show(dcamera.himg, rs);
+            rs.show(dcamera.himg, rs,isng);
         }
 
 

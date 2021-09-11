@@ -28,7 +28,8 @@ namespace ctmeasure
             else {
                 this.Dispose();
                 this.Close();
-                Environment.Exit(1);
+                //Application.Exit();
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             
         }
@@ -37,13 +38,15 @@ namespace ctmeasure
         {
             this.Dispose();
             this.Close();
-            Environment.Exit(1);
+            //Application.Exit();
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             Apphelper.deleteValue();
-            Environment.Exit(1);
+            //Environment.Exit(0);
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
 }
