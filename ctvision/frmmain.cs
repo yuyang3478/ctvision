@@ -108,7 +108,8 @@ namespace ctmeasure
         public Mat template = new Mat();
         private bool bugmode = false;
         public frmlimittime frmlit = new frmlimittime();
-
+        //private List<int> listTracked = new List<int>(); //时间
+        //private Dictionary<int, int> dicTrack = new Dictionary<int, int>();
 
         [DllImport("gdi32.dll")]
         static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
@@ -1069,6 +1070,7 @@ namespace ctmeasure
                 //赋值
                 croi.roipoint = cbpoint.SelectedIndex;
                 croi.thway = cbthway.SelectedIndex;
+                croi.trackNumber = combtrack.SelectedIndex;
                 croi.thmin = thmin.Value;
                 croi.thmax = thmax.Value;
                 croi.closingcircle = cbcloseing.SelectedIndex;
@@ -1113,6 +1115,7 @@ namespace ctmeasure
             troi.Text = rois.croi.num.ToString("D3");
             cbpoint.SelectedIndex = rois.croi.roipoint;
             cbthway.SelectedIndex = rois.croi.thway;
+            //combtrack.SelectedIndex = rois.croi.trackNumber;
             thmin.Value = (int)rois.croi.thmin;
             tthmin.Text = thmin.Value.ToString();
             thmax.Value = (int)rois.croi.thmax;
@@ -1166,6 +1169,9 @@ namespace ctmeasure
             troi.Text = "";
             cbpoint.SelectedIndex = 0;
             cbthway.SelectedIndex = 0;
+            //if (combtrack.Items.Count > 0) {
+            //    combtrack.SelectedIndex = 0;
+            //}
             thmin.Value = 0;
             thmax.Value = 128;
             tthmin.Text = "0";
@@ -2728,6 +2734,8 @@ namespace ctmeasure
                     if (rs.thmaxsurface > 0)
                         rs.getBlackMask(dcamera.himg, himgbak,false, true);
                 }
+                combtrack.Items.Add(rs.num);
+                
             }
             pictureBox1.Invalidate();
         }
@@ -2812,9 +2820,13 @@ namespace ctmeasure
         //删除按钮
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            foreach(roishape rs in rois.srois.rois) mrois.delete(rs);
+            foreach (roishape rs in rois.srois.rois) {
+                mrois.delete(rs);
+                combtrack.Items.Remove(rs.num);
+            }
             rois.delete(pictureBox1, dcamera.himg, himgbak, iw,ih);
             if (rois.broi == -1) cbbase.SelectedIndex = -1;
+            
             dgupdatemeasureall();
             pictureBox1.Invalidate();
             showroidata();
@@ -3910,6 +3922,18 @@ namespace ctmeasure
             //}
 
 
+        }
+
+        private void combtrack_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rois.croi == null) return;
+            if (rois.srois.count == 0) return;
+            
+            int num_ = Convert.ToInt32(combtrack.SelectedItem.ToString());
+            foreach (roishape croi in rois.srois.rois)
+            {
+                croi.trackNumber = num_;
+            }
         }
 
         private void btnbugmode_Click(object sender, EventArgs e)

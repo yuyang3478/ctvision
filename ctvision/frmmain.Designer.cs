@@ -68,6 +68,8 @@
             this.ptools = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabroi = new System.Windows.Forms.TabPage();
+            this.combtrack = new System.Windows.Forms.ComboBox();
+            this.label42 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.tbgraythresh = new System.Windows.Forms.TextBox();
@@ -195,6 +197,8 @@
             this.tqty = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabdata = new System.Windows.Forms.TabPage();
+            this.lbng = new System.Windows.Forms.Label();
+            this.lbpass = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btnend = new System.Windows.Forms.Button();
             this.btnstart = new System.Windows.Forms.Button();
@@ -227,8 +231,6 @@
             this.tbalignmidv = new System.Windows.Forms.ToolStripMenuItem();
             this.tbalignheight = new System.Windows.Forms.ToolStripMenuItem();
             this.tbalignwidth = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbng = new System.Windows.Forms.Label();
-            this.lbpass = new System.Windows.Forms.Label();
             this.mtools.SuspendLayout();
             this.mstatus.SuspendLayout();
             this.ptools.SuspendLayout();
@@ -675,6 +677,8 @@
             // tabroi
             // 
             this.tabroi.AutoScroll = true;
+            this.tabroi.Controls.Add(this.combtrack);
+            this.tabroi.Controls.Add(this.label42);
             this.tabroi.Controls.Add(this.groupBox6);
             this.tabroi.Controls.Add(this.cbthway);
             this.tabroi.Controls.Add(this.label10);
@@ -693,6 +697,25 @@
             this.tabroi.UseVisualStyleBackColor = true;
             this.tabroi.Click += new System.EventHandler(this.tabPage1_Click);
             // 
+            // combtrack
+            // 
+            this.combtrack.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combtrack.FormattingEnabled = true;
+            this.combtrack.Location = new System.Drawing.Point(103, 54);
+            this.combtrack.Name = "combtrack";
+            this.combtrack.Size = new System.Drawing.Size(155, 20);
+            this.combtrack.TabIndex = 28;
+            this.combtrack.SelectedIndexChanged += new System.EventHandler(this.combtrack_SelectedIndexChanged);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(31, 59);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(71, 12);
+            this.label42.TabIndex = 25;
+            this.label42.Text = "跟    踪:  ";
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.groupBox9);
@@ -700,7 +723,7 @@
             this.groupBox6.Controls.Add(this.cksurfaceareamax);
             this.groupBox6.Controls.Add(this.ckshowsurface);
             this.groupBox6.Controls.Add(this.cksurface);
-            this.groupBox6.Location = new System.Drawing.Point(22, 422);
+            this.groupBox6.Location = new System.Drawing.Point(22, 445);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(298, 309);
             this.groupBox6.TabIndex = 24;
@@ -1018,7 +1041,7 @@
             this.cbthway.FormattingEnabled = true;
             this.cbthway.Items.AddRange(new object[] {
             "灰度"});
-            this.cbthway.Location = new System.Drawing.Point(103, 57);
+            this.cbthway.Location = new System.Drawing.Point(103, 80);
             this.cbthway.Name = "cbthway";
             this.cbthway.Size = new System.Drawing.Size(155, 20);
             this.cbthway.TabIndex = 23;
@@ -1027,7 +1050,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(31, 62);
+            this.label10.Location = new System.Drawing.Point(31, 85);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(71, 12);
             this.label10.TabIndex = 22;
@@ -1035,7 +1058,7 @@
             // 
             // troi
             // 
-            this.troi.Location = new System.Drawing.Point(103, 30);
+            this.troi.Location = new System.Drawing.Point(103, 26);
             this.troi.Name = "troi";
             this.troi.ReadOnly = true;
             this.troi.Size = new System.Drawing.Size(155, 21);
@@ -1052,7 +1075,7 @@
             "下边线",
             "左边线",
             "右边线"});
-            this.cbpoint.Location = new System.Drawing.Point(103, 82);
+            this.cbpoint.Location = new System.Drawing.Point(103, 105);
             this.cbpoint.Name = "cbpoint";
             this.cbpoint.Size = new System.Drawing.Size(155, 20);
             this.cbpoint.TabIndex = 20;
@@ -1062,7 +1085,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(30, 87);
+            this.label12.Location = new System.Drawing.Point(30, 110);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(71, 12);
             this.label12.TabIndex = 19;
@@ -1092,7 +1115,7 @@
             this.groupBox4.Controls.Add(this.twidthmin);
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Location = new System.Drawing.Point(18, 252);
+            this.groupBox4.Location = new System.Drawing.Point(18, 275);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(302, 164);
             this.groupBox4.TabIndex = 18;
@@ -1324,7 +1347,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(30, 33);
+            this.label9.Location = new System.Drawing.Point(30, 29);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 12);
             this.label9.TabIndex = 14;
@@ -1340,7 +1363,7 @@
             this.groupBox2.Controls.Add(this.thmin);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(18, 120);
+            this.groupBox2.Location = new System.Drawing.Point(18, 143);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(302, 126);
             this.groupBox2.TabIndex = 0;
@@ -1614,7 +1637,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 28);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(426, 275);
+            this.panel1.Size = new System.Drawing.Size(423, 275);
             this.panel1.TabIndex = 24;
             // 
             // dgview
@@ -1635,7 +1658,7 @@
             this.dgview.RowHeadersWidth = 82;
             this.dgview.RowTemplate.Height = 23;
             this.dgview.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgview.Size = new System.Drawing.Size(426, 275);
+            this.dgview.Size = new System.Drawing.Size(423, 275);
             this.dgview.TabIndex = 24;
             this.dgview.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgview_RowEnter);
             this.dgview.Click += new System.EventHandler(this.dgview_Click);
@@ -1866,7 +1889,7 @@
             this.label23.Dock = System.Windows.Forms.DockStyle.Top;
             this.label23.Location = new System.Drawing.Point(3, 3);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(426, 25);
+            this.label23.Size = new System.Drawing.Size(423, 25);
             this.label23.TabIndex = 17;
             this.label23.Text = "检测内容";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2114,6 +2137,30 @@
             this.tabdata.TabIndex = 4;
             this.tabdata.Text = "实时数据";
             this.tabdata.UseVisualStyleBackColor = true;
+            // 
+            // lbng
+            // 
+            this.lbng.BackColor = System.Drawing.Color.Red;
+            this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbng.Location = new System.Drawing.Point(4, 86);
+            this.lbng.Name = "lbng";
+            this.lbng.Size = new System.Drawing.Size(427, 117);
+            this.lbng.TabIndex = 27;
+            this.lbng.Text = "NG";
+            this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbpass
+            // 
+            this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
+            this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbpass.Location = new System.Drawing.Point(4, 86);
+            this.lbpass.Name = "lbpass";
+            this.lbpass.Size = new System.Drawing.Size(427, 117);
+            this.lbpass.TabIndex = 26;
+            this.lbpass.Text = "PASS";
+            this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox7
             // 
@@ -2433,30 +2480,6 @@
             this.tbalignwidth.Text = "等宽";
             this.tbalignwidth.Click += new System.EventHandler(this.tbalignwidth_Click);
             // 
-            // lbng
-            // 
-            this.lbng.BackColor = System.Drawing.Color.Red;
-            this.lbng.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbng.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbng.Location = new System.Drawing.Point(4, 86);
-            this.lbng.Name = "lbng";
-            this.lbng.Size = new System.Drawing.Size(427, 117);
-            this.lbng.TabIndex = 27;
-            this.lbng.Text = "NG";
-            this.lbng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbpass
-            // 
-            this.lbpass.BackColor = System.Drawing.Color.LawnGreen;
-            this.lbpass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbpass.Font = new System.Drawing.Font("宋体", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbpass.Location = new System.Drawing.Point(4, 86);
-            this.lbpass.Name = "lbpass";
-            this.lbpass.Size = new System.Drawing.Size(427, 117);
-            this.lbpass.TabIndex = 26;
-            this.lbpass.Text = "PASS";
-            this.lbpass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // frmmain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2736,6 +2759,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.Label lbng;
         private System.Windows.Forms.Label lbpass;
+        private System.Windows.Forms.Label label42;
+        public System.Windows.Forms.ComboBox combtrack;
     }
 }
 

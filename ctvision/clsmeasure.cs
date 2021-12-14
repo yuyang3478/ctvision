@@ -14,7 +14,7 @@ namespace leanvision
         public roishape roi2 { get; set; }//基准对象
         public int mtype { get; set; }//0-x距离, 1-y距离, 2-两点距离, 3-面积, 4-直径
         public double mstd { get; set; }//标准值
-        public double mllimit { get; set; }//下限
+        public double mllimit { get; set; }
         public double mulimit { get; set; }//上限
         public double mvalue { get; set; }//检测结果值
         public string mresult { get; set; }//检测结果ok/ng

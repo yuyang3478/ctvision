@@ -70,6 +70,15 @@ namespace leanvision
 
         public int defectArea { get; set; }//实际缺陷面积
 
+        //public bool isTrackedPoint { get; set; }//是不是被跟踪点
+
+        public int trackNumber { get; set; }//跟踪点编号
+        public double templateAr { get; set; }
+        public double templateAc { get; set; }
+
+        public double shiftr { get; set; }
+        public double shiftc { get; set; }
+
         int maxWhiteConIdx = -1;
         Point[][] whiteContours;
 
@@ -77,6 +86,7 @@ namespace leanvision
         HierarchyIndex[] whiteHierarchly;
         [NonSerialized]
         Point[][] regionContours;//测量
+        [NonSerialized]
         HierarchyIndex[] regionHierarchly;
 
         [NonSerialized]
@@ -125,6 +135,11 @@ namespace leanvision
             rowmax = colmax = widthmax = heightmax = areamax = 99999;
             areamaxcheck = true;
             area = ar = ac = cr = cc = cradius = gr = gc= 0;
+
+            //isTrackedPoint = false;
+            trackNumber = 0;
+            templateAr = templateAc = 0;
+            shiftr = shiftc = 0;
             
         }
 
@@ -134,6 +149,11 @@ namespace leanvision
             row = vr1; col = vc1; row1 = vr2; col1 = vc2;
             srcCopy = new Mat();
             roiCopy = new Mat();
+
+            //isTrackedPoint = false;
+            trackNumber = 0;
+            templateAr = templateAc = 0;
+            shiftr = shiftc = 0;
         }
 
         public void repair(Mat himg, Mat himgback, int iw, int ih)
@@ -818,6 +838,17 @@ namespace leanvision
                 
             }
 
+            if (!Program.fmain.tbrun.Checked)
+            {
+                templateAr = ar;
+                templateAc = ac;
+            }
+            else
+            {
+                shiftr = ar - templateAr;
+                shiftc = ac - templateAc;
+            }
+
 
 
             //Cv2.ImWrite("C:\\Users\\24981\\Desktop\\ctvision源码\\result.bmp", himg);
@@ -1001,12 +1032,27 @@ namespace leanvision
             //没有mask 直接计算整个bbox的匹配度
             if (surfacecheck == false) return true;
             if (thminsurface ==0 && thmaxsurface == 0) return true;
-            Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
-            if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width<=0 || roi.Height<=0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
+
+            //加偏移量前
+            //Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
+            //if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width <= 0 || roi.Height <= 0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
+            //{
+            //    //MessageBox.Show("ROI 超出边界");
+            //    return false;
+            //}
+
+            //加便宜量后
+            double shiftr_ = row - vcommon.viewy +  shiftr;
+            double shiftc_ = col - vcommon.viewx + shiftc;
+            
+            Rect roi = new Rect(new OpenCvSharp.Point(shiftc_, shiftr_), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
+            if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width <= 0 || roi.Height <= 0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
             {
                 //MessageBox.Show("ROI 超出边界");
                 return false;
             }
+
+
             if (srcCopy==null)
                 srcCopy = new Mat();
             double stime1 = Environment.TickCount;
@@ -1510,6 +1556,7 @@ namespace leanvision
                     croi.num = nums;
                     srois.clear();
                     srois.add(croi);
+                    Program.fmain.combtrack.Items.Add(nums);
                 }
             }
             double tmx = mx/vcommon.viewscale;
