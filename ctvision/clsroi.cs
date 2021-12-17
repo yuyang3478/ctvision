@@ -73,6 +73,7 @@ namespace leanvision
         //public bool isTrackedPoint { get; set; }//是不是被跟踪点
 
         public int trackNumber { get; set; }//跟踪点编号
+        public bool isTracked { get; set; }
         public double templateAr { get; set; }
         public double templateAc { get; set; }
 
@@ -140,6 +141,7 @@ namespace leanvision
             trackNumber = 0;
             templateAr = templateAc = 0;
             shiftr = shiftc = 0;
+            isTracked = false;
             
         }
 
@@ -154,6 +156,7 @@ namespace leanvision
             trackNumber = 0;
             templateAr = templateAc = 0;
             shiftr = shiftc = 0;
+            isTracked = false;
         }
 
         public void repair(Mat himg, Mat himgback, int iw, int ih)
@@ -204,6 +207,9 @@ namespace leanvision
                 e.Graphics.DrawRectangle(Pens.Green, rect.rectangle);
                 //e.Graphics.DrawRectangles(vcommon.hcolor, rect.subRectList.ToArray());
                 e.Graphics.DrawString(num.ToString(), new Font("Arial", Convert.ToInt32(180 * vcommon.viewscale)), new SolidBrush(Color.Green), Convert.ToSingle(col ), Convert.ToSingle(row ));
+                if (trackNumber > 0) { 
+                    e.Graphics.DrawString(trackNumber.ToString(), new Font("Arial", Convert.ToInt32(180 * vcommon.viewscale)), new SolidBrush(Color.Blue), Convert.ToSingle(col1 ), Convert.ToSingle(row1 ));
+                }
             }
             //if (action == "ondraw")
             //{
@@ -224,10 +230,13 @@ namespace leanvision
             if (roi.X <= 0 || roi.Y <= 0 || roi.Width <= 0 || roi.Height <= 0 || ((roi.X + roi.Width) >= himg.Width) || ((roi.Y + roi.Height) > himg.Height))
             {
                 //MessageBox.Show("ROI 超出边界");
+                Program.fmain.mstatus.Text = "ROI 超出边界";
                 return;
             }
             if (srcCopy != null) {
-                if (isng&& Program.fmain.tbrun.Checked)
+                Console.WriteLine(isng);
+                /////////////////////////////////////////
+                if (isng && Program.fmain.tbrun.Checked)
                 { 
                     Cv2.DrawContours(
                                 srcCopy,
@@ -551,7 +560,6 @@ namespace leanvision
             //double wRatio = himg.Width * 1.0 / iw;// hw.Width;
             //double hRatio = himg.Height * 1.0 / ih;// hw.Height;
             //double hshift = (ih * wRatio * 1.0 - himg.Height) / 2.0;
-            //Rect roi = new Rect(new OpenCvSharp.Point(col * wRatio-vcommon.viewx, row * wRatio - hshift-vcommon.viewy), new OpenCvSharp.Size((col1 - col) * wRatio, (row1 - row) * wRatio));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             //Console.WriteLine("width,wRatio :{0},{1}", (col1 - col), wRatio);
             if (roi.Width == 0 || roi.Height == 0) return;
@@ -716,7 +724,8 @@ namespace leanvision
             
             
             boundingRect = new Rect(brx, bry, (brx1 - brx), (bry1 - bry));
-            if (!Program.fmain.tbrun.Checked)
+            /////////////////////////////////////////
+            //if (!Program.fmain.tbrun.Checked)
             {
                 if (areamaxcheck && !combinecheck)
                 {
@@ -799,8 +808,8 @@ namespace leanvision
             }
 
             //Cv2.ImShow("DrawContours srcCopy.", srcCopy);
-            //Cv2.WaitKey(10000000);
-             
+            //Cv2.WaitKey(500);
+
             //计算特征
             if (regionContours.Length == 0)
             {
@@ -809,7 +818,7 @@ namespace leanvision
                 c1 = c2 = (int)col;
                 gr = row; gc = col;
                 cradius = 0; cr = row; cc = col;
-            }//Rect roi = new Rect(new OpenCvSharp.Point(col*wRatio, row*wRatio-hshift), new OpenCvSharp.Size((col1 - col)*wRatio, (row1 - row)* wRatio));
+            }
             else
             {//要加换算公式
                 ar = roi.Y + cy;
@@ -837,17 +846,23 @@ namespace leanvision
                 cradius = (cr + gr) / 2;
                 
             }
+            if (isTracked)
+            {
+                if (!Program.fmain.tbrun.Checked)
+                {
+                    templateAr = ar;
+                    templateAc = ac;
+                }
+                else
+                {
+                    
+                    shiftr = ar - templateAr;
+                    shiftc = ac - templateAc;
+                    
+                }
+            }
 
-            if (!Program.fmain.tbrun.Checked)
-            {
-                templateAr = ar;
-                templateAc = ac;
-            }
-            else
-            {
-                shiftr = ar - templateAr;
-                shiftc = ac - templateAc;
-            }
+           
 
 
 
@@ -972,7 +987,7 @@ namespace leanvision
         };
 
 
-        public Mat drawCountours(Mat himgbak,  Mat srcCopy , Rect roi,Mat mask,int grayThresh) {
+        public Mat drawCountours(Mat himgbak,  Mat srcCopy , Rect roi, Rect roi1, Mat mask,int grayThresh) {
 
             //Mat submat = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8UC1);
             Mat subgray = new Mat(new OpenCvSharp.Size(srcCopy.Width, srcCopy.Height), MatType.CV_8SC1);
@@ -992,7 +1007,7 @@ namespace leanvision
             //Cv2.ImShow("subgray", mask);
 
 
-            Cv2.CvtColor(Program.fmain.template[roi], temlateRoi, ColorConversionCodes.BGR2GRAY);
+            Cv2.CvtColor(Program.fmain.template[roi1], temlateRoi, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(himgbak[roi], himgbakRoi, ColorConversionCodes.BGR2GRAY);
             //himgbakRoi = Cv2.ImRead(".\\aa_himgbak.bmp");
             //temlateRoi = Cv2.ImRead(".\\aa_template.bmp");
@@ -1027,31 +1042,40 @@ namespace leanvision
             //double start = Environment.TickCount;
         }
 
-        public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion) {
+        public bool measuresuface(Mat himg, Mat himgbak, bool isset,bool isshowregion,double shift_r=0,double shift_c=0) {
 
             //没有mask 直接计算整个bbox的匹配度
             if (surfacecheck == false) return true;
             if (thminsurface ==0 && thmaxsurface == 0) return true;
+            Rect roi = new Rect();
+            Rect roi1 = new Rect();
+            //未加偏移量
+            roi1 = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
+            if (roi1.X <= 0 || (roi1.X + roi1.Width) > himg.Width || roi1.Width <= 0 || roi1.Height <= 0 || roi1.Y <= 0 || (roi1.Y + roi1.Height) > himg.Height)
+            {
+                //MessageBox.Show("ROI 超出边界");
+                return false;
+            }
+            if (shift_c != 0 || shift_r != 0)
+            {
+                Console.WriteLine("*******************");
 
-            //加偏移量前
-            //Rect roi = new Rect(new OpenCvSharp.Point(col - vcommon.viewx, row - vcommon.viewy), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
-            //if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width <= 0 || roi.Height <= 0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
-            //{
-            //    //MessageBox.Show("ROI 超出边界");
-            //    return false;
-            //}
+                Console.WriteLine(shift_r);
+                Console.WriteLine(shift_c);
+                Console.WriteLine("*******************");
+            }
+            //return false;
+            //加偏移量后
+            double shiftr_ = row - vcommon.viewy + shift_r;
+            double shiftc_ = col - vcommon.viewx + shift_c;
 
-            //加便宜量后
-            double shiftr_ = row - vcommon.viewy +  shiftr;
-            double shiftc_ = col - vcommon.viewx + shiftc;
-            
-            Rect roi = new Rect(new OpenCvSharp.Point(shiftc_, shiftr_), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
+            roi = new Rect(new OpenCvSharp.Point(shiftc_, shiftr_), new OpenCvSharp.Size((col1 - col), (row1 - row)));// Convert.ToInt32(col), Convert.ToInt32(row), Convert.ToInt32(), Convert.ToInt32(row1 - row));// ;
             if (roi.X <= 0 || (roi.X + roi.Width) > himg.Width || roi.Width <= 0 || roi.Height <= 0 || roi.Y <= 0 || (roi.Y + roi.Height) > himg.Height)
             {
                 //MessageBox.Show("ROI 超出边界");
                 return false;
             }
-
+            //Cv2.ImWrite(".\\test\\aa_a.bmp",himgbak[roi]);
 
             if (srcCopy==null)
                 srcCopy = new Mat();
@@ -1060,20 +1084,20 @@ namespace leanvision
 
             mask = Mat.Zeros(srcCopy.Size(), MatType.CV_8UC1);
 
-            if (whiteMask == null && blackMask != null)
-            {
-                if ((blackMask.Width == mask.Width) && (blackMask.Height == mask.Height))
-                {
-                    blackMask.CopyTo(mask);
-                }
-            }
-            else if (blackMask == null && whiteMask != null)
-            {
-                if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height))
-                {
-                    whiteMask.CopyTo(mask);
-                }
-            }
+            //if (whiteMask == null && blackMask != null)
+            //{
+            //    if ((blackMask.Width == mask.Width) && (blackMask.Height == mask.Height))
+            //    {
+            //        blackMask.CopyTo(mask);
+            //    }
+            //}
+            //else if (blackMask == null && whiteMask != null)
+            //{
+            //    if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height))
+            //    {
+            //        whiteMask.CopyTo(mask);
+            //    }
+            //}
             //else if (blackMask != null && whiteMask != null)
             //{
             //    if ((whiteMask.Width == mask.Width) && (whiteMask.Height == mask.Height) && (blackMask.Width == mask.Width) && (blackMask.Height == mask.Height))
@@ -1082,15 +1106,15 @@ namespace leanvision
             //        Cv2.Add(whiteMask, blackMask, mask);
             //    }
             //}
-            else if (blackMask == null && whiteMask == null)
-            {
-                Console.WriteLine("BOTH BLACK MASK AND WHITEMASK ARE NULL");
-                return true;
-            }
+            //else if (blackMask == null && whiteMask == null)
+            //{
+            //    Console.WriteLine("BOTH BLACK MASK AND WHITEMASK ARE NULL");
+            //    return true;
+            //}
             int maxarea = 0;
-             
-            Mat subgray = drawCountours(himgbak, srcCopy, roi, whiteMask, grayThresh );
-            Mat subgray1 = drawCountours(himgbak, srcCopy, roi, blackMask, grayThresh1 );
+            // not drawCountours 分割
+            Mat subgray = drawCountours(himgbak, srcCopy, roi, roi1, whiteMask, grayThresh );
+            Mat subgray1 = drawCountours(himgbak, srcCopy, roi, roi1,blackMask, grayThresh1 );
 
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchly;
@@ -1556,7 +1580,7 @@ namespace leanvision
                     croi.num = nums;
                     srois.clear();
                     srois.add(croi);
-                    Program.fmain.combtrack.Items.Add(nums);
+                    Program.fmain.combtrack.Items.Add(nums.ToString().PadLeft(3,'0'));
                 }
             }
             double tmx = mx/vcommon.viewscale;

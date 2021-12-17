@@ -2569,7 +2569,7 @@
         private System.Windows.Forms.ToolStripButton tb_move;
         public System.Windows.Forms.ToolStripButton tbrunonce;
         private System.Windows.Forms.ToolStripButton tbdrawrect;
-        private System.Windows.Forms.StatusStrip mstatus;
+        public System.Windows.Forms.StatusStrip mstatus;
         private System.Windows.Forms.ToolStripStatusLabel slabeltips;
         private System.Windows.Forms.ToolStripStatusLabel slabelxy;
         private System.Windows.Forms.ToolStripStatusLabel slabelzoom;

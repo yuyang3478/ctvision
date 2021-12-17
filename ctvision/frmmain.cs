@@ -797,8 +797,10 @@ namespace ctmeasure
         {
             if (e.KeyData == Keys.Delete)
             {
-                foreach (roishape rs in rois.srois.rois) 
+                foreach (roishape rs in rois.srois.rois) {
+                    combtrack.Items.Remove(rs.num);
                     mrois.delete(rs);
+                }
                 rois.delete(pictureBox1, dcamera.himg, himgbak, iw,ih);
                 if (rois.broi == -1)
                     cbbase.SelectedIndex = -1;
@@ -1764,11 +1766,27 @@ namespace ctmeasure
                 if (rs.surfacecheck) {
                     //if (rs.surfacecheck)
                     double stime1 = Environment.TickCount;
-                    bool areack = rs.measuresuface(dcamera.himg,himgbak, false,true);
+                    bool areack = false;
+                    if (rs.trackNumber != 0)
+                    {
+                        foreach (roishape rst in rois.rois)
+                        {
+                            if (rst.num == rs.trackNumber)
+                            {
+                                areack = rs.measuresuface(dcamera.himg, himgbak, false, true,rst.shiftr,rst.shiftc);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        areack = rs.measuresuface(dcamera.himg, himgbak, false, true,0,0);
+                    }
+                    
+                    
                     double etime1 = Environment.TickCount;
                     // true 没有缺陷
                     // false 有缺陷
-                    Console.WriteLine("表面检测耗时： {0}",etime1 - stime1);
+                    //Console.WriteLine("表面检测耗时： {0}",etime1 - stime1);
                     if (areack) {
                         testresult = "NG";
                         mcon = rs.num.ToString("d3");
@@ -1834,7 +1852,7 @@ namespace ctmeasure
                 vcommon.qtypass++;
             }
             double cenpoitend = Environment.TickCount;
-            Console.WriteLine("计算中心点耗时----->: {0}", cenpoitend - estime);
+            //Console.WriteLine("计算中心点耗时----->: {0}", cenpoitend - estime);
             vcommon.qty++;
             vcommon.showstatistic();
             
@@ -1927,7 +1945,7 @@ namespace ctmeasure
                 pictureBox1.Refresh(); 
             }
             double howrtend = Environment.TickCount;
-            Console.WriteLine("界面刷新耗时----->: {0}", howrtend - showrtstart);
+            //Console.WriteLine("界面刷新耗时----->: {0}", howrtend - showrtstart);
             //时间
             double eetime = Environment.TickCount;
             if (this.truntime.InvokeRequired) { truntime.Invoke(new MethodInvoker(delegate () { truntime.Text = (eetime - estime).ToString(); })); }
@@ -2306,6 +2324,7 @@ namespace ctmeasure
             rois.clear();
             cbmroi1.Items.Clear();
             cbmroi2.Items.Clear();
+            combtrack.Items.Clear();
             clearroidata();
             rois.text1 = "";
             rois.text2 = "data...";
@@ -2628,7 +2647,14 @@ namespace ctmeasure
                     }
                 }
             }
-            if (bugmode) { 
+
+            ////设置是执行一次（false）还是一直执行(true)，默认为true
+            //aTimer.AutoReset = true;
+            ////开始计时
+            //aTimer.Enabled = true;
+
+            if (bugmode)
+            {
                 //调试代码
                 ////设置时间间隔为2秒（2000毫秒），覆盖构造函数设置的间隔
                 //aTimer.Interval = 1000;
@@ -2734,7 +2760,7 @@ namespace ctmeasure
                     if (rs.thmaxsurface > 0)
                         rs.getBlackMask(dcamera.himg, himgbak,false, true);
                 }
-                combtrack.Items.Add(rs.num);
+                combtrack.Items.Add(rs.num.ToString().PadLeft(3,'0'));
                 
             }
             pictureBox1.Invalidate();
@@ -2821,8 +2847,11 @@ namespace ctmeasure
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             foreach (roishape rs in rois.srois.rois) {
-                mrois.delete(rs);
+
                 combtrack.Items.Remove(rs.num);
+                mrois.delete(rs);
+                
+                
             }
             rois.delete(pictureBox1, dcamera.himg, himgbak, iw,ih);
             if (rois.broi == -1) cbbase.SelectedIndex = -1;
@@ -3350,10 +3379,12 @@ namespace ctmeasure
                     croi.minDefectArea = bararea.Value = 200;
                     tbarea.Text = "200";
                 }
-                croi.getWhiteMask(dcamera.himg, himgbak,false,false);
-                croi.getBlackMask(dcamera.himg, himgbak,true,true);
-                
+                croi.getWhiteMask(dcamera.himg, himgbak, false, false);
+                croi.getBlackMask(dcamera.himg, himgbak, true, true);
+
             }
+            //drawWhiteRegion();
+            //drawBlackRegion();
             pictureBox1.Invalidate();
             //foreach (roishape croi in rois.rois)
             //{
@@ -3373,7 +3404,7 @@ namespace ctmeasure
             {
                 if (!croi.surfacecheck) continue;
                 if (!tbrun.Checked) { 
-                croi.measuresuface(dcamera.himg,himgbak, true,true);
+                    croi.measuresuface(dcamera.himg,himgbak, true,true);
                 }
             }
             pictureBox1.Invalidate();
@@ -3934,6 +3965,16 @@ namespace ctmeasure
             {
                 croi.trackNumber = num_;
             }
+            foreach (roishape croi in rois.rois)
+            {
+                if(croi.num == num_)
+                {
+                    croi.isTracked = true;
+                    croi.getregion(dcamera.himg, himgbak);
+                    croi.showregion(dcamera.himg, true);
+                }
+            }
+            pictureBox1.Refresh();
         }
 
         private void btnbugmode_Click(object sender, EventArgs e)
@@ -4140,7 +4181,7 @@ namespace ctmeasure
             if (m_hCamera > 0)
             {
                 //已经初始化过，直接返回 true
-
+                
                 return true;
             }
 
